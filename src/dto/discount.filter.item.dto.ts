@@ -12,7 +12,7 @@ import { Transform, Type } from 'class-transformer';
 import { DiscountFilterType } from 'enum/DiscountFilterType';
 import { DiscountListItemDto } from 'dto/discount.list.item.dto';
 
-export class DiscountFilterDto {
+export class DiscountFilterItemDto {
   @IsOptional()
   @ValidateIf((_object, value) => !!value)
   @Type(() => Number)

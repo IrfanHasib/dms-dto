@@ -8,7 +8,7 @@ import { BXGYGetType } from 'enum/BXGYGetType';
 import { DiscountBulkDto } from 'dto/discount.bulk.dto';
 import { DiscountBxgyDto } from 'dto/discount.bxgy.dto';
 import { DiscountBxgxDto } from 'dto/discount.bxgx.dto';
-import { DiscountFilterDto } from 'dto/discount.filter.dto';
+import { DiscountFilterItemDto } from 'dto/discount.filter.dto';
 import { DiscountConditionDto } from 'dto/discount.condition.dto';
 export declare class DiscountBaseDto {
     name: string;
@@ -35,6 +35,6 @@ export declare class DiscountBaseDto {
     activeFromDateTime: Date;
     activeToDateTime: Date;
     isMatchAllCondition: boolean;
-    discountFilers: DiscountFilterDto[];
+    discountFilers: DiscountFilterItemDto[];
     discountConditions: DiscountConditionDto[];
 }

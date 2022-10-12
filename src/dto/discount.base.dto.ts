@@ -22,7 +22,7 @@ import { BXGYGetType } from 'enum/BXGYGetType';
 import { DiscountBulkDto } from 'dto/discount.bulk.dto';
 import { DiscountBxgyDto } from 'dto/discount.bxgy.dto';
 import { DiscountBxgxDto } from 'dto/discount.bxgx.dto';
-import { DiscountFilterDto } from 'dto/discount.filter.dto';
+import { DiscountFilterItemDto } from 'dto/discount.filter.item.dto';
 import { DiscountConditionDto } from 'dto/discount.condition.dto';
 
 export class DiscountBaseDto {
@@ -173,8 +173,8 @@ export class DiscountBaseDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => DiscountFilterDto)
-  discountFilers: DiscountFilterDto[];
+  @Type(() => DiscountFilterItemDto)
+  discountFilers: DiscountFilterItemDto[];
 
   @IsOptional()
   @IsArray()
