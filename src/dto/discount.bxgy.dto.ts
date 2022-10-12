@@ -12,11 +12,11 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { BaseDiscountNestedItemDto } from './base.discount.nested.item.dto';
 import { BXGYDiscountType } from 'enum/BXGYDiscountType';
 import { BXGYType } from 'enum/BXGYType';
+import { DiscountListItemDto } from 'dto/discount.list.item.dto';
 
-export class BaseDiscountBxgyDto {
+export class DiscountBxgyDto {
   @IsOptional()
   @ValidateIf((_object, value) => !!value)
   @Type(() => Number)
@@ -58,20 +58,20 @@ export class BaseDiscountBxgyDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => BaseDiscountNestedItemDto)
-  products: BaseDiscountNestedItemDto[];
+  @Type(() => DiscountListItemDto)
+  products: DiscountListItemDto[];
 
   @ValidateIf(o => o.BXGYType === BXGYType.COMPANIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => BaseDiscountNestedItemDto)
-  companies: BaseDiscountNestedItemDto[];
+  @Type(() => DiscountListItemDto)
+  companies: DiscountListItemDto[];
 
   @ValidateIf(o => o.BXGYType === BXGYType.CATEGORIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => BaseDiscountNestedItemDto)
-  categories: BaseDiscountNestedItemDto[];
+  @Type(() => DiscountListItemDto)
+  categories: DiscountListItemDto[];
 }

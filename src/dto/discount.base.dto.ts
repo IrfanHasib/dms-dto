@@ -12,11 +12,6 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { BaseDiscountFilterDto } from './base.discount.filter.dto';
-import { BaseDiscountBulkDto } from './base.discount.bulk.dto';
-import { BaseDiscountBxgxDto } from './base.discount.bxgx.dto';
-import { BaseDiscountBxgyDto } from './base.discount.bxgy.dto';
-import { BaseDiscountConditionDto } from './base.discount.condition.dto';
 import { BulkAdjustmentCountType } from 'enum/BulkAdjustmentCountType';
 import { CartAdjustmentDiscountType } from 'enum/CartAdjustmentDiscountType';
 import { DiscountType } from 'enum/DiscountType';
@@ -24,8 +19,13 @@ import { ProductAdjustmentDiscountType } from 'enum/ProductAdjustmentDiscountTyp
 import { BXGYType } from 'enum/BXGYType';
 import { BXGYCountType } from 'enum/BXGYCountType';
 import { BXGYGetType } from 'enum/BXGYGetType';
+import { DiscountBulkDto } from 'dto/discount.bulk.dto';
+import { DiscountBxgyDto } from 'dto/discount.bxgy.dto';
+import { DiscountBxgxDto } from 'dto/discount.bxgx.dto';
+import { DiscountFilterDto } from 'dto/discount.filter.dto';
+import { DiscountConditionDto } from 'dto/discount.condition.dto';
 
-export class BaseDiscountDto {
+export class DiscountBaseDto {
   @IsNotEmpty()
   @IsString()
   name: string;
@@ -94,8 +94,8 @@ export class BaseDiscountDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => BaseDiscountBulkDto)
-  discountBulks: BaseDiscountBulkDto[];
+  @Type(() => DiscountBulkDto)
+  discountBulks: DiscountBulkDto[];
 
   //DiscountType.BXGX
   @ValidateIf(o => o.discountType === DiscountType.BXGX)
@@ -115,9 +115,9 @@ export class BaseDiscountDto {
         return valueObj;
       }),
   )
-  @Type(() => BaseDiscountBxgxDto)
+  @Type(() => DiscountBxgxDto)
   @ValidateNested({ each: true })
-  discountBXGXs: BaseDiscountBxgxDto[];
+  discountBXGXs: DiscountBxgxDto[];
 
   //DiscountType.BXGY
   @ValidateIf(o => o.discountType === DiscountType.BXGY)
@@ -150,9 +150,9 @@ export class BaseDiscountDto {
         return valueObj;
       }),
   )
-  @Type(() => BaseDiscountBxgyDto)
+  @Type(() => DiscountBxgyDto)
   @ValidateNested({ each: true })
-  discountBXGYs: BaseDiscountBxgyDto[];
+  discountBXGYs: DiscountBxgyDto[];
 
   @IsOptional()
   @ValidateIf((_object, value) => !!value)
@@ -173,13 +173,13 @@ export class BaseDiscountDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => BaseDiscountFilterDto)
-  discountFilers: BaseDiscountFilterDto[];
+  @Type(() => DiscountFilterDto)
+  discountFilers: DiscountFilterDto[];
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(0)
-  @Type(() => BaseDiscountConditionDto)
-  discountConditions: BaseDiscountConditionDto[];
+  @Type(() => DiscountConditionDto)
+  discountConditions: DiscountConditionDto[];
 }

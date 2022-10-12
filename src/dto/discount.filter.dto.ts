@@ -9,10 +9,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { BaseDiscountNestedItemDto } from './base.discount.nested.item.dto';
 import { DiscountFilterType } from 'enum/DiscountFilterType';
+import { DiscountListItemDto } from 'dto/discount.list.item.dto';
 
-export class BaseDiscountFilterDto {
+export class DiscountFilterDto {
   @IsOptional()
   @ValidateIf((_object, value) => !!value)
   @Type(() => Number)
@@ -33,20 +33,20 @@ export class BaseDiscountFilterDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => BaseDiscountNestedItemDto)
-  products: BaseDiscountNestedItemDto[];
+  @Type(() => DiscountListItemDto)
+  products: DiscountListItemDto[];
 
   @ValidateIf(o => o.discountFilterType === DiscountFilterType.COMPANIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => BaseDiscountNestedItemDto)
-  companies: BaseDiscountNestedItemDto[];
+  @Type(() => DiscountListItemDto)
+  companies: DiscountListItemDto[];
 
   @ValidateIf(o => o.discountFilterType === DiscountFilterType.CATEGORIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => BaseDiscountNestedItemDto)
-  categories: BaseDiscountNestedItemDto[];
+  @Type(() => DiscountListItemDto)
+  categories: DiscountListItemDto[];
 }
