@@ -1,5 +1,5 @@
 import { BulkDiscountType } from 'enum/bulkDiscountType';
-export declare class DiscountBulkDto {
+export declare class DiscountBulkItemDto {
     id: number;
     minimumQuantity: number;
     maximumQuantity: number;

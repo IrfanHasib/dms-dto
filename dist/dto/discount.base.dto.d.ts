@@ -5,11 +5,11 @@ import { ProductAdjustmentDiscountType } from 'enum/ProductAdjustmentDiscountTyp
 import { BXGYType } from 'enum/BXGYType';
 import { BXGYCountType } from 'enum/BXGYCountType';
 import { BXGYGetType } from 'enum/BXGYGetType';
-import { DiscountBulkItemDto } from 'dto/discount.bulk.dto';
-import { DiscountBxgyItemDto } from 'dto/discount.bxgy.dto';
-import { DiscountBxgxItemDto } from 'dto/discount.bxgx.dto';
-import { DiscountFilterItemDto } from 'dto/discount.filter.dto';
-import { DiscountConditionItemDto } from 'dto/discount.condition.dto';
+import { DiscountBulkItemDto } from 'dto/discount.bulk.item.dto';
+import { DiscountBxgyItemDto } from 'dto/discount.bxgy.item.dto';
+import { DiscountBxgxItemDto } from 'dto/discount.bxgx.item.dto';
+import { DiscountFilterItemDto } from 'dto/discount.filter.item.dto';
+import { DiscountConditionItemDto } from 'dto/discount.condition.item.dto';
 export declare class DiscountBaseDto {
     name: string;
     discountType: DiscountType;

@@ -1,7 +1,7 @@
 import { BXGYDiscountType } from 'enum/BXGYDiscountType';
 import { BXGYType } from 'enum/BXGYType';
 import { DiscountListItemDto } from 'dto/discount.list.item.dto';
-export declare class DiscountBxgyDto {
+export declare class DiscountBxgyItemDto {
     id: number;
     minimumQuantity: number;
     bonusQuantity: number;
