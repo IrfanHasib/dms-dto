@@ -1,5 +1,5 @@
-import {Allow, IsNotEmpty, IsNumber} from 'class-validator';
-import "reflect-metadata";
+import { Allow, IsNotEmpty, IsNumber } from 'class-validator';
+import 'reflect-metadata';
 
 export class AutoCompleteOptionItemDto {
   @IsNotEmpty()
@@ -7,5 +7,5 @@ export class AutoCompleteOptionItemDto {
   id: number;
 
   @Allow()
-  label: string
+  label: string;
 }

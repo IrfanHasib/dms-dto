@@ -1,4 +1,4 @@
 import { DiscountBaseDto } from './../dto/discount.base.dto';
-import "reflect-metadata";
+import 'reflect-metadata';
 
 export class DiscountCreateDto extends DiscountBaseDto {}

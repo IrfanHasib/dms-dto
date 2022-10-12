@@ -12,7 +12,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import "reflect-metadata";
+import 'reflect-metadata';
 import { BXGYDiscountType } from './../enum/BXGYDiscountType';
 import { BXGYType } from './../enum/BXGYType';
 import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';

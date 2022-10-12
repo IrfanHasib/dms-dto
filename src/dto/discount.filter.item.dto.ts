@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import "reflect-metadata";
+import 'reflect-metadata';
 import { DiscountFilterType } from './../enum/DiscountFilterType';
 import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
 

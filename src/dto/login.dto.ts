@@ -1,5 +1,5 @@
 import { IsNotEmpty, Length } from 'class-validator';
-import "reflect-metadata";
+import 'reflect-metadata';
 
 export class LoginDTO {
   @IsNotEmpty()
