@@ -1,6 +1,6 @@
 import { IsBoolean, IsDecimal, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, ValidateIf } from 'class-validator';
 import { Type } from 'class-transformer';
-import {BXGXDiscountType} from "enum/BXGXDiscountType";
+import { BXGXDiscountType } from 'enum/BXGXDiscountType';
 
 export class BaseDiscountBxgxDto {
   @IsOptional()
@@ -23,7 +23,7 @@ export class BaseDiscountBxgxDto {
   @IsEnum(BXGXDiscountType)
   discountType: BXGXDiscountType;
 
-  @ValidateIf((o) => o.discountType !== BXGXDiscountType.FREE)
+  @ValidateIf(o => o.discountType !== BXGXDiscountType.FREE)
   @IsDecimal()
   discountAmount: number;
 
@@ -31,7 +31,7 @@ export class BaseDiscountBxgxDto {
   @IsBoolean()
   isBXGXRecursive: boolean;
 
-  @ValidateIf((o) => !o.isBXGXRecursive)
+  @ValidateIf(o => !o.isBXGXRecursive)
   @IsInt()
   @Type(() => Number)
   maximumQuantity: number;

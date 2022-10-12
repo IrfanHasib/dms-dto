@@ -17,13 +17,13 @@ import { BaseDiscountBulkDto } from './base.discount.bulk.dto';
 import { BaseDiscountBxgxDto } from './base.discount.bxgx.dto';
 import { BaseDiscountBxgyDto } from './base.discount.bxgy.dto';
 import { BaseDiscountConditionDto } from './base.discount.condition.dto';
-import {BulkAdjustmentCountType} from "enum/BulkAdjustmentCountType";
-import {CartAdjustmentDiscountType} from "enum/CartAdjustmentDiscountType";
-import {DiscountType} from "enum/DiscountType";
-import {ProductAdjustmentDiscountType} from "enum/ProductAdjustmentDiscountType";
-import {BXGYType} from "enum/BXGYType";
-import {BXGYCountType} from "enum/BXGYCountType";
-import {BXGYGetType} from "enum/BXGYGetType";
+import { BulkAdjustmentCountType } from 'enum/BulkAdjustmentCountType';
+import { CartAdjustmentDiscountType } from 'enum/CartAdjustmentDiscountType';
+import { DiscountType } from 'enum/DiscountType';
+import { ProductAdjustmentDiscountType } from 'enum/ProductAdjustmentDiscountType';
+import { BXGYType } from 'enum/BXGYType';
+import { BXGYCountType } from 'enum/BXGYCountType';
+import { BXGYGetType } from 'enum/BXGYGetType';
 
 export class BaseDiscountDto {
   @IsNotEmpty()
@@ -64,33 +64,33 @@ export class BaseDiscountDto {
   usageLimit: number;
 
   //DiscountType.PRODUCT_ADJUSTMENT
-  @ValidateIf((o) => o.discountType === DiscountType.PRODUCT_ADJUSTMENT)
+  @ValidateIf(o => o.discountType === DiscountType.PRODUCT_ADJUSTMENT)
   @IsEnum(ProductAdjustmentDiscountType)
   productAdjustmentDiscountType: ProductAdjustmentDiscountType;
 
-  @ValidateIf((o) => o.discountType === DiscountType.PRODUCT_ADJUSTMENT)
+  @ValidateIf(o => o.discountType === DiscountType.PRODUCT_ADJUSTMENT)
   @IsDecimal()
   productAdjustmentDiscountAmount: number;
 
   //DiscountType.CART_ADJUSTMENT
-  @ValidateIf((o) => o.discountType === DiscountType.CART_ADJUSTMENT)
+  @ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT)
   @IsEnum(CartAdjustmentDiscountType)
   cartAdjustmentDiscountType: CartAdjustmentDiscountType;
 
-  @ValidateIf((o) => o.discountType === DiscountType.CART_ADJUSTMENT)
+  @ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT)
   @IsDecimal()
   cartAdjustmentDiscountAmount: number;
 
-  @ValidateIf((o) => o.discountType === DiscountType.CART_ADJUSTMENT)
+  @ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT)
   @IsString()
   cartAdjustmentLabel: string;
 
   //DiscountType.BULK_ADJUSTMENT
-  @ValidateIf((o) => o.discountType === DiscountType.BULK_ADJUSTMENT)
+  @ValidateIf(o => o.discountType === DiscountType.BULK_ADJUSTMENT)
   @IsEnum(BulkAdjustmentCountType)
   bulkAdjustmentCountType: BulkAdjustmentCountType;
 
-  @ValidateIf((o) => o.discountType === DiscountType.BULK_ADJUSTMENT)
+  @ValidateIf(o => o.discountType === DiscountType.BULK_ADJUSTMENT)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
@@ -98,13 +98,13 @@ export class BaseDiscountDto {
   discountBulks: BaseDiscountBulkDto[];
 
   //DiscountType.BXGX
-  @ValidateIf((o) => o.discountType === DiscountType.BXGX)
+  @ValidateIf(o => o.discountType === DiscountType.BXGX)
   @Transform(({ value }) => {
     return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
   })
   isBXGXRecursive: boolean;
 
-  @ValidateIf((o) => o.discountType === DiscountType.BXGX)
+  @ValidateIf(o => o.discountType === DiscountType.BXGX)
   @IsArray()
   @ArrayMinSize(1)
   @Transform(({ value, obj }) =>
@@ -120,31 +120,31 @@ export class BaseDiscountDto {
   discountBXGXs: BaseDiscountBxgxDto[];
 
   //DiscountType.BXGY
-  @ValidateIf((o) => o.discountType === DiscountType.BXGY)
+  @ValidateIf(o => o.discountType === DiscountType.BXGY)
   @IsEnum(BXGYType)
   BXGYType: BXGYType;
 
-  @ValidateIf((o) => o.discountType === DiscountType.BXGY)
+  @ValidateIf(o => o.discountType === DiscountType.BXGY)
   @IsEnum(BXGYCountType)
   BXGYCountType: BXGYCountType;
 
-  @ValidateIf((o) => o.discountType === DiscountType.BXGY)
+  @ValidateIf(o => o.discountType === DiscountType.BXGY)
   @IsEnum(BXGYGetType)
   BXGYGetType: BXGYGetType;
 
-  @ValidateIf((o) => o.discountType === DiscountType.BXGY)
+  @ValidateIf(o => o.discountType === DiscountType.BXGY)
   @Transform(({ value }) => {
     return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
   })
   isBXGYRecursive: boolean;
 
-  @ValidateIf((o) => o.discountType === DiscountType.BXGY)
+  @ValidateIf(o => o.discountType === DiscountType.BXGY)
   @IsArray()
   @ArrayMinSize(1)
   @Transform(({ value, obj }) =>
     value
       ?.filter((_valueObj: any, index: number) => !obj?.isBXGYRecursive || index < 1)
-      ?.map((valueObj:any) => {
+      ?.map((valueObj: any) => {
         valueObj.BXGYType = obj?.BXGYType;
         valueObj.isBXGYRecursive = obj?.isBXGYRecursive;
         return valueObj;

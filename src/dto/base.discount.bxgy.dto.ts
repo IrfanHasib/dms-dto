@@ -13,8 +13,8 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { BaseDiscountNestedItemDto } from './base.discount.nested.item.dto';
-import {BXGYDiscountType} from "enum/BXGYDiscountType";
-import {BXGYType} from "enum/BXGYType";
+import { BXGYDiscountType } from 'enum/BXGYDiscountType';
+import { BXGYType } from 'enum/BXGYType';
 
 export class BaseDiscountBxgyDto {
   @IsOptional()
@@ -37,7 +37,7 @@ export class BaseDiscountBxgyDto {
   @IsEnum(BXGYDiscountType)
   discountType: BXGYDiscountType;
 
-  @ValidateIf((o) => o.discountType !== BXGYDiscountType.FREE)
+  @ValidateIf(o => o.discountType !== BXGYDiscountType.FREE)
   @IsDecimal()
   discountAmount: number;
 
@@ -49,26 +49,26 @@ export class BaseDiscountBxgyDto {
   @IsEnum(BXGYType)
   BXGYType: BXGYType;
 
-  @ValidateIf((o) => !o.isBXGYRecursive)
+  @ValidateIf(o => !o.isBXGYRecursive)
   @IsInt()
   @Type(() => Number)
   maximumQuantity: number;
 
-  @ValidateIf((o) => o.BXGYType === BXGYType.PRODUCTS)
+  @ValidateIf(o => o.BXGYType === BXGYType.PRODUCTS)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
   @Type(() => BaseDiscountNestedItemDto)
   products: BaseDiscountNestedItemDto[];
 
-  @ValidateIf((o) => o.BXGYType === BXGYType.COMPANIES)
+  @ValidateIf(o => o.BXGYType === BXGYType.COMPANIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
   @Type(() => BaseDiscountNestedItemDto)
   companies: BaseDiscountNestedItemDto[];
 
-  @ValidateIf((o) => o.BXGYType === BXGYType.CATEGORIES)
+  @ValidateIf(o => o.BXGYType === BXGYType.CATEGORIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
