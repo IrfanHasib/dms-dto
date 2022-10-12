@@ -1,1 +1,1 @@
-export {LoginDto} from "./src/login.dto"
+export {LoginDTO} from "./src/login.dto"
