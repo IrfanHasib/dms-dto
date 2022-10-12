@@ -4,7 +4,7 @@ import { ConditionCountType } from 'enum/conditionCountType';
 import { ConditionOperator } from 'enum/conditionOperator';
 import { DiscountConditionType } from 'enum/discountConditionType';
 
-export class DiscountConditionDto {
+export class DiscountConditionItemDto {
   @IsOptional()
   @ValidateIf((_object, value) => !!value)
   @Type(() => Number)

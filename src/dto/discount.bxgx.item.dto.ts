@@ -2,7 +2,7 @@ import { IsBoolean, IsDecimal, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, 
 import { Type } from 'class-transformer';
 import { BXGXDiscountType } from 'enum/BXGXDiscountType';
 
-export class DiscountBxgxDto {
+export class DiscountBxgxItemDto {
   @IsOptional()
   @ValidateIf((_object, value) => !!value)
   @Type(() => Number)

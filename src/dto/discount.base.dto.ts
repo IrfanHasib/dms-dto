@@ -19,11 +19,11 @@ import { ProductAdjustmentDiscountType } from 'enum/ProductAdjustmentDiscountTyp
 import { BXGYType } from 'enum/BXGYType';
 import { BXGYCountType } from 'enum/BXGYCountType';
 import { BXGYGetType } from 'enum/BXGYGetType';
-import { DiscountBulkDto } from 'dto/discount.bulk.dto';
-import { DiscountBxgyDto } from 'dto/discount.bxgy.dto';
-import { DiscountBxgxDto } from 'dto/discount.bxgx.dto';
+import { DiscountBulkItemDto } from 'dto/discount.bulk.item.dto';
+import { DiscountBxgyItemDto } from 'dto/discount.bxgy.item.dto';
+import { DiscountBxgxItemDto } from 'dto/discount.bxgx.item.dto';
 import { DiscountFilterItemDto } from 'dto/discount.filter.item.dto';
-import { DiscountConditionDto } from 'dto/discount.condition.dto';
+import { DiscountConditionItemDto } from 'dto/discount.condition.item.dto';
 
 export class DiscountBaseDto {
   @IsNotEmpty()
@@ -94,8 +94,8 @@ export class DiscountBaseDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => DiscountBulkDto)
-  discountBulks: DiscountBulkDto[];
+  @Type(() => DiscountBulkItemDto)
+  discountBulks: DiscountBulkItemDto[];
 
   //DiscountType.BXGX
   @ValidateIf(o => o.discountType === DiscountType.BXGX)
@@ -115,9 +115,9 @@ export class DiscountBaseDto {
         return valueObj;
       }),
   )
-  @Type(() => DiscountBxgxDto)
+  @Type(() => DiscountBxgxItemDto)
   @ValidateNested({ each: true })
-  discountBXGXs: DiscountBxgxDto[];
+  discountBXGXs: DiscountBxgxItemDto[];
 
   //DiscountType.BXGY
   @ValidateIf(o => o.discountType === DiscountType.BXGY)
@@ -150,9 +150,9 @@ export class DiscountBaseDto {
         return valueObj;
       }),
   )
-  @Type(() => DiscountBxgyDto)
+  @Type(() => DiscountBxgyItemDto)
   @ValidateNested({ each: true })
-  discountBXGYs: DiscountBxgyDto[];
+  discountBXGYs: DiscountBxgyItemDto[];
 
   @IsOptional()
   @ValidateIf((_object, value) => !!value)
@@ -180,6 +180,6 @@ export class DiscountBaseDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(0)
-  @Type(() => DiscountConditionDto)
-  discountConditions: DiscountConditionDto[];
+  @Type(() => DiscountConditionItemDto)
+  discountConditions: DiscountConditionItemDto[];
 }

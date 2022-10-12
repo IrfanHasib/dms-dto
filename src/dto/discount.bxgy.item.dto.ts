@@ -16,7 +16,7 @@ import { BXGYDiscountType } from 'enum/BXGYDiscountType';
 import { BXGYType } from 'enum/BXGYType';
 import { DiscountListItemDto } from 'dto/discount.list.item.dto';
 
-export class DiscountBxgyDto {
+export class DiscountBxgyItemDto {
   @IsOptional()
   @ValidateIf((_object, value) => !!value)
   @Type(() => Number)

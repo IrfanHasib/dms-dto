@@ -5,11 +5,11 @@ import { ProductAdjustmentDiscountType } from 'enum/ProductAdjustmentDiscountTyp
 import { BXGYType } from 'enum/BXGYType';
 import { BXGYCountType } from 'enum/BXGYCountType';
 import { BXGYGetType } from 'enum/BXGYGetType';
-import { DiscountBulkDto } from 'dto/discount.bulk.dto';
-import { DiscountBxgyDto } from 'dto/discount.bxgy.dto';
-import { DiscountBxgxDto } from 'dto/discount.bxgx.dto';
+import { DiscountBulkItemDto } from 'dto/discount.bulk.dto';
+import { DiscountBxgyItemDto } from 'dto/discount.bxgy.dto';
+import { DiscountBxgxItemDto } from 'dto/discount.bxgx.dto';
 import { DiscountFilterItemDto } from 'dto/discount.filter.dto';
-import { DiscountConditionDto } from 'dto/discount.condition.dto';
+import { DiscountConditionItemDto } from 'dto/discount.condition.dto';
 export declare class DiscountBaseDto {
     name: string;
     discountType: DiscountType;
@@ -24,17 +24,17 @@ export declare class DiscountBaseDto {
     cartAdjustmentDiscountAmount: number;
     cartAdjustmentLabel: string;
     bulkAdjustmentCountType: BulkAdjustmentCountType;
-    discountBulks: DiscountBulkDto[];
+    discountBulks: DiscountBulkItemDto[];
     isBXGXRecursive: boolean;
-    discountBXGXs: DiscountBxgxDto[];
+    discountBXGXs: DiscountBxgxItemDto[];
     BXGYType: BXGYType;
     BXGYCountType: BXGYCountType;
     BXGYGetType: BXGYGetType;
     isBXGYRecursive: boolean;
-    discountBXGYs: DiscountBxgyDto[];
+    discountBXGYs: DiscountBxgyItemDto[];
     activeFromDateTime: Date;
     activeToDateTime: Date;
     isMatchAllCondition: boolean;
     discountFilers: DiscountFilterItemDto[];
-    discountConditions: DiscountConditionDto[];
+    discountConditions: DiscountConditionItemDto[];
 }

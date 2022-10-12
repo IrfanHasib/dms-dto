@@ -2,7 +2,7 @@ import { IsDecimal, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, V
 import { Type } from 'class-transformer';
 import { BulkDiscountType } from 'enum/bulkDiscountType';
 
-export class DiscountBulkDto {
+export class DiscountBulkItemDto {
   @IsOptional()
   @ValidateIf((_object, value) => !!value)
   @Type(() => Number)
