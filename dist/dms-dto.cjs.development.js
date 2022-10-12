@@ -133,6 +133,7 @@ var responseDtoValidator = function responseDtoValidator(dto, obj) {
         returnError = ['Response is not valid'].concat(returnError);
         throw new Error((_returnError = returnError) === null || _returnError === void 0 ? void 0 : _returnError.join('. \n'));
       }
+      return classTransformer.plainToInstance(dto, obj);
     });
   } catch (e) {
     return Promise.reject(e);
