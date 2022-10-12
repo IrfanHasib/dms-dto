@@ -1,22 +1,13 @@
-import { ClassConstructor, plainToClass } from "class-transformer";
-import { validate } from "class-validator";
+import { ClassConstructor } from "class-transformer";
+import {dtoValidator} from "./dtoValidator";
 
 const responseDtoValidator = async <T extends ClassConstructor<any>>(
     dto: T,
     obj: Object
 ) => {
-    const objInstance = plainToClass(dto, obj);
-    const errors = await validate(objInstance);
-    if (errors.length > 0) {
-
-        let returnError: string[] = ["Response is not valid"]
-        errors?.map(
-            ({  constraints }) => {
-                Object.values(constraints as Object)?.map(i=>{
-                    returnError.push(i)
-                })
-            }
-        );
+    let returnError: string[] = await dtoValidator(dto,obj)
+    if (returnError.length > 0) {
+        returnError = ["Response is not valid", ...returnError]
         throw new Error(returnError?.join(". \n"));
     }
 };
