@@ -1,5 +1,5 @@
-import { BXGXDiscountType } from "enum/BXGXDiscountType";
-export declare class BaseDiscountBxgxDto {
+import { BXGXDiscountType } from 'enum/BXGXDiscountType';
+export declare class DiscountBxgxDto {
     id: number;
     minimumQuantity: number;
     bonusQuantity: number;

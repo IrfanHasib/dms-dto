@@ -1,6 +1,6 @@
 import { __decorate } from 'tslib';
 import { IsNotEmpty, Length, IsString, IsOptional, validate } from 'class-validator';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 
 var BulkAdjustmentCountType;
 (function (BulkAdjustmentCountType) {
@@ -115,7 +115,7 @@ __decorate([IsOptional(), IsString()], AuthResponseDTO.prototype, "message", voi
 
 var dtoValidator = function dtoValidator(dto, obj) {
   try {
-    var objInstance = plainToClass(dto, obj);
+    var objInstance = plainToInstance(dto, obj);
     return Promise.resolve(validate(objInstance)).then(function (errors) {
       var returnError = [];
       if (errors.length > 0) {

@@ -105,7 +105,7 @@ tslib.__decorate([classValidator.IsOptional(), classValidator.IsString()], AuthR
 
 var dtoValidator = function dtoValidator(dto, obj) {
   try {
-    var objInstance = classTransformer.plainToClass(dto, obj);
+    var objInstance = classTransformer.plainToInstance(dto, obj);
     return Promise.resolve(classValidator.validate(objInstance)).then(function (errors) {
       var returnError = [];
       if (errors.length > 0) {

@@ -1,8 +1,8 @@
-import { ClassConstructor, plainToClass } from 'class-transformer';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 
-const dtoValidator = async <T extends ClassConstructor<any>>(dto: T, obj: Object) => {
-  const objInstance = plainToClass(dto, obj);
+const dtoValidator = async (dto: ClassConstructor<any>, obj: Object) => {
+  const objInstance = plainToInstance(dto, obj);
   const errors = await validate(objInstance);
   let returnError: string[] = [];
   if (errors.length > 0) {
