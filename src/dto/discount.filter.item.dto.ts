@@ -9,8 +9,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { DiscountFilterType } from 'enum/DiscountFilterType';
-import { DiscountListItemDto } from 'dto/discount.list.item.dto';
+import { DiscountFilterType } from './../enum/DiscountFilterType';
+import { DiscountListItemDto } from './../dto/discount.list.item.dto';
 
 export class DiscountFilterItemDto {
   @IsOptional()

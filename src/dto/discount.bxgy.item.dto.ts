@@ -12,9 +12,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { BXGYDiscountType } from 'enum/BXGYDiscountType';
-import { BXGYType } from 'enum/BXGYType';
-import { DiscountListItemDto } from 'dto/discount.list.item.dto';
+import { BXGYDiscountType } from './../enum/BXGYDiscountType';
+import { BXGYType } from './../enum/BXGYType';
+import { DiscountListItemDto } from './../dto/discount.list.item.dto';
 
 export class DiscountBxgyItemDto {
   @IsOptional()
