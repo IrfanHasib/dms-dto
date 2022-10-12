@@ -1,3 +1,12 @@
+export { DiscountBaseDto } from 'dto/discount.base.dto';
+export { DiscountBulkItemDto } from 'dto/discount.bulk.item.dto';
+export { DiscountBxgxItemDto } from 'dto/discount.bxgx.item.dto';
+export { DiscountBxgyItemDto } from 'dto/discount.bxgy.item.dto';
+export { DiscountConditionItemDto } from 'dto/discount.condition.item.dto';
+export { DiscountCreateDto } from 'dto/discount.create.dto';
+export { DiscountFilterItemDto } from 'dto/discount.filter.item.dto';
+export { DiscountListItemDto } from 'dto/discount.list.item.dto';
+export { DiscountUpdateDto } from 'dto/discount.update.dto';
 export { BulkAdjustmentCountType } from './enum/bulkAdjustmentCountType';
 export { BulkDiscountType } from './enum/bulkDiscountType';
 export { BXGXDiscountType } from './enum/BXGXDiscountType';

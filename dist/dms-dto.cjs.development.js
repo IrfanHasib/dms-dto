@@ -2,6 +2,15 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var discount_base_dto = require('dto/discount.base.dto');
+var discount_bulk_item_dto = require('dto/discount.bulk.item.dto');
+var discount_bxgx_item_dto = require('dto/discount.bxgx.item.dto');
+var discount_bxgy_item_dto = require('dto/discount.bxgy.item.dto');
+var discount_condition_item_dto = require('dto/discount.condition.item.dto');
+var discount_create_dto = require('dto/discount.create.dto');
+var discount_filter_item_dto = require('dto/discount.filter.item.dto');
+var discount_list_item_dto = require('dto/discount.list.item.dto');
+var discount_update_dto = require('dto/discount.update.dto');
 var tslib = require('tslib');
 var classValidator = require('class-validator');
 var classTransformer = require('class-transformer');
@@ -140,6 +149,60 @@ var responseDtoValidator = function responseDtoValidator(dto, obj) {
   }
 };
 
+Object.defineProperty(exports, 'DiscountBaseDto', {
+  enumerable: true,
+  get: function () {
+    return discount_base_dto.DiscountBaseDto;
+  }
+});
+Object.defineProperty(exports, 'DiscountBulkItemDto', {
+  enumerable: true,
+  get: function () {
+    return discount_bulk_item_dto.DiscountBulkItemDto;
+  }
+});
+Object.defineProperty(exports, 'DiscountBxgxItemDto', {
+  enumerable: true,
+  get: function () {
+    return discount_bxgx_item_dto.DiscountBxgxItemDto;
+  }
+});
+Object.defineProperty(exports, 'DiscountBxgyItemDto', {
+  enumerable: true,
+  get: function () {
+    return discount_bxgy_item_dto.DiscountBxgyItemDto;
+  }
+});
+Object.defineProperty(exports, 'DiscountConditionItemDto', {
+  enumerable: true,
+  get: function () {
+    return discount_condition_item_dto.DiscountConditionItemDto;
+  }
+});
+Object.defineProperty(exports, 'DiscountCreateDto', {
+  enumerable: true,
+  get: function () {
+    return discount_create_dto.DiscountCreateDto;
+  }
+});
+Object.defineProperty(exports, 'DiscountFilterItemDto', {
+  enumerable: true,
+  get: function () {
+    return discount_filter_item_dto.DiscountFilterItemDto;
+  }
+});
+Object.defineProperty(exports, 'DiscountListItemDto', {
+  enumerable: true,
+  get: function () {
+    return discount_list_item_dto.DiscountListItemDto;
+  }
+});
+Object.defineProperty(exports, 'DiscountUpdateDto', {
+  enumerable: true,
+  get: function () {
+    return discount_update_dto.DiscountUpdateDto;
+  }
+});
 exports.AuthResponseDTO = AuthResponseDTO;
 exports.LoginDTO = LoginDTO;
 exports.dtoValidator = dtoValidator;
