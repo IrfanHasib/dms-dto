@@ -1,15 +1,314 @@
-export { DiscountBaseDto } from 'dto/discount.base.dto';
-export { DiscountBulkItemDto } from 'dto/discount.bulk.item.dto';
-export { DiscountBxgxItemDto } from 'dto/discount.bxgx.item.dto';
-export { DiscountBxgyItemDto } from 'dto/discount.bxgy.item.dto';
-export { DiscountConditionItemDto } from 'dto/discount.condition.item.dto';
-export { DiscountCreateDto } from 'dto/discount.create.dto';
-export { DiscountFilterItemDto } from 'dto/discount.filter.item.dto';
-export { DiscountListItemDto } from 'dto/discount.list.item.dto';
-export { DiscountUpdateDto } from 'dto/discount.update.dto';
 import { __decorate } from 'tslib';
-import { IsNotEmpty, Length, IsString, IsOptional, validate } from 'class-validator';
-import { plainToInstance } from 'class-transformer';
+import { IsNotEmpty, IsString, IsEnum, IsInt, IsOptional, ValidateIf, IsDecimal, IsArray, ValidateNested, ArrayMinSize, IsDateString, IsNumber, IsBoolean, Length, validate } from 'class-validator';
+import { Transform, Type, plainToInstance } from 'class-transformer';
+import { BulkAdjustmentCountType as BulkAdjustmentCountType$1 } from 'enum/BulkAdjustmentCountType';
+import { CartAdjustmentDiscountType as CartAdjustmentDiscountType$1 } from 'enum/CartAdjustmentDiscountType';
+import { DiscountType as DiscountType$1 } from 'enum/DiscountType';
+import { ProductAdjustmentDiscountType as ProductAdjustmentDiscountType$1 } from 'enum/ProductAdjustmentDiscountType';
+import { BXGYType as BXGYType$1 } from 'enum/BXGYType';
+import { BXGYCountType as BXGYCountType$1 } from 'enum/BXGYCountType';
+import { BXGYGetType as BXGYGetType$1 } from 'enum/BXGYGetType';
+import { DiscountBulkItemDto as DiscountBulkItemDto$1 } from 'dto/discount.bulk.item.dto';
+import { DiscountBxgyItemDto as DiscountBxgyItemDto$1 } from 'dto/discount.bxgy.item.dto';
+import { DiscountBxgxItemDto as DiscountBxgxItemDto$1 } from 'dto/discount.bxgx.item.dto';
+import { DiscountFilterItemDto as DiscountFilterItemDto$1 } from 'dto/discount.filter.item.dto';
+import { DiscountConditionItemDto as DiscountConditionItemDto$1 } from 'dto/discount.condition.item.dto';
+import { BulkDiscountType as BulkDiscountType$1 } from 'enum/bulkDiscountType';
+import { BXGXDiscountType as BXGXDiscountType$1 } from 'enum/BXGXDiscountType';
+import { BXGYDiscountType as BXGYDiscountType$1 } from 'enum/BXGYDiscountType';
+import { DiscountListItemDto as DiscountListItemDto$1 } from 'dto/discount.list.item.dto';
+import { ConditionCountType as ConditionCountType$1 } from 'enum/conditionCountType';
+import { ConditionOperator as ConditionOperator$1 } from 'enum/conditionOperator';
+import { DiscountConditionType as DiscountConditionType$1 } from 'enum/discountConditionType';
+import { DiscountBaseDto as DiscountBaseDto$1 } from 'dto/discount.base.dto';
+import { DiscountFilterType as DiscountFilterType$1 } from 'enum/DiscountFilterType';
+
+var DiscountBaseDto = function DiscountBaseDto() {};
+__decorate([IsNotEmpty(), IsString()], DiscountBaseDto.prototype, "name", void 0);
+__decorate([IsNotEmpty(), IsEnum(DiscountType$1)], DiscountBaseDto.prototype, "discountType", void 0);
+__decorate([IsNotEmpty(), Transform(function (_ref) {
+  var value = _ref.value;
+  return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+})], DiscountBaseDto.prototype, "isEnabled", void 0);
+__decorate([IsNotEmpty(), Transform(function (_ref2) {
+  var value = _ref2.value;
+  return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+})], DiscountBaseDto.prototype, "isIgnoreOther", void 0);
+__decorate([IsNotEmpty(), Transform(function (_ref3) {
+  var value = _ref3.value;
+  return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+})], DiscountBaseDto.prototype, "isIgnoreThisIfOtherMatched", void 0);
+__decorate([IsNotEmpty(), IsInt(), Type(function () {
+  return Number;
+})], DiscountBaseDto.prototype, "priority", void 0);
+__decorate([IsOptional(), ValidateIf(function (_object, value) {
+  return !!value;
+}), IsInt(), Type(function () {
+  return Number;
+})], DiscountBaseDto.prototype, "usageLimit", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.PRODUCT_ADJUSTMENT;
+}), IsEnum(ProductAdjustmentDiscountType$1)], DiscountBaseDto.prototype, "productAdjustmentDiscountType", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.PRODUCT_ADJUSTMENT;
+}), IsDecimal()], DiscountBaseDto.prototype, "productAdjustmentDiscountAmount", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.CART_ADJUSTMENT;
+}), IsEnum(CartAdjustmentDiscountType$1)], DiscountBaseDto.prototype, "cartAdjustmentDiscountType", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.CART_ADJUSTMENT;
+}), IsDecimal()], DiscountBaseDto.prototype, "cartAdjustmentDiscountAmount", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.CART_ADJUSTMENT;
+}), IsString()], DiscountBaseDto.prototype, "cartAdjustmentLabel", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.BULK_ADJUSTMENT;
+}), IsEnum(BulkAdjustmentCountType$1)], DiscountBaseDto.prototype, "bulkAdjustmentCountType", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.BULK_ADJUSTMENT;
+}), IsArray(), ValidateNested({
+  each: true
+}), ArrayMinSize(1), Type(function () {
+  return DiscountBulkItemDto$1;
+})], DiscountBaseDto.prototype, "discountBulks", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.BXGX;
+}), Transform(function (_ref4) {
+  var value = _ref4.value;
+  return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+})], DiscountBaseDto.prototype, "isBXGXRecursive", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.BXGX;
+}), IsArray(), ArrayMinSize(1), Transform(function (_ref5) {
+  var _value$filter;
+  var value = _ref5.value,
+    obj = _ref5.obj;
+  return value === null || value === void 0 ? void 0 : (_value$filter = value.filter(function (_valueObj, index) {
+    return !(obj !== null && obj !== void 0 && obj.isBXGXRecursive) || index < 1;
+  })) === null || _value$filter === void 0 ? void 0 : _value$filter.map(function (valueObj) {
+    valueObj.isBXGXRecursive = obj === null || obj === void 0 ? void 0 : obj.isBXGXRecursive;
+    return valueObj;
+  });
+}), Type(function () {
+  return DiscountBxgxItemDto$1;
+}), ValidateNested({
+  each: true
+})], DiscountBaseDto.prototype, "discountBXGXs", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.BXGY;
+}), IsEnum(BXGYType$1)], DiscountBaseDto.prototype, "BXGYType", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.BXGY;
+}), IsEnum(BXGYCountType$1)], DiscountBaseDto.prototype, "BXGYCountType", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.BXGY;
+}), IsEnum(BXGYGetType$1)], DiscountBaseDto.prototype, "BXGYGetType", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.BXGY;
+}), Transform(function (_ref6) {
+  var value = _ref6.value;
+  return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+})], DiscountBaseDto.prototype, "isBXGYRecursive", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType === DiscountType$1.BXGY;
+}), IsArray(), ArrayMinSize(1), Transform(function (_ref7) {
+  var _value$filter2;
+  var value = _ref7.value,
+    obj = _ref7.obj;
+  return value === null || value === void 0 ? void 0 : (_value$filter2 = value.filter(function (_valueObj, index) {
+    return !(obj !== null && obj !== void 0 && obj.isBXGYRecursive) || index < 1;
+  })) === null || _value$filter2 === void 0 ? void 0 : _value$filter2.map(function (valueObj) {
+    valueObj.BXGYType = obj === null || obj === void 0 ? void 0 : obj.BXGYType;
+    valueObj.isBXGYRecursive = obj === null || obj === void 0 ? void 0 : obj.isBXGYRecursive;
+    return valueObj;
+  });
+}), Type(function () {
+  return DiscountBxgyItemDto$1;
+}), ValidateNested({
+  each: true
+})], DiscountBaseDto.prototype, "discountBXGYs", void 0);
+__decorate([IsOptional(), ValidateIf(function (_object, value) {
+  return !!value;
+}), IsDateString()], DiscountBaseDto.prototype, "activeFromDateTime", void 0);
+__decorate([IsOptional(), ValidateIf(function (_object, value) {
+  return !!value;
+}), IsDateString()], DiscountBaseDto.prototype, "activeToDateTime", void 0);
+__decorate([IsNotEmpty(), Transform(function (_ref8) {
+  var value = _ref8.value;
+  return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+})], DiscountBaseDto.prototype, "isMatchAllCondition", void 0);
+__decorate([IsArray(), ValidateNested({
+  each: true
+}), ArrayMinSize(1), Type(function () {
+  return DiscountFilterItemDto$1;
+})], DiscountBaseDto.prototype, "discountFilers", void 0);
+__decorate([IsOptional(), IsArray(), ValidateNested({
+  each: true
+}), ArrayMinSize(0), Type(function () {
+  return DiscountConditionItemDto$1;
+})], DiscountBaseDto.prototype, "discountConditions", void 0);
+
+var DiscountBulkItemDto = function DiscountBulkItemDto() {};
+__decorate([IsOptional(), ValidateIf(function (_object, value) {
+  return !!value;
+}), Type(function () {
+  return Number;
+}), IsNumber()], DiscountBulkItemDto.prototype, "id", void 0);
+__decorate([IsNotEmpty(), IsInt(), Type(function () {
+  return Number;
+})], DiscountBulkItemDto.prototype, "minimumQuantity", void 0);
+__decorate([IsNotEmpty(), IsInt(), Type(function () {
+  return Number;
+})], DiscountBulkItemDto.prototype, "maximumQuantity", void 0);
+__decorate([IsNotEmpty(), IsEnum(BulkDiscountType$1)], DiscountBulkItemDto.prototype, "discountType", void 0);
+__decorate([IsNotEmpty(), IsDecimal()], DiscountBulkItemDto.prototype, "discountAmount", void 0);
+__decorate([IsNotEmpty(), IsString()], DiscountBulkItemDto.prototype, "label", void 0);
+
+var DiscountBxgxItemDto = function DiscountBxgxItemDto() {};
+__decorate([IsOptional(), ValidateIf(function (_object, value) {
+  return !!value;
+}), Type(function () {
+  return Number;
+}), IsNumber()], DiscountBxgxItemDto.prototype, "id", void 0);
+__decorate([IsNotEmpty(), IsInt(), Type(function () {
+  return Number;
+})], DiscountBxgxItemDto.prototype, "minimumQuantity", void 0);
+__decorate([IsNotEmpty(), IsInt(), Type(function () {
+  return Number;
+})], DiscountBxgxItemDto.prototype, "bonusQuantity", void 0);
+__decorate([IsNotEmpty(), IsEnum(BXGXDiscountType$1)], DiscountBxgxItemDto.prototype, "discountType", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType !== BXGXDiscountType$1.FREE;
+}), IsDecimal()], DiscountBxgxItemDto.prototype, "discountAmount", void 0);
+__decorate([IsNotEmpty(), IsBoolean()], DiscountBxgxItemDto.prototype, "isBXGXRecursive", void 0);
+__decorate([ValidateIf(function (o) {
+  return !o.isBXGXRecursive;
+}), IsInt(), Type(function () {
+  return Number;
+})], DiscountBxgxItemDto.prototype, "maximumQuantity", void 0);
+
+var DiscountBxgyItemDto = function DiscountBxgyItemDto() {};
+__decorate([IsOptional(), ValidateIf(function (_object, value) {
+  return !!value;
+}), Type(function () {
+  return Number;
+}), IsNumber()], DiscountBxgyItemDto.prototype, "id", void 0);
+__decorate([IsNotEmpty(), IsInt(), Type(function () {
+  return Number;
+})], DiscountBxgyItemDto.prototype, "minimumQuantity", void 0);
+__decorate([IsNotEmpty(), IsInt(), Type(function () {
+  return Number;
+})], DiscountBxgyItemDto.prototype, "bonusQuantity", void 0);
+__decorate([IsNotEmpty(), IsEnum(BXGYDiscountType$1)], DiscountBxgyItemDto.prototype, "discountType", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountType !== BXGYDiscountType$1.FREE;
+}), IsDecimal()], DiscountBxgyItemDto.prototype, "discountAmount", void 0);
+__decorate([IsNotEmpty(), IsBoolean()], DiscountBxgyItemDto.prototype, "isBXGYRecursive", void 0);
+__decorate([IsNotEmpty(), IsEnum(BXGYType$1)], DiscountBxgyItemDto.prototype, "BXGYType", void 0);
+__decorate([ValidateIf(function (o) {
+  return !o.isBXGYRecursive;
+}), IsInt(), Type(function () {
+  return Number;
+})], DiscountBxgyItemDto.prototype, "maximumQuantity", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.BXGYType === BXGYType$1.PRODUCTS;
+}), IsArray(), ValidateNested({
+  each: true
+}), ArrayMinSize(1), Type(function () {
+  return DiscountListItemDto$1;
+})], DiscountBxgyItemDto.prototype, "products", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.BXGYType === BXGYType$1.COMPANIES;
+}), IsArray(), ValidateNested({
+  each: true
+}), ArrayMinSize(1), Type(function () {
+  return DiscountListItemDto$1;
+})], DiscountBxgyItemDto.prototype, "companies", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.BXGYType === BXGYType$1.CATEGORIES;
+}), IsArray(), ValidateNested({
+  each: true
+}), ArrayMinSize(1), Type(function () {
+  return DiscountListItemDto$1;
+})], DiscountBxgyItemDto.prototype, "categories", void 0);
+
+var DiscountConditionItemDto = function DiscountConditionItemDto() {};
+__decorate([IsOptional(), ValidateIf(function (_object, value) {
+  return !!value;
+}), Type(function () {
+  return Number;
+}), IsNumber()], DiscountConditionItemDto.prototype, "id", void 0);
+__decorate([IsNotEmpty(), IsDecimal()], DiscountConditionItemDto.prototype, "conditionValue", void 0);
+__decorate([IsNotEmpty(), IsEnum(ConditionOperator$1)], DiscountConditionItemDto.prototype, "conditionOperator", void 0);
+__decorate([IsNotEmpty(), IsEnum(DiscountConditionType$1)], DiscountConditionItemDto.prototype, "conditionType", void 0);
+__decorate([IsNotEmpty(), IsEnum(ConditionCountType$1)], DiscountConditionItemDto.prototype, "conditionCountType", void 0);
+
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  _setPrototypeOf(subClass, superClass);
+}
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+  return _setPrototypeOf(o, p);
+}
+
+var DiscountCreateDto = /*#__PURE__*/function (_DiscountBaseDto) {
+  _inheritsLoose(DiscountCreateDto, _DiscountBaseDto);
+  function DiscountCreateDto() {
+    return _DiscountBaseDto.apply(this, arguments) || this;
+  }
+  return DiscountCreateDto;
+}(DiscountBaseDto$1);
+
+var DiscountFilterItemDto = function DiscountFilterItemDto() {};
+__decorate([IsOptional(), ValidateIf(function (_object, value) {
+  return !!value;
+}), Type(function () {
+  return Number;
+}), IsNumber()], DiscountFilterItemDto.prototype, "id", void 0);
+__decorate([IsNotEmpty(), IsEnum(DiscountFilterType$1)], DiscountFilterItemDto.prototype, "discountFilterType", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountFilterType !== DiscountFilterType$1.ALL;
+}), Transform(function (_ref) {
+  var value = _ref.value;
+  return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+})], DiscountFilterItemDto.prototype, "isInList", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountFilterType === DiscountFilterType$1.PRODUCTS;
+}), IsArray(), ValidateNested({
+  each: true
+}), ArrayMinSize(1), Type(function () {
+  return DiscountListItemDto$1;
+})], DiscountFilterItemDto.prototype, "products", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountFilterType === DiscountFilterType$1.COMPANIES;
+}), IsArray(), ValidateNested({
+  each: true
+}), ArrayMinSize(1), Type(function () {
+  return DiscountListItemDto$1;
+})], DiscountFilterItemDto.prototype, "companies", void 0);
+__decorate([ValidateIf(function (o) {
+  return o.discountFilterType === DiscountFilterType$1.CATEGORIES;
+}), IsArray(), ValidateNested({
+  each: true
+}), ArrayMinSize(1), Type(function () {
+  return DiscountListItemDto$1;
+})], DiscountFilterItemDto.prototype, "categories", void 0);
+
+var DiscountListItemDto = function DiscountListItemDto() {};
+__decorate([IsNotEmpty(), IsNumber()], DiscountListItemDto.prototype, "id", void 0);
+
+var DiscountUpdateDto = /*#__PURE__*/function (_DiscountBaseDto) {
+  _inheritsLoose(DiscountUpdateDto, _DiscountBaseDto);
+  function DiscountUpdateDto() {
+    return _DiscountBaseDto.apply(this, arguments) || this;
+  }
+  return DiscountUpdateDto;
+}(DiscountBaseDto$1);
 
 var BulkAdjustmentCountType;
 (function (BulkAdjustmentCountType) {
@@ -159,5 +458,5 @@ var responseDtoValidator = function responseDtoValidator(dto, obj) {
   }
 };
 
-export { AuthResponseDTO, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, ConditionCountType, ConditionOperator, DiscountConditionType, DiscountFilterType, DiscountType, LoginDTO, ProductAdjustmentDiscountType, dtoValidator, responseDtoValidator };
+export { AuthResponseDTO, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, ConditionCountType, ConditionOperator, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountListItemDto, DiscountType, DiscountUpdateDto, LoginDTO, ProductAdjustmentDiscountType, dtoValidator, responseDtoValidator };
 //# sourceMappingURL=dms-dto.esm.js.map
