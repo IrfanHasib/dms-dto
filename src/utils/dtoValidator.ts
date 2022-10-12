@@ -1,7 +1,7 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 
-const dtoValidator = async (dto: ClassConstructor<any>, obj: Object) => {
+const dtoValidator = async (dto: ClassConstructor<any>, obj: Object): Promise<string[]> => {
   const objInstance = plainToInstance(dto, obj);
   const errors = await validate(objInstance);
   let returnError: string[] = [];
