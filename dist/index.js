@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dtoValidator = exports.responseDtoValidator = exports.AuthResponseDTO = exports.LoginDTO = void 0;
+exports.dtoValidator = exports.responseDtoValidator = exports.AuthResponseDTO = exports.LoginDTO = exports.DiscountFilterType = void 0;
+var discountFilterType_1 = require("./enum/discountFilterType");
+Object.defineProperty(exports, "DiscountFilterType", { enumerable: true, get: function () { return discountFilterType_1.DiscountFilterType; } });
 var login_dto_1 = require("./login.dto");
 Object.defineProperty(exports, "LoginDTO", { enumerable: true, get: function () { return login_dto_1.LoginDTO; } });
 var auth_response_dto_1 = require("./auth.response.dto");
