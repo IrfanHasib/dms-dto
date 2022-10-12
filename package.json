@@ -6,9 +6,6 @@
   "typings": "dist/index.d.ts",
   "module": "dist/dms-dto.esm.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "watch:build": "tsc --watch",
-    "watch:server": "nodemon './dist/index.js' --watch './dist'",
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
     "start": "tsdx watch",
     "build": "tsdx build",
@@ -33,9 +30,7 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.20",
-    "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
-    "rimraf": "^3.0.2",
     "typescript": "^4.8.4",
     "tsdx": "0.13.2"
   }
