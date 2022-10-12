@@ -1,4 +1,5 @@
-import { BulkDiscountType } from 'enum/bulkDiscountType';
+import "reflect-metadata";
+import { BulkDiscountType } from './../enum/bulkDiscountType';
 export declare class DiscountBulkItemDto {
     id: number;
     minimumQuantity: number;

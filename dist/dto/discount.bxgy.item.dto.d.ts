@@ -1,6 +1,7 @@
-import { BXGYDiscountType } from 'enum/BXGYDiscountType';
-import { BXGYType } from 'enum/BXGYType';
-import { DiscountListItemDto } from 'dto/discount.list.item.dto';
+import "reflect-metadata";
+import { BXGYDiscountType } from './../enum/BXGYDiscountType';
+import { BXGYType } from './../enum/BXGYType';
+import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
 export declare class DiscountBxgyItemDto {
     id: number;
     minimumQuantity: number;
@@ -10,7 +11,7 @@ export declare class DiscountBxgyItemDto {
     isBXGYRecursive: boolean;
     BXGYType: BXGYType;
     maximumQuantity: number;
-    products: DiscountListItemDto[];
-    companies: DiscountListItemDto[];
-    categories: DiscountListItemDto[];
+    products: AutoCompleteOptionItemDto[];
+    companies: AutoCompleteOptionItemDto[];
+    categories: AutoCompleteOptionItemDto[];
 }

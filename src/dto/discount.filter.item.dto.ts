@@ -9,8 +9,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
+import "reflect-metadata";
 import { DiscountFilterType } from './../enum/DiscountFilterType';
-import { DiscountListItemDto } from './../dto/discount.list.item.dto';
+import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
 
 export class DiscountFilterItemDto {
   @IsOptional()
@@ -33,20 +34,20 @@ export class DiscountFilterItemDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => DiscountListItemDto)
-  products: DiscountListItemDto[];
+  @Type(() => AutoCompleteOptionItemDto)
+  products: AutoCompleteOptionItemDto[];
 
   @ValidateIf(o => o.discountFilterType === DiscountFilterType.COMPANIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => DiscountListItemDto)
-  companies: DiscountListItemDto[];
+  @Type(() => AutoCompleteOptionItemDto)
+  companies: AutoCompleteOptionItemDto[];
 
   @ValidateIf(o => o.discountFilterType === DiscountFilterType.CATEGORIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => DiscountListItemDto)
-  categories: DiscountListItemDto[];
+  @Type(() => AutoCompleteOptionItemDto)
+  categories: AutoCompleteOptionItemDto[];
 }

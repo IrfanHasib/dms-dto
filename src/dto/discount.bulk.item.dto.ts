@@ -1,5 +1,6 @@
 import { IsDecimal, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Type } from 'class-transformer';
+import "reflect-metadata";
 import { BulkDiscountType } from './../enum/bulkDiscountType';
 
 export class DiscountBulkItemDto {

@@ -1,10 +1,11 @@
-import { DiscountFilterType } from 'enum/discountFilterType';
-import { DiscountListItemDto } from 'dto/discount.list.item.dto';
+import "reflect-metadata";
+import { DiscountFilterType } from './../enum/DiscountFilterType';
+import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
 export declare class DiscountFilterItemDto {
     id: number;
     discountFilterType: DiscountFilterType;
     isInList: boolean;
-    products: DiscountListItemDto[];
-    companies: DiscountListItemDto[];
-    categories: DiscountListItemDto[];
+    products: AutoCompleteOptionItemDto[];
+    companies: AutoCompleteOptionItemDto[];
+    categories: AutoCompleteOptionItemDto[];
 }

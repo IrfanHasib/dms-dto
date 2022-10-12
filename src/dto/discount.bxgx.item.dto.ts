@@ -1,5 +1,6 @@
 import { IsBoolean, IsDecimal, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, ValidateIf } from 'class-validator';
 import { Type } from 'class-transformer';
+import "reflect-metadata";
 import { BXGXDiscountType } from './../enum/BXGXDiscountType';
 
 export class DiscountBxgxItemDto {

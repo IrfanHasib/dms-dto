@@ -12,9 +12,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import "reflect-metadata";
 import { BXGYDiscountType } from './../enum/BXGYDiscountType';
 import { BXGYType } from './../enum/BXGYType';
-import { DiscountListItemDto } from './../dto/discount.list.item.dto';
+import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
 
 export class DiscountBxgyItemDto {
   @IsOptional()
@@ -58,20 +59,20 @@ export class DiscountBxgyItemDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => DiscountListItemDto)
-  products: DiscountListItemDto[];
+  @Type(() => AutoCompleteOptionItemDto)
+  products: AutoCompleteOptionItemDto[];
 
   @ValidateIf(o => o.BXGYType === BXGYType.COMPANIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => DiscountListItemDto)
-  companies: DiscountListItemDto[];
+  @Type(() => AutoCompleteOptionItemDto)
+  companies: AutoCompleteOptionItemDto[];
 
   @ValidateIf(o => o.BXGYType === BXGYType.CATEGORIES)
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @Type(() => DiscountListItemDto)
-  categories: DiscountListItemDto[];
+  @Type(() => AutoCompleteOptionItemDto)
+  categories: AutoCompleteOptionItemDto[];
 }
