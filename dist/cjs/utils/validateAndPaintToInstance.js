@@ -44,7 +44,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateAndPaintToInstance = void 0;
 var class_transformer_1 = require("class-transformer");
 var dtoValidator_1 = require("./dtoValidator");

@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscountBxgyItemDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
@@ -24,45 +24,45 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         (0, class_transformer_1.Type)(function () { return Number; }),
         (0, class_validator_1.IsNumber)(),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "id");
+    ], DiscountBxgyItemDto.prototype, "id", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "minimumQuantity");
+    ], DiscountBxgyItemDto.prototype, "minimumQuantity", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "bonusQuantity");
+    ], DiscountBxgyItemDto.prototype, "bonusQuantity", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(BXGYDiscountType_1.BXGYDiscountType),
         __metadata("design:type", String)
-    ], DiscountBxgyItemDto.prototype, "discountType");
+    ], DiscountBxgyItemDto.prototype, "discountType", void 0);
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountType !== BXGYDiscountType_1.BXGYDiscountType.FREE; }),
         (0, class_validator_1.IsDecimal)(),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "discountAmount");
+    ], DiscountBxgyItemDto.prototype, "discountAmount", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsBoolean)(),
         __metadata("design:type", Boolean)
-    ], DiscountBxgyItemDto.prototype, "isBXGYRecursive");
+    ], DiscountBxgyItemDto.prototype, "isBXGYRecursive", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(BXGYType_1.BXGYType),
         __metadata("design:type", String)
-    ], DiscountBxgyItemDto.prototype, "BXGYType");
+    ], DiscountBxgyItemDto.prototype, "BXGYType", void 0);
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return !o.isBXGYRecursive; }),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "maximumQuantity");
+    ], DiscountBxgyItemDto.prototype, "maximumQuantity", void 0);
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return o.BXGYType === BXGYType_1.BXGYType.PRODUCTS; }),
         (0, class_validator_1.IsArray)(),
@@ -70,7 +70,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         (0, class_validator_1.ArrayMinSize)(1),
         (0, class_transformer_1.Type)(function () { return autoComplete_option_item_dto_1.AutoCompleteOptionItemDto; }),
         __metadata("design:type", Array)
-    ], DiscountBxgyItemDto.prototype, "products");
+    ], DiscountBxgyItemDto.prototype, "products", void 0);
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return o.BXGYType === BXGYType_1.BXGYType.COMPANIES; }),
         (0, class_validator_1.IsArray)(),
@@ -78,7 +78,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         (0, class_validator_1.ArrayMinSize)(1),
         (0, class_transformer_1.Type)(function () { return autoComplete_option_item_dto_1.AutoCompleteOptionItemDto; }),
         __metadata("design:type", Array)
-    ], DiscountBxgyItemDto.prototype, "companies");
+    ], DiscountBxgyItemDto.prototype, "companies", void 0);
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return o.BXGYType === BXGYType_1.BXGYType.CATEGORIES; }),
         (0, class_validator_1.IsArray)(),
@@ -86,7 +86,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         (0, class_validator_1.ArrayMinSize)(1),
         (0, class_transformer_1.Type)(function () { return autoComplete_option_item_dto_1.AutoCompleteOptionItemDto; }),
         __metadata("design:type", Array)
-    ], DiscountBxgyItemDto.prototype, "categories");
+    ], DiscountBxgyItemDto.prototype, "categories", void 0);
     return DiscountBxgyItemDto;
 }());
 exports.DiscountBxgyItemDto = DiscountBxgyItemDto;

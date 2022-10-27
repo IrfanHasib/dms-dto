@@ -2,7 +2,8 @@ const typescript = require("rollup-plugin-typescript2")
 const commonjs = require("rollup-plugin-commonjs")
 const external = require("rollup-plugin-peer-deps-external")
 const resolve = require("rollup-plugin-node-resolve")
-const pkg = require("./package.json")
+//const tsconfig = require("./tsconfig.esm.json")
+
 
 
 module.exports = {
@@ -17,10 +18,10 @@ module.exports = {
         },
         */
         {
-            file: pkg.module,
+            file: "./dist/esm/index.js",
             format: "es",
             exports: "named",
-            sourcemap: true
+            sourcemap: true,
         }
     ],
         plugins: [

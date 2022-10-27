@@ -23,7 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompanyItemDto = void 0;
 var class_validator_1 = require("class-validator");
 var baseDBFields_dto_1 = require("./../dto/baseDBFields.dto");
@@ -36,12 +36,12 @@ var CompanyItemDto = /** @class */ (function (_super) {
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], CompanyItemDto.prototype, "name");
+    ], CompanyItemDto.prototype, "name", void 0);
     __decorate([
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], CompanyItemDto.prototype, "logo");
+    ], CompanyItemDto.prototype, "logo", void 0);
     return CompanyItemDto;
 }(baseDBFields_dto_1.BaseDBFieldsDto));
 exports.CompanyItemDto = CompanyItemDto;

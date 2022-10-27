@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.BXGXDiscountType = void 0;
 var BXGXDiscountType;
 (function (BXGXDiscountType) {

@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseDBFieldsDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
@@ -20,24 +20,24 @@ var BaseDBFieldsDto = /** @class */ (function () {
         (0, class_validator_1.IsNumber)(),
         (0, class_validator_1.IsInt)(),
         __metadata("design:type", Number)
-    ], BaseDBFieldsDto.prototype, "id");
+    ], BaseDBFieldsDto.prototype, "id", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsBoolean)(),
         __metadata("design:type", Boolean)
-    ], BaseDBFieldsDto.prototype, "isDeleted");
+    ], BaseDBFieldsDto.prototype, "isDeleted", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsDate)(),
         (0, class_transformer_1.Type)(function () { return Date; }),
         __metadata("design:type", Date)
-    ], BaseDBFieldsDto.prototype, "createdAt");
+    ], BaseDBFieldsDto.prototype, "createdAt", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsDate)(),
         (0, class_transformer_1.Type)(function () { return Date; }),
         __metadata("design:type", Date)
-    ], BaseDBFieldsDto.prototype, "updatedAt");
+    ], BaseDBFieldsDto.prototype, "updatedAt", void 0);
     return BaseDBFieldsDto;
 }());
 exports.BaseDBFieldsDto = BaseDBFieldsDto;

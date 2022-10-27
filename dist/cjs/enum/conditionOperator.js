@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConditionOperator = void 0;
 var ConditionOperator;
 (function (ConditionOperator) {

@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaginateResponseMetadataDto = void 0;
 var class_validator_1 = require("class-validator");
 var PaginateResponseMetadataDto = /** @class */ (function () {
@@ -19,31 +19,31 @@ var PaginateResponseMetadataDto = /** @class */ (function () {
         (0, class_validator_1.IsNumber)(),
         (0, class_validator_1.IsInt)(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "itemCount");
+    ], PaginateResponseMetadataDto.prototype, "itemCount", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsNumber)(),
         (0, class_validator_1.IsInt)(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "totalItems");
+    ], PaginateResponseMetadataDto.prototype, "totalItems", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsNumber)(),
         (0, class_validator_1.IsInt)(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "itemsPerPage");
+    ], PaginateResponseMetadataDto.prototype, "itemsPerPage", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsNumber)(),
         (0, class_validator_1.IsInt)(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "totalPages");
+    ], PaginateResponseMetadataDto.prototype, "totalPages", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsNumber)(),
         (0, class_validator_1.IsInt)(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "currentPage");
+    ], PaginateResponseMetadataDto.prototype, "currentPage", void 0);
     return PaginateResponseMetadataDto;
 }());
 exports.PaginateResponseMetadataDto = PaginateResponseMetadataDto;

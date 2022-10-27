@@ -5,7 +5,7 @@
   "typings": "dist/types/index.d.ts",
   "scripts": {
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
-    "build:es": "rollup -c",
+    "build:esm": "rollup -c",
     "build:cjs": "tsc --module CommonJS --target es5 --outDir dist/cjs",
     "copy-to-dev": "cp -R dist ../dms-app/node_modules/dms-dto/ && cp -R dist ../dms-api/node_modules/dms-dto/",
     "build": "tsc --project tsconfig.esm.json & tsc --project tsconfig.cjs.json"

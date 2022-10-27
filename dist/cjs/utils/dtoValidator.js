@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.dtoValidator = void 0;
 var class_transformer_1 = require("class-transformer");
 var class_validator_1 = require("class-validator");
@@ -56,7 +56,7 @@ var dtoValidator = function (dto, obj) { return __awaiter(void 0, void 0, void 0
                         enableDebugMessages: true,
                         whitelist: true,
                         skipMissingProperties: false,
-                        transform: true
+                        transform: true,
                     })];
             case 1:
                 errors = _a.sent();

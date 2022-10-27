@@ -23,7 +23,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompanyPaginateResponseDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
@@ -39,7 +39,7 @@ var CompanyPaginateResponseDto = /** @class */ (function (_super) {
         (0, class_transformer_1.Type)(function () { return company_item_dto_1.CompanyItemDto; }),
         (0, class_validator_1.ValidateNested)({ each: true }),
         __metadata("design:type", Array)
-    ], CompanyPaginateResponseDto.prototype, "items");
+    ], CompanyPaginateResponseDto.prototype, "items", void 0);
     return CompanyPaginateResponseDto;
 }(paginate_response_metadata_dto_1.PaginateResponseMetadataDto));
 exports.CompanyPaginateResponseDto = CompanyPaginateResponseDto;
