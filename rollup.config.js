@@ -1,13 +1,13 @@
-import typescript from "rollup-plugin-typescript2";
-import commonjs from "rollup-plugin-commonjs";
-import external from "rollup-plugin-peer-deps-external";
-import resolve from "rollup-plugin-node-resolve";
+const typescript = require("rollup-plugin-typescript2")
+const commonjs = require("rollup-plugin-commonjs")
+const external = require("rollup-plugin-peer-deps-external")
+const resolve = require("rollup-plugin-node-resolve")
+const pkg = require("./package.json")
 
-import pkg from "./package.json" assert {type: 'json'};
 
-export default {
+module.exports = {
     input: "src/index.ts",
-    output: [
+        output: [
         {
             file: pkg.main,
             format: "cjs",
@@ -21,7 +21,7 @@ export default {
             sourcemap: true
         }
     ],
-    plugins: [
+        plugins: [
         external(),
         resolve(),
         typescript({
@@ -41,3 +41,5 @@ export default {
         })
     ]
 };
+
+
