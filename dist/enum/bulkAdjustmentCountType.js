@@ -1,9 +1,6 @@
-"use strict";
-exports.__esModule = true;
-exports.BulkAdjustmentCountType = void 0;
-var BulkAdjustmentCountType;
+export var BulkAdjustmentCountType;
 (function (BulkAdjustmentCountType) {
     BulkAdjustmentCountType["ALL"] = "ALL";
     BulkAdjustmentCountType["INDIVIDUAL"] = "INDIVIDUAL";
-})(BulkAdjustmentCountType = exports.BulkAdjustmentCountType || (exports.BulkAdjustmentCountType = {}));
+})(BulkAdjustmentCountType || (BulkAdjustmentCountType = {}));
 //# sourceMappingURL=bulkAdjustmentCountType.js.map

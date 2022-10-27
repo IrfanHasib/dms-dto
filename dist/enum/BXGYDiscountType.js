@@ -1,10 +1,7 @@
-"use strict";
-exports.__esModule = true;
-exports.BXGYDiscountType = void 0;
-var BXGYDiscountType;
+export var BXGYDiscountType;
 (function (BXGYDiscountType) {
     BXGYDiscountType["PERCENT"] = "PERCENT";
     BXGYDiscountType["FIXED"] = "FIXED";
     BXGYDiscountType["FREE"] = "FREE";
-})(BXGYDiscountType = exports.BXGYDiscountType || (exports.BXGYDiscountType = {}));
+})(BXGYDiscountType || (BXGYDiscountType = {}));
 //# sourceMappingURL=BXGYDiscountType.js.map

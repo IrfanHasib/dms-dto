@@ -1,1 +1,1 @@
-{"version":3,"file":"BXGYDiscountType.js","sourceRoot":"","sources":["../../src/enum/BXGYDiscountType.ts"],"names":[],"mappings":";;;AAAA,IAAY,gBAIX;AAJD,WAAY,gBAAgB;IAC1B,uCAAmB,CAAA;IACnB,mCAAe,CAAA;IACf,iCAAa,CAAA;AACf,CAAC,EAJW,gBAAgB,GAAhB,wBAAgB,KAAhB,wBAAgB,QAI3B"}
+{"version":3,"file":"BXGYDiscountType.js","sourceRoot":"","sources":["../../src/enum/BXGYDiscountType.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,gBAIX;AAJD,WAAY,gBAAgB;IAC1B,uCAAmB,CAAA;IACnB,mCAAe,CAAA;IACf,iCAAa,CAAA;AACf,CAAC,EAJW,gBAAgB,KAAhB,gBAAgB,QAI3B"}
