@@ -1,3 +1,7 @@
+import { BaseDBFieldsDto } from './dto/baseDBFields.dto';
+import { CompanyItemDto } from './dto/company.item.dto';
+import { CompanyPaginateResponseDt } from './dto/company.paginate.response.dto';
+import { PaginateMetadataDto } from './dto/paginate.metadata.dto';
 export { DiscountBaseDto } from './dto/discount.base.dto';
 export { DiscountBulkItemDto } from './dto/discount.bulk.item.dto';
 export { DiscountBxgxItemDto } from './dto/discount.bxgx.item.dto';

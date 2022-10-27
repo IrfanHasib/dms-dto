@@ -10,7 +10,7 @@ import { DiscountBxgyItemDto } from './../dto/discount.bxgy.item.dto';
 import { DiscountBxgxItemDto } from './../dto/discount.bxgx.item.dto';
 import { DiscountFilterItemDto } from './../dto/discount.filter.item.dto';
 import { DiscountConditionItemDto } from './../dto/discount.condition.item.dto';
-import "reflect-metadata";
+import 'reflect-metadata';
 export declare class DiscountBaseDto {
     name: string;
     discountType: DiscountType;

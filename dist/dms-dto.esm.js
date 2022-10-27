@@ -432,7 +432,6 @@ var dtoValidator = function dtoValidator(dto, obj) {
     return Promise.resolve(validate(objInstance)).then(function (errors) {
       var returnError = [];
       if (errors.length > 0) {
-        returnError.push('Response is not valid');
         errors === null || errors === void 0 ? void 0 : errors.map(function (_ref) {
           var _Object$values;
           var constraints = _ref.constraints;
