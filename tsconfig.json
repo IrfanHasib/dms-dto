@@ -14,7 +14,6 @@
     "lib": [ "es2015","es2017" ,"esnext"],
     "sourceMap": true,
     "declaration": true,
-    "jsx": "react-native",
     "esModuleInterop": true,
     "paths": {
       "*": ["src/*", "node_modules/*"]
@@ -22,6 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "module": "ESNext"
+    "module": "ESNext",
   },
 }
