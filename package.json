@@ -1,17 +1,16 @@
 {
   "name": "dms-dto",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "module": "dist/dms-dto.esm.js",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build"
+    "copy-to-dev": "cp -R . ../dms-app/node_modules/dms-dto/ && cp -R . ../dms-api/node_modules/dms-dto/"
   },
   "repository": {
     "type": "git",
@@ -27,13 +26,10 @@
   "dependencies": {
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
-    "reflect-metadata": "^0.1.13",
-    "tslib": "^2.4.0"
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20",
     "prettier": "^2.7.1",
-    "tsdx": "0.13.2",
     "typescript": "^4.8.4"
   }
 }

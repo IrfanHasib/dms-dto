@@ -1,5 +1,6 @@
+import { IsBoolean, IsDate, IsDateString, IsInt, IsNotEmpty, IsNumber } from 'class-validator';
 import 'reflect-metadata';
-import { IsBoolean, IsDateString, IsInt, IsNotEmpty, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class BaseDBFieldsDto {
   @IsNotEmpty()
@@ -12,10 +13,12 @@ export class BaseDBFieldsDto {
   isDeleted: boolean;
 
   @IsNotEmpty()
-  @IsDateString()
+  @IsDate()
+  @Type(() => Date)
   createdAt: Date;
 
   @IsNotEmpty()
-  @IsDateString()
+  @IsDate()
+  @Type(() => Date)
   updatedAt: Date;
 }

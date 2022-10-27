@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { PaginateMetadataDto } from './../dto/paginate.metadata.dto';
 import { CompanyItemDto } from './../dto/company.item.dto';
+import { PaginateResponseMetadataDto } from './../dto/paginate.response.metadata.dto';
 
-export class CompanyPaginateResponseDt extends PaginateMetadataDto {
+export class CompanyPaginateResponseDto extends PaginateResponseMetadataDto {
   @IsArray()
   @Type(() => CompanyItemDto)
   @ValidateNested({ each: true })

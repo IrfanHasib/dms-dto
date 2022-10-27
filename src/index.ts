@@ -1,7 +1,4 @@
-import { BaseDBFieldsDto } from './dto/baseDBFields.dto';
-import { CompanyItemDto } from './dto/company.item.dto';
-import { CompanyPaginateResponseDt } from './dto/company.paginate.response.dto';
-import { PaginateMetadataDto } from './dto/paginate.metadata.dto';
+import 'reflect-metadata';
 export { DiscountBaseDto } from './dto/discount.base.dto';
 export { DiscountBulkItemDto } from './dto/discount.bulk.item.dto';
 export { DiscountBxgxItemDto } from './dto/discount.bxgx.item.dto';
@@ -27,5 +24,10 @@ export { ProductAdjustmentDiscountType } from './enum/productAdjustmentDiscountT
 export { DiscountFilterType } from './enum/discountFilterType';
 export { LoginDTO } from './dto/login.dto';
 export { AuthResponseDTO } from './dto/auth.response.dto';
-export { responseDtoValidator } from './utils/responseDtoValidator';
+export { BaseDBFieldsDto } from './dto/baseDBFields.dto';
+export { CompanyItemDto } from './dto/company.item.dto';
+export { CompanyPaginateResponseDto } from './dto/company.paginate.response.dto';
+export { PaginateResponseMetadataDto } from './dto/paginate.response.metadata.dto';
+export { PaginateRequestDto } from './dto/paginate.request.dto';
+export { validateAndPaintToInstance } from './utils/validateAndPaintToInstance';
 export { dtoValidator } from './utils/dtoValidator';
