@@ -9,7 +9,7 @@
     "build:esm": "rollup -c",
     "build:cjs": "tsc --module CommonJS --target es5 --outDir dist/cjs",
     "copy-to-dev": "cp -R dist ../dms-app/node_modules/dms-dto/ && cp -R dist ../dms-api/node_modules/dms-dto/",
-    "build": "tsc --project tsconfig.esm.json & tsc --project tsconfig.cjs.json"
+    "build": "npm run build:esm && npm run build:cjs"
   },
   "repository": {
     "type": "git",
