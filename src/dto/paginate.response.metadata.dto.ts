@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { IsInt, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class PaginateResponseMetadataDto {

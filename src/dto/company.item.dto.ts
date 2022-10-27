@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { BaseDBFieldsDto } from './../dto/baseDBFields.dto';
 

@@ -2,12 +2,14 @@
   "name": "dms-dto",
   "version": "1.0.2",
   "description": "",
-  "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "type":"module",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "type": "module",
   "scripts": {
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
-    "build": "tsc",
+    "build": "rollup -c",
     "copy-to-dev": "cp -R dist ../dms-app/node_modules/dms-dto/ && cp -R dist ../dms-api/node_modules/dms-dto/"
   },
   "repository": {
@@ -29,6 +31,11 @@
   },
   "devDependencies": {
     "prettier": "^2.7.1",
+    "rollup": "^3.2.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.34.1",
     "typescript": "^4.8.4"
   }
 }

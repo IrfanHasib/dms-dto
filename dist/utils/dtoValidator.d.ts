@@ -1,5 +1,4 @@
 import { ClassConstructor } from 'class-transformer';
-import 'reflect-metadata';
 /**
 Obj should not be empty, if there are no field then pass {}
  */

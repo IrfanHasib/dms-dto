@@ -1,6 +1,5 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { dtoValidator } from './dtoValidator';
-import 'reflect-metadata';
 
 const validateAndPaintToInstance = async <T>(dto: ClassConstructor<T>, obj: T): Promise<T> => {
   let returnError: string[] = await dtoValidator<T>(dto, obj);

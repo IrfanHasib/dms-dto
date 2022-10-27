@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { DiscountFilterType } from './../enum/DiscountFilterType';
 import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
 export declare class DiscountFilterItemDto {

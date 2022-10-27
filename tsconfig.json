@@ -19,10 +19,9 @@
     "paths": {
       "*": ["src/*", "node_modules/*"]
     },
-
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "importHelpers": true,
-    "module": "esnext"
+    "resolveJsonModule": true,
+    "module": "ESNext"
   },
 }

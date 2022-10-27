@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import 'reflect-metadata';
 
 export class AuthResponseDTO {
   @IsNotEmpty()

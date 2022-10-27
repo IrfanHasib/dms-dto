@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { IsInt, IsNumber, IsNumberString, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 

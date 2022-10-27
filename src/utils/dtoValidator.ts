@@ -1,6 +1,5 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
-import 'reflect-metadata';
 /**
 Obj should not be empty, if there are no field then pass {}
  */

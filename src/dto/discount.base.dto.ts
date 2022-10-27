@@ -24,7 +24,6 @@ import { DiscountBxgyItemDto } from './../dto/discount.bxgy.item.dto';
 import { DiscountBxgxItemDto } from './../dto/discount.bxgx.item.dto';
 import { DiscountFilterItemDto } from './../dto/discount.filter.item.dto';
 import { DiscountConditionItemDto } from './../dto/discount.condition.item.dto';
-import 'reflect-metadata';
 
 export class DiscountBaseDto {
   @IsNotEmpty()
