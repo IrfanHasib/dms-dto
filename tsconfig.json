@@ -4,6 +4,7 @@
   ],
   "include": ["src"],
   "compilerOptions": {
+    "outDir": "dist",
     "experimentalDecorators": true,
     "emitDecoratorMetadata":true,
     "lib": [ "es2015","es2017" ]
