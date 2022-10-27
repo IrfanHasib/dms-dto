@@ -42,3 +42,4 @@ var BaseDBFieldsDto = /** @class */ (function () {
     return BaseDBFieldsDto;
 }());
 exports.BaseDBFieldsDto = BaseDBFieldsDto;
+//# sourceMappingURL=baseDBFields.dto.js.map

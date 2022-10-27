@@ -54,3 +54,4 @@ var DiscountBulkItemDto = /** @class */ (function () {
     return DiscountBulkItemDto;
 }());
 exports.DiscountBulkItemDto = DiscountBulkItemDto;
+//# sourceMappingURL=discount.bulk.item.dto.js.map

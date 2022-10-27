@@ -2,8 +2,8 @@
   "name": "dms-dto",
   "version": "1.0.2",
   "description": "",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
     "start": "tsdx watch",

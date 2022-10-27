@@ -65,3 +65,4 @@ var DiscountFilterItemDto = /** @class */ (function () {
     return DiscountFilterItemDto;
 }());
 exports.DiscountFilterItemDto = DiscountFilterItemDto;
+//# sourceMappingURL=discount.filter.item.dto.js.map

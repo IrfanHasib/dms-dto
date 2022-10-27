@@ -46,3 +46,4 @@ var CompanyItemDto = /** @class */ (function (_super) {
     return CompanyItemDto;
 }(baseDBFields_dto_1.BaseDBFieldsDto));
 exports.CompanyItemDto = CompanyItemDto;
+//# sourceMappingURL=company.item.dto.js.map

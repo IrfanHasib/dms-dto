@@ -7,3 +7,4 @@ var CartAdjustmentDiscountType;
     CartAdjustmentDiscountType["FIXED"] = "FIXED";
     CartAdjustmentDiscountType["FIXED_PRICE_PER_PRODUCT"] = "FIXED_PRICE_PER_PRODUCT";
 })(CartAdjustmentDiscountType = exports.CartAdjustmentDiscountType || (exports.CartAdjustmentDiscountType = {}));
+//# sourceMappingURL=cartAdjustmentDiscountType.js.map

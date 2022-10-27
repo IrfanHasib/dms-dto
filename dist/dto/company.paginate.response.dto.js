@@ -44,3 +44,4 @@ var CompanyPaginateResponseDto = /** @class */ (function (_super) {
     return CompanyPaginateResponseDto;
 }(paginate_response_metadata_dto_1.PaginateResponseMetadataDto));
 exports.CompanyPaginateResponseDto = CompanyPaginateResponseDto;
+//# sourceMappingURL=company.paginate.response.dto.js.map

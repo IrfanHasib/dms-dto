@@ -7,3 +7,4 @@ var BXGXDiscountType;
     BXGXDiscountType["FIXED"] = "FIXED";
     BXGXDiscountType["FREE"] = "FREE";
 })(BXGXDiscountType = exports.BXGXDiscountType || (exports.BXGXDiscountType = {}));
+//# sourceMappingURL=BXGXDiscountType.js.map

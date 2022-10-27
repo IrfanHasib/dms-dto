@@ -26,3 +26,4 @@ var DiscountUpdateDto = /** @class */ (function (_super) {
     return DiscountUpdateDto;
 }(discount_base_dto_1.DiscountBaseDto));
 exports.DiscountUpdateDto = DiscountUpdateDto;
+//# sourceMappingURL=discount.update.dto.js.map

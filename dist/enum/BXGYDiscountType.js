@@ -7,3 +7,4 @@ var BXGYDiscountType;
     BXGYDiscountType["FIXED"] = "FIXED";
     BXGYDiscountType["FREE"] = "FREE";
 })(BXGYDiscountType = exports.BXGYDiscountType || (exports.BXGYDiscountType = {}));
+//# sourceMappingURL=BXGYDiscountType.js.map

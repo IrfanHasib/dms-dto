@@ -48,3 +48,4 @@ var PaginateRequestDto = /** @class */ (function () {
     return PaginateRequestDto;
 }());
 exports.PaginateRequestDto = PaginateRequestDto;
+//# sourceMappingURL=paginate.request.dto.js.map

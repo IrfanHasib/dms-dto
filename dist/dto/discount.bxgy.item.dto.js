@@ -91,3 +91,4 @@ var DiscountBxgyItemDto = /** @class */ (function () {
     return DiscountBxgyItemDto;
 }());
 exports.DiscountBxgyItemDto = DiscountBxgyItemDto;
+//# sourceMappingURL=discount.bxgy.item.dto.js.map

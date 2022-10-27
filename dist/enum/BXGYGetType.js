@@ -7,3 +7,4 @@ var BXGYGetType;
     BXGYGetType["CHEAPEST_PRICE"] = "CHEAPEST_PRICE";
     BXGYGetType["HIGHEST_PRICE"] = "HIGHEST_PRICE";
 })(BXGYGetType = exports.BXGYGetType || (exports.BXGYGetType = {}));
+//# sourceMappingURL=BXGYGetType.js.map

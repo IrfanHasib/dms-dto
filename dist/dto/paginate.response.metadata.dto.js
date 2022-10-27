@@ -48,3 +48,4 @@ var PaginateResponseMetadataDto = /** @class */ (function () {
     return PaginateResponseMetadataDto;
 }());
 exports.PaginateResponseMetadataDto = PaginateResponseMetadataDto;
+//# sourceMappingURL=paginate.response.metadata.dto.js.map

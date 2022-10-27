@@ -6,3 +6,4 @@ var BXGYCountType;
     BXGYCountType["ALL"] = "ALL";
     BXGYCountType["INDIVIDUAL"] = "INDIVIDUAL";
 })(BXGYCountType = exports.BXGYCountType || (exports.BXGYCountType = {}));
+//# sourceMappingURL=BXGYCountType.js.map

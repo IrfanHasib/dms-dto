@@ -8,3 +8,4 @@ var BXGYType;
     BXGYType["COMPANIES"] = "COMPANIES";
     BXGYType["PRODUCTS"] = "PRODUCTS";
 })(BXGYType = exports.BXGYType || (exports.BXGYType = {}));
+//# sourceMappingURL=BXGYType.js.map
