@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.DiscountFilterItemDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
@@ -23,12 +23,12 @@ var DiscountFilterItemDto = /** @class */ (function () {
         (0, class_transformer_1.Type)(function () { return Number; }),
         (0, class_validator_1.IsNumber)(),
         __metadata("design:type", Number)
-    ], DiscountFilterItemDto.prototype, "id", void 0);
+    ], DiscountFilterItemDto.prototype, "id");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(DiscountFilterType_1.DiscountFilterType),
         __metadata("design:type", String)
-    ], DiscountFilterItemDto.prototype, "discountFilterType", void 0);
+    ], DiscountFilterItemDto.prototype, "discountFilterType");
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountFilterType !== DiscountFilterType_1.DiscountFilterType.ALL; }),
         (0, class_transformer_1.Transform)(function (_a) {
@@ -36,7 +36,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
             return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
         }),
         __metadata("design:type", Boolean)
-    ], DiscountFilterItemDto.prototype, "isInList", void 0);
+    ], DiscountFilterItemDto.prototype, "isInList");
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountFilterType === DiscountFilterType_1.DiscountFilterType.PRODUCTS; }),
         (0, class_validator_1.IsArray)(),
@@ -44,7 +44,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         (0, class_validator_1.ArrayMinSize)(1),
         (0, class_transformer_1.Type)(function () { return autoComplete_option_item_dto_1.AutoCompleteOptionItemDto; }),
         __metadata("design:type", Array)
-    ], DiscountFilterItemDto.prototype, "products", void 0);
+    ], DiscountFilterItemDto.prototype, "products");
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountFilterType === DiscountFilterType_1.DiscountFilterType.COMPANIES; }),
         (0, class_validator_1.IsArray)(),
@@ -52,7 +52,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         (0, class_validator_1.ArrayMinSize)(1),
         (0, class_transformer_1.Type)(function () { return autoComplete_option_item_dto_1.AutoCompleteOptionItemDto; }),
         __metadata("design:type", Array)
-    ], DiscountFilterItemDto.prototype, "companies", void 0);
+    ], DiscountFilterItemDto.prototype, "companies");
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountFilterType === DiscountFilterType_1.DiscountFilterType.CATEGORIES; }),
         (0, class_validator_1.IsArray)(),
@@ -60,7 +60,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         (0, class_validator_1.ArrayMinSize)(1),
         (0, class_transformer_1.Type)(function () { return autoComplete_option_item_dto_1.AutoCompleteOptionItemDto; }),
         __metadata("design:type", Array)
-    ], DiscountFilterItemDto.prototype, "categories", void 0);
+    ], DiscountFilterItemDto.prototype, "categories");
     return DiscountFilterItemDto;
 }());
 exports.DiscountFilterItemDto = DiscountFilterItemDto;

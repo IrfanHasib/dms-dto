@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.AutoCompleteOptionItemDto = void 0;
 var class_validator_1 = require("class-validator");
 var AutoCompleteOptionItemDto = /** @class */ (function () {
@@ -18,11 +18,11 @@ var AutoCompleteOptionItemDto = /** @class */ (function () {
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsNumber)(),
         __metadata("design:type", Number)
-    ], AutoCompleteOptionItemDto.prototype, "id", void 0);
+    ], AutoCompleteOptionItemDto.prototype, "id");
     __decorate([
         (0, class_validator_1.Allow)(),
         __metadata("design:type", String)
-    ], AutoCompleteOptionItemDto.prototype, "label", void 0);
+    ], AutoCompleteOptionItemDto.prototype, "label");
     return AutoCompleteOptionItemDto;
 }());
 exports.AutoCompleteOptionItemDto = AutoCompleteOptionItemDto;

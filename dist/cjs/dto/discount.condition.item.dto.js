@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.DiscountConditionItemDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
@@ -24,27 +24,27 @@ var DiscountConditionItemDto = /** @class */ (function () {
         (0, class_transformer_1.Type)(function () { return Number; }),
         (0, class_validator_1.IsNumber)(),
         __metadata("design:type", Number)
-    ], DiscountConditionItemDto.prototype, "id", void 0);
+    ], DiscountConditionItemDto.prototype, "id");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsDecimal)(),
         __metadata("design:type", Number)
-    ], DiscountConditionItemDto.prototype, "conditionValue", void 0);
+    ], DiscountConditionItemDto.prototype, "conditionValue");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(conditionOperator_1.ConditionOperator),
         __metadata("design:type", String)
-    ], DiscountConditionItemDto.prototype, "conditionOperator", void 0);
+    ], DiscountConditionItemDto.prototype, "conditionOperator");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(discountConditionType_1.DiscountConditionType),
         __metadata("design:type", String)
-    ], DiscountConditionItemDto.prototype, "conditionType", void 0);
+    ], DiscountConditionItemDto.prototype, "conditionType");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(conditionCountType_1.ConditionCountType),
         __metadata("design:type", String)
-    ], DiscountConditionItemDto.prototype, "conditionCountType", void 0);
+    ], DiscountConditionItemDto.prototype, "conditionCountType");
     return DiscountConditionItemDto;
 }());
 exports.DiscountConditionItemDto = DiscountConditionItemDto;

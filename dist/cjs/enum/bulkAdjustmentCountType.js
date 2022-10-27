@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.BulkAdjustmentCountType = void 0;
 var BulkAdjustmentCountType;
 (function (BulkAdjustmentCountType) {

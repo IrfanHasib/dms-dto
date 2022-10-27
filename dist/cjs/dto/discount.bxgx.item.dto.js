@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.DiscountBxgxItemDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
@@ -22,40 +22,40 @@ var DiscountBxgxItemDto = /** @class */ (function () {
         (0, class_transformer_1.Type)(function () { return Number; }),
         (0, class_validator_1.IsNumber)(),
         __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "id", void 0);
+    ], DiscountBxgxItemDto.prototype, "id");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "minimumQuantity", void 0);
+    ], DiscountBxgxItemDto.prototype, "minimumQuantity");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "bonusQuantity", void 0);
+    ], DiscountBxgxItemDto.prototype, "bonusQuantity");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(BXGXDiscountType_1.BXGXDiscountType),
         __metadata("design:type", String)
-    ], DiscountBxgxItemDto.prototype, "discountType", void 0);
+    ], DiscountBxgxItemDto.prototype, "discountType");
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountType !== BXGXDiscountType_1.BXGXDiscountType.FREE; }),
         (0, class_validator_1.IsDecimal)(),
         __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "discountAmount", void 0);
+    ], DiscountBxgxItemDto.prototype, "discountAmount");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsBoolean)(),
         __metadata("design:type", Boolean)
-    ], DiscountBxgxItemDto.prototype, "isBXGXRecursive", void 0);
+    ], DiscountBxgxItemDto.prototype, "isBXGXRecursive");
     __decorate([
         (0, class_validator_1.ValidateIf)(function (o) { return !o.isBXGXRecursive; }),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "maximumQuantity", void 0);
+    ], DiscountBxgxItemDto.prototype, "maximumQuantity");
     return DiscountBxgxItemDto;
 }());
 exports.DiscountBxgxItemDto = DiscountBxgxItemDto;

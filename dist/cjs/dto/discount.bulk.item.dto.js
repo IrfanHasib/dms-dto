@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.DiscountBulkItemDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
@@ -22,34 +22,34 @@ var DiscountBulkItemDto = /** @class */ (function () {
         (0, class_transformer_1.Type)(function () { return Number; }),
         (0, class_validator_1.IsNumber)(),
         __metadata("design:type", Number)
-    ], DiscountBulkItemDto.prototype, "id", void 0);
+    ], DiscountBulkItemDto.prototype, "id");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
-    ], DiscountBulkItemDto.prototype, "minimumQuantity", void 0);
+    ], DiscountBulkItemDto.prototype, "minimumQuantity");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
-    ], DiscountBulkItemDto.prototype, "maximumQuantity", void 0);
+    ], DiscountBulkItemDto.prototype, "maximumQuantity");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(bulkDiscountType_1.BulkDiscountType),
         __metadata("design:type", String)
-    ], DiscountBulkItemDto.prototype, "discountType", void 0);
+    ], DiscountBulkItemDto.prototype, "discountType");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsDecimal)(),
         __metadata("design:type", Number)
-    ], DiscountBulkItemDto.prototype, "discountAmount", void 0);
+    ], DiscountBulkItemDto.prototype, "discountAmount");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], DiscountBulkItemDto.prototype, "label", void 0);
+    ], DiscountBulkItemDto.prototype, "label");
     return DiscountBulkItemDto;
 }());
 exports.DiscountBulkItemDto = DiscountBulkItemDto;

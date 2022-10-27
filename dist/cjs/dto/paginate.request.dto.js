@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.PaginateRequestDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
@@ -25,7 +25,7 @@ var PaginateRequestDto = /** @class */ (function () {
         (0, class_validator_1.IsNumber)(),
         (0, class_validator_1.IsInt)(),
         __metadata("design:type", Number)
-    ], PaginateRequestDto.prototype, "page", void 0);
+    ], PaginateRequestDto.prototype, "page");
     __decorate([
         (0, class_validator_1.IsOptional)(),
         (0, class_transformer_1.Transform)(function (_a) {
@@ -39,12 +39,12 @@ var PaginateRequestDto = /** @class */ (function () {
         (0, class_validator_1.IsNumber)(),
         (0, class_validator_1.IsInt)(),
         __metadata("design:type", Number)
-    ], PaginateRequestDto.prototype, "limit", void 0);
+    ], PaginateRequestDto.prototype, "limit");
     __decorate([
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], PaginateRequestDto.prototype, "search", void 0);
+    ], PaginateRequestDto.prototype, "search");
     return PaginateRequestDto;
 }());
 exports.PaginateRequestDto = PaginateRequestDto;

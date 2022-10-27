@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.AuthResponseDTO = void 0;
 var class_validator_1 = require("class-validator");
 var AuthResponseDTO = /** @class */ (function () {
@@ -18,22 +18,22 @@ var AuthResponseDTO = /** @class */ (function () {
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], AuthResponseDTO.prototype, "accessToken", void 0);
+    ], AuthResponseDTO.prototype, "accessToken");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], AuthResponseDTO.prototype, "expiresIn", void 0);
+    ], AuthResponseDTO.prototype, "expiresIn");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], AuthResponseDTO.prototype, "tokenType", void 0);
+    ], AuthResponseDTO.prototype, "tokenType");
     __decorate([
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], AuthResponseDTO.prototype, "message", void 0);
+    ], AuthResponseDTO.prototype, "message");
     return AuthResponseDTO;
 }());
 exports.AuthResponseDTO = AuthResponseDTO;

@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.LoginDTO = void 0;
 var class_validator_1 = require("class-validator");
 var LoginDTO = /** @class */ (function () {
@@ -18,12 +18,12 @@ var LoginDTO = /** @class */ (function () {
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.Length)(11, 11),
         __metadata("design:type", String)
-    ], LoginDTO.prototype, "mobile", void 0);
+    ], LoginDTO.prototype, "mobile");
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.Length)(6),
         __metadata("design:type", String)
-    ], LoginDTO.prototype, "password", void 0);
+    ], LoginDTO.prototype, "password");
     return LoginDTO;
 }());
 exports.LoginDTO = LoginDTO;

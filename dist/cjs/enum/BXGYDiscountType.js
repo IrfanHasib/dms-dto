@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.BXGYDiscountType = void 0;
 var BXGYDiscountType;
 (function (BXGYDiscountType) {
