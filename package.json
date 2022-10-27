@@ -2,8 +2,8 @@
   "name": "dms-dto",
   "version": "1.0.2",
   "description": "",
-  "typings": "dist/index.d.ts",
-  "main": "dist/index.js",
+  "typings": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "type": "commonjs",
   "scripts": {
