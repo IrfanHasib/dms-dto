@@ -1,15 +1,13 @@
-const typescript = require("rollup-plugin-typescript2")
-const commonjs = require("rollup-plugin-commonjs")
-const external = require("rollup-plugin-peer-deps-external")
-const resolve = require("rollup-plugin-node-resolve")
+const typescript = require('rollup-plugin-typescript2');
+const commonjs = require('rollup-plugin-commonjs');
+const external = require('rollup-plugin-peer-deps-external');
+const resolve = require('rollup-plugin-node-resolve');
 //const tsconfig = require("./tsconfig.esm.json")
 
-
-
 module.exports = {
-    input: "src/index.ts",
-        output: [
-       /*
+  input: 'src/index.ts',
+  output: [
+    /*
         {
             file: pkg.main,
             format: "cjs",
@@ -17,23 +15,19 @@ module.exports = {
             sourcemap: true
         },
         */
-        {
-            file: "./dist/esm/index.js",
-            format: "es",
-            exports: "named",
-            sourcemap: true,
-        }
-    ],
-        plugins: [
-        external(),
-        resolve(),
-        typescript({
-
-        }),
-        commonjs({
-            include: ["node_modules/**"],
-        })
-    ]
+    {
+      file: './dist/esm/index.js',
+      format: 'es',
+      exports: 'named',
+      sourcemap: true,
+    },
+  ],
+  plugins: [
+    external(),
+    resolve(),
+    typescript({}),
+    commonjs({
+      include: ['node_modules/**'],
+    }),
+  ],
 };
-
-
