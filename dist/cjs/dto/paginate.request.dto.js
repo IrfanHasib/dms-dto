@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaginateRequestDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
-require("reflect-metadata");
 var PaginateRequestDto = /** @class */ (function () {
     function PaginateRequestDto() {
         this.page = 1;

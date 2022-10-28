@@ -1,7 +1,5 @@
-import { IsInt, IsNumber, IsNumberString, IsOptional, IsString, ValidateIf } from 'class-validator';
+import { IsInt, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import 'reflect-metadata';
-import * as r from 'reflect-metadata';
 
 export class PaginateRequestDto {
   @IsOptional()
