@@ -8,7 +8,7 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
-import {Expose, Transform, Type} from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { DiscountFilterType } from './../enum/DiscountFilterType';
 import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
 

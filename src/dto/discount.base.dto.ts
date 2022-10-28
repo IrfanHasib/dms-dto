@@ -11,7 +11,7 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
-import {Expose, Transform, Type} from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { BulkAdjustmentCountType } from './../enum/bulkAdjustmentCountType';
 import { CartAdjustmentDiscountType } from './../enum/cartAdjustmentDiscountType';
 import { DiscountType } from './../enum/DiscountType';
@@ -69,7 +69,6 @@ export class DiscountBaseDto {
   @IsInt()
   @Type(() => Number)
   usageLimit: number;
-
 
   //DiscountType.PRODUCT_ADJUSTMENT
   @Expose()

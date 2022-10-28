@@ -4602,8 +4602,7 @@ var PaginateRequestDto = /** @class */ (function () {
     }
     __decorate([
         Expose(),
-        IsOptional(),
-        ValidateIf(function (object, value) { return !!value; }),
+        IsNotEmpty(),
         Type(function () { return Number; }),
         IsNumber(),
         IsInt(),
@@ -4611,14 +4610,13 @@ var PaginateRequestDto = /** @class */ (function () {
     ], PaginateRequestDto.prototype, "page");
     __decorate([
         Expose(),
-        IsOptional(),
+        IsNotEmpty(),
         Transform(function (_a) {
             var value = _a.value;
             var limit = value;
             limit = limit > 100 ? 100 : limit;
             return limit;
         }),
-        ValidateIf(function (object, value) { return !!value; }),
         Type(function () { return Number; }),
         IsNumber(),
         IsInt(),
@@ -4692,6 +4690,138 @@ var DeleteResponseDto = /** @class */ (function () {
     return DeleteResponseDto;
 }());
 
+var CategoryBaseDto = /** @class */ (function () {
+    function CategoryBaseDto() {
+    }
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsString(),
+        __metadata("design:type", String)
+    ], CategoryBaseDto.prototype, "name");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], CategoryBaseDto.prototype, "icon");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], CategoryBaseDto.prototype, "categoryId");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], CategoryBaseDto.prototype, "order");
+    return CategoryBaseDto;
+}());
+
+var CategoryUpdateDto = /** @class */ (function (_super) {
+    __extends(CategoryUpdateDto, _super);
+    function CategoryUpdateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return CategoryUpdateDto;
+}(CategoryBaseDto));
+
+var CategoryCreateDto = /** @class */ (function (_super) {
+    __extends(CategoryCreateDto, _super);
+    function CategoryCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], CategoryCreateDto.prototype, "companyId");
+    return CategoryCreateDto;
+}(CategoryBaseDto));
+
+var CategoryItemDto = /** @class */ (function (_super) {
+    __extends(CategoryItemDto, _super);
+    function CategoryItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsString(),
+        __metadata("design:type", String)
+    ], CategoryItemDto.prototype, "name");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], CategoryItemDto.prototype, "icon");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], CategoryItemDto.prototype, "categoryId");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], CategoryItemDto.prototype, "order");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], CategoryItemDto.prototype, "companyId");
+    return CategoryItemDto;
+}(BaseDBFieldsDto));
+
+var CategoryPaginateResponseDto = /** @class */ (function (_super) {
+    __extends(CategoryPaginateResponseDto, _super);
+    function CategoryPaginateResponseDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsArray(),
+        Type(function () { return CategoryItemDto; }),
+        ValidateNested({ each: true }),
+        __metadata("design:type", Array)
+    ], CategoryPaginateResponseDto.prototype, "items");
+    return CategoryPaginateResponseDto;
+}(PaginateResponseMetadataDto));
+
+var CategoryPaginateRequestDto = /** @class */ (function (_super) {
+    __extends(CategoryPaginateRequestDto, _super);
+    function CategoryPaginateRequestDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        Type(function () { return Number; }),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], CategoryPaginateRequestDto.prototype, "companyId");
+    return CategoryPaginateRequestDto;
+}(PaginateRequestDto));
+
 /**
 Obj should not be empty, if there are no field then pass {}
  */
@@ -4759,5 +4889,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map

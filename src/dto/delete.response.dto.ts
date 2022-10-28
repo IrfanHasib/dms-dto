@@ -1,5 +1,5 @@
 import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import {Expose} from "class-transformer";
+import { Expose } from 'class-transformer';
 
 export class DeleteResponseDto {
   @Expose()

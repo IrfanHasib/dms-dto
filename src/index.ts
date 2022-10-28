@@ -1,6 +1,4 @@
 import 'reflect-metadata';
-import { CompanyUpdateDto } from './dto/company.update..dto';
-import { DeleteResponseDto } from './dto/delete.response.dto';
 export { DiscountBaseDto } from './dto/discount.base.dto';
 export { DiscountBulkItemDto } from './dto/discount.bulk.item.dto';
 export { DiscountBxgxItemDto } from './dto/discount.bxgx.item.dto';
@@ -35,5 +33,11 @@ export { CompanyBaseDto } from './dto/company.base.dto';
 export { CompanyCreateDto } from './dto/company.create.dto';
 export { CompanyUpdateDto } from './dto/company.update..dto';
 export { DeleteResponseDto } from './dto/delete.response.dto';
+export { CategoryBaseDto } from './dto/category.base.dto';
+export { CategoryUpdateDto } from './dto/category.update.dto';
+export { CategoryCreateDto } from './dto/category.create.dto';
+export { CategoryItemDto } from './dto/category.item.dto';
+export { CategoryPaginateResponseDto } from './dto/category.paginate.response.dto';
+export { CategoryPaginateRequestDto } from './dto/category.paginate.request.dto';
 export { validateAndPaintToInstance } from './utils/validateAndPaintToInstance';
 export { dtoValidator } from './utils/dtoValidator';

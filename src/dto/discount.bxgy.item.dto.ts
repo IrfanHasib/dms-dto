@@ -11,7 +11,7 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
-import {Expose, Type} from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { BXGYDiscountType } from './../enum/BXGYDiscountType';
 import { BXGYType } from './../enum/BXGYType';
 import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';

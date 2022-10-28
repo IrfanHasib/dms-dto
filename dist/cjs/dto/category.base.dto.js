@@ -9,43 +9,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PaginateRequestDto = void 0;
+exports.CategoryBaseDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
-var PaginateRequestDto = /** @class */ (function () {
-    function PaginateRequestDto() {
-        this.page = 1;
-        this.limit = 10;
+var CategoryBaseDto = /** @class */ (function () {
+    function CategoryBaseDto() {
     }
     __decorate([
         (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
-        (0, class_transformer_1.Type)(function () { return Number; }),
-        (0, class_validator_1.IsNumber)(),
-        (0, class_validator_1.IsInt)(),
-        __metadata("design:type", Number)
-    ], PaginateRequestDto.prototype, "page", void 0);
-    __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        (0, class_transformer_1.Transform)(function (_a) {
-            var value = _a.value;
-            var limit = value;
-            limit = limit > 100 ? 100 : limit;
-            return limit;
-        }),
-        (0, class_transformer_1.Type)(function () { return Number; }),
-        (0, class_validator_1.IsNumber)(),
-        (0, class_validator_1.IsInt)(),
-        __metadata("design:type", Number)
-    ], PaginateRequestDto.prototype, "limit", void 0);
+        (0, class_validator_1.IsString)(),
+        __metadata("design:type", String)
+    ], CategoryBaseDto.prototype, "name", void 0);
     __decorate([
         (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], PaginateRequestDto.prototype, "search", void 0);
-    return PaginateRequestDto;
+    ], CategoryBaseDto.prototype, "icon", void 0);
+    __decorate([
+        (0, class_transformer_1.Expose)(),
+        (0, class_validator_1.IsOptional)(),
+        (0, class_validator_1.ValidateIf)(function (object, value) { return !!value; }),
+        (0, class_validator_1.IsInt)(),
+        (0, class_transformer_1.Type)(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], CategoryBaseDto.prototype, "categoryId", void 0);
+    __decorate([
+        (0, class_transformer_1.Expose)(),
+        (0, class_validator_1.IsOptional)(),
+        (0, class_validator_1.ValidateIf)(function (object, value) { return !!value; }),
+        (0, class_validator_1.IsInt)(),
+        (0, class_transformer_1.Type)(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], CategoryBaseDto.prototype, "order", void 0);
+    return CategoryBaseDto;
 }());
-exports.PaginateRequestDto = PaginateRequestDto;
-//# sourceMappingURL=paginate.request.dto.js.map
+exports.CategoryBaseDto = CategoryBaseDto;
+//# sourceMappingURL=category.base.dto.js.map

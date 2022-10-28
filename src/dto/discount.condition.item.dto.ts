@@ -1,5 +1,5 @@
 import { IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, ValidateIf } from 'class-validator';
-import {Expose, Type} from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { ConditionCountType } from './../enum/conditionCountType';
 import { ConditionOperator } from './../enum/conditionOperator';
 import { DiscountConditionType } from './../enum/discountConditionType';
