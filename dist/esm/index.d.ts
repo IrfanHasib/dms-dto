@@ -29,5 +29,8 @@ export { CompanyItemDto } from './dto/company.item.dto';
 export { CompanyPaginateResponseDto } from './dto/company.paginate.response.dto';
 export { PaginateResponseMetadataDto } from './dto/paginate.response.metadata.dto';
 export { PaginateRequestDto } from './dto/paginate.request.dto';
+export { CompanyBaseDto } from './dto/company.base.dto';
+export { CompanyCreateDto } from './dto/company.create.dto';
+export { CompanyUpdateDto } from './dto/company.update..dto';
 export { validateAndPaintToInstance } from './utils/validateAndPaintToInstance';
 export { dtoValidator } from './utils/dtoValidator';

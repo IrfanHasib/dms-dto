@@ -4525,6 +4525,38 @@ var PaginateRequestDto = /** @class */ (function () {
     return PaginateRequestDto;
 }());
 
+var CompanyBaseDto = /** @class */ (function () {
+    function CompanyBaseDto() {
+    }
+    __decorate([
+        IsNotEmpty(),
+        IsString(),
+        __metadata("design:type", String)
+    ], CompanyBaseDto.prototype, "name");
+    __decorate([
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], CompanyBaseDto.prototype, "logo");
+    return CompanyBaseDto;
+}());
+
+var CompanyCreateDto = /** @class */ (function (_super) {
+    __extends(CompanyCreateDto, _super);
+    function CompanyCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return CompanyCreateDto;
+}(CompanyBaseDto));
+
+var CompanyUpdateDto = /** @class */ (function (_super) {
+    __extends(CompanyUpdateDto, _super);
+    function CompanyUpdateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return CompanyUpdateDto;
+}(CompanyBaseDto));
+
 /**
 Obj should not be empty, if there are no field then pass {}
  */
@@ -4583,5 +4615,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CompanyItemDto, CompanyPaginateResponseDto, ConditionCountType, ConditionOperator, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map
