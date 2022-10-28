@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { CompanyUpdateDto } from './dto/company.update..dto';
+import { DeleteResponseDto } from './dto/delete.response.dto';
 export { DiscountBaseDto } from './dto/discount.base.dto';
 export { DiscountBulkItemDto } from './dto/discount.bulk.item.dto';
 export { DiscountBxgxItemDto } from './dto/discount.bxgx.item.dto';
@@ -33,5 +34,6 @@ export { PaginateRequestDto } from './dto/paginate.request.dto';
 export { CompanyBaseDto } from './dto/company.base.dto';
 export { CompanyCreateDto } from './dto/company.create.dto';
 export { CompanyUpdateDto } from './dto/company.update..dto';
+export { DeleteResponseDto } from './dto/delete.response.dto';
 export { validateAndPaintToInstance } from './utils/validateAndPaintToInstance';
 export { dtoValidator } from './utils/dtoValidator';

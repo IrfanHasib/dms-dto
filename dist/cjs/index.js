@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dtoValidator = exports.validateAndPaintToInstance = exports.CompanyUpdateDto = exports.CompanyCreateDto = exports.CompanyBaseDto = exports.PaginateRequestDto = exports.PaginateResponseMetadataDto = exports.CompanyPaginateResponseDto = exports.CompanyItemDto = exports.BaseDBFieldsDto = exports.AuthResponseDTO = exports.LoginDTO = exports.DiscountFilterType = exports.ProductAdjustmentDiscountType = exports.DiscountType = exports.DiscountConditionType = exports.ConditionOperator = exports.ConditionCountType = exports.CartAdjustmentDiscountType = exports.BXGYType = exports.BXGYGetType = exports.BXGYDiscountType = exports.BXGYCountType = exports.BXGXDiscountType = exports.BulkDiscountType = exports.BulkAdjustmentCountType = exports.DiscountUpdateDto = exports.AutoCompleteOptionItemDto = exports.DiscountFilterItemDto = exports.DiscountCreateDto = exports.DiscountConditionItemDto = exports.DiscountBxgyItemDto = exports.DiscountBxgxItemDto = exports.DiscountBulkItemDto = exports.DiscountBaseDto = void 0;
+exports.dtoValidator = exports.validateAndPaintToInstance = exports.DeleteResponseDto = exports.CompanyUpdateDto = exports.CompanyCreateDto = exports.CompanyBaseDto = exports.PaginateRequestDto = exports.PaginateResponseMetadataDto = exports.CompanyPaginateResponseDto = exports.CompanyItemDto = exports.BaseDBFieldsDto = exports.AuthResponseDTO = exports.LoginDTO = exports.DiscountFilterType = exports.ProductAdjustmentDiscountType = exports.DiscountType = exports.DiscountConditionType = exports.ConditionOperator = exports.ConditionCountType = exports.CartAdjustmentDiscountType = exports.BXGYType = exports.BXGYGetType = exports.BXGYDiscountType = exports.BXGYCountType = exports.BXGXDiscountType = exports.BulkDiscountType = exports.BulkAdjustmentCountType = exports.DiscountUpdateDto = exports.AutoCompleteOptionItemDto = exports.DiscountFilterItemDto = exports.DiscountCreateDto = exports.DiscountConditionItemDto = exports.DiscountBxgyItemDto = exports.DiscountBxgxItemDto = exports.DiscountBulkItemDto = exports.DiscountBaseDto = void 0;
 require("reflect-metadata");
 var discount_base_dto_1 = require("./dto/discount.base.dto");
 Object.defineProperty(exports, "DiscountBaseDto", { enumerable: true, get: function () { return discount_base_dto_1.DiscountBaseDto; } });
@@ -68,6 +68,8 @@ var company_create_dto_1 = require("./dto/company.create.dto");
 Object.defineProperty(exports, "CompanyCreateDto", { enumerable: true, get: function () { return company_create_dto_1.CompanyCreateDto; } });
 var company_update__dto_1 = require("./dto/company.update..dto");
 Object.defineProperty(exports, "CompanyUpdateDto", { enumerable: true, get: function () { return company_update__dto_1.CompanyUpdateDto; } });
+var delete_response_dto_1 = require("./dto/delete.response.dto");
+Object.defineProperty(exports, "DeleteResponseDto", { enumerable: true, get: function () { return delete_response_dto_1.DeleteResponseDto; } });
 var validateAndPaintToInstance_1 = require("./utils/validateAndPaintToInstance");
 Object.defineProperty(exports, "validateAndPaintToInstance", { enumerable: true, get: function () { return validateAndPaintToInstance_1.validateAndPaintToInstance; } });
 var dtoValidator_1 = require("./utils/dtoValidator");
