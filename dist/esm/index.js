@@ -4717,8 +4717,9 @@ var CategoryBaseDto = /** @class */ (function () {
         Expose(),
         IsOptional(),
         ValidateIf(function (object, value) { return !!value; }),
-        IsInt(),
         Type(function () { return Number; }),
+        IsNumber(),
+        IsInt(),
         __metadata("design:type", Number)
     ], CategoryBaseDto.prototype, "order");
     return CategoryBaseDto;

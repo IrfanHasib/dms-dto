@@ -19,7 +19,7 @@ module.exports = {
       file: './dist/esm/index.js',
       format: 'es',
       exports: 'named',
-      sourcemap: true,
+      sourcemap: true
     },
   ],
   plugins: [

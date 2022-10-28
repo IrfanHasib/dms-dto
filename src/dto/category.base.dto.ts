@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString, ValidateIf } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 
 export class CategoryBaseDto {
@@ -22,7 +22,8 @@ export class CategoryBaseDto {
   @Expose()
   @IsOptional()
   @ValidateIf((object, value) => !!value)
-  @IsInt()
   @Type(() => Number)
+  @IsNumber()
+  @IsInt()
   order?: number;
 }
