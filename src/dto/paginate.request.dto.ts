@@ -1,7 +1,8 @@
 import { IsInt, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
 export class PaginateRequestDto {
+  @Expose()
   @IsOptional()
   @ValidateIf((object, value) => !!value)
   @Type(() => Number)
@@ -9,6 +10,7 @@ export class PaginateRequestDto {
   @IsInt()
   page?: number = 1;
 
+  @Expose()
   @IsOptional()
   @Transform(({ value }) => {
     let limit = value;
@@ -21,6 +23,7 @@ export class PaginateRequestDto {
   @IsInt()
   limit?: number = 10;
 
+  @Expose()
   @IsOptional()
   @IsString()
   search?: string;

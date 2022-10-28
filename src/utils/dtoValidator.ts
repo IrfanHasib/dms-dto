@@ -8,11 +8,16 @@ const dtoValidator = async <T>(dto: ClassConstructor<T>, obj: T): Promise<string
   if (typeof obj !== 'object') {
     returnError.push('Received empty object');
   }
-  const objInstance = plainToInstance<T, T>(dto, obj, { exposeDefaultValues: true, enableImplicitConversion: true });
+  const objInstance = plainToInstance<T, T>(dto, obj, {
+    excludeExtraneousValues: true,
+    exposeDefaultValues: true,
+    enableImplicitConversion: true,
+  });
   // @ts-ignore
   const errors = await validate(objInstance, {
     enableDebugMessages: true,
-    whitelist: true,
+    whitelist: false,
+    forbidNonWhitelisted: true,
     skipMissingProperties: false,
     transform: true,
   });

@@ -27,17 +27,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompanyItemDto = void 0;
 var class_validator_1 = require("class-validator");
 var baseDBFields_dto_1 = require("./../dto/baseDBFields.dto");
+var class_transformer_1 = require("class-transformer");
 var CompanyItemDto = /** @class */ (function (_super) {
     __extends(CompanyItemDto, _super);
     function CompanyItemDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
     ], CompanyItemDto.prototype, "name", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)

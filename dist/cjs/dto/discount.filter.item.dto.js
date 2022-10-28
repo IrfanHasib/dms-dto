@@ -18,6 +18,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
     function DiscountFilterItemDto() {
     }
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.ValidateIf)(function (_object, value) { return !!value; }),
         (0, class_transformer_1.Type)(function () { return Number; }),
@@ -25,11 +26,13 @@ var DiscountFilterItemDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountFilterItemDto.prototype, "id", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(DiscountFilterType_1.DiscountFilterType),
         __metadata("design:type", String)
     ], DiscountFilterItemDto.prototype, "discountFilterType", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountFilterType !== DiscountFilterType_1.DiscountFilterType.ALL; }),
         (0, class_transformer_1.Transform)(function (_a) {
             var value = _a.value;
@@ -38,6 +41,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], DiscountFilterItemDto.prototype, "isInList", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountFilterType === DiscountFilterType_1.DiscountFilterType.PRODUCTS; }),
         (0, class_validator_1.IsArray)(),
         (0, class_validator_1.ValidateNested)({ each: true }),
@@ -46,6 +50,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountFilterItemDto.prototype, "products", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountFilterType === DiscountFilterType_1.DiscountFilterType.COMPANIES; }),
         (0, class_validator_1.IsArray)(),
         (0, class_validator_1.ValidateNested)({ each: true }),
@@ -54,6 +59,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountFilterItemDto.prototype, "companies", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountFilterType === DiscountFilterType_1.DiscountFilterType.CATEGORIES; }),
         (0, class_validator_1.IsArray)(),
         (0, class_validator_1.ValidateNested)({ each: true }),

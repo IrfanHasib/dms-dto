@@ -3720,6 +3720,30 @@ var ClassTransformer = /** @class */ (function () {
 }());
 
 /**
+ * Marks the given class or property as included. By default the property is included in both
+ * constructorToPlain and plainToConstructor transformations. It can be limited to only one direction
+ * via using the `toPlainOnly` or `toClassOnly` option.
+ *
+ * Can be applied to class definitions and properties.
+ */
+function Expose(options) {
+    if (options === void 0) { options = {}; }
+    /**
+     * NOTE: The `propertyName` property must be marked as optional because
+     * this decorator used both as a class and a property decorator and the
+     * Typescript compiler will freak out if we make it mandatory as a class
+     * decorator only receives one parameter.
+     */
+    return function (object, propertyName) {
+        defaultMetadataStorage.addExposeMetadata({
+            target: object instanceof Function ? object : object.constructor,
+            propertyName: propertyName,
+            options: options,
+        });
+    };
+}
+
+/**
  * Defines a custom logic for value transformation.
  *
  * Can be applied to properties only.
@@ -3822,6 +3846,7 @@ var DiscountBulkItemDto = /** @class */ (function () {
     function DiscountBulkItemDto() {
     }
     __decorate([
+        Expose(),
         IsOptional(),
         ValidateIf(function (_object, value) { return !!value; }),
         Type(function () { return Number; }),
@@ -3829,28 +3854,33 @@ var DiscountBulkItemDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountBulkItemDto.prototype, "id");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBulkItemDto.prototype, "minimumQuantity");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBulkItemDto.prototype, "maximumQuantity");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsEnum(BulkDiscountType),
         __metadata("design:type", String)
     ], DiscountBulkItemDto.prototype, "discountType");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsDecimal(),
         __metadata("design:type", Number)
     ], DiscountBulkItemDto.prototype, "discountAmount");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
@@ -3869,11 +3899,13 @@ var AutoCompleteOptionItemDto = /** @class */ (function () {
     function AutoCompleteOptionItemDto() {
     }
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsNumber(),
         __metadata("design:type", Number)
     ], AutoCompleteOptionItemDto.prototype, "id");
     __decorate([
+        Expose(),
         Allow(),
         __metadata("design:type", String)
     ], AutoCompleteOptionItemDto.prototype, "label");
@@ -3884,6 +3916,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
     function DiscountBxgyItemDto() {
     }
     __decorate([
+        Expose(),
         IsOptional(),
         ValidateIf(function (_object, value) { return !!value; }),
         Type(function () { return Number; }),
@@ -3891,44 +3924,52 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "id");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "minimumQuantity");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "bonusQuantity");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsEnum(BXGYDiscountType),
         __metadata("design:type", String)
     ], DiscountBxgyItemDto.prototype, "discountType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType !== BXGYDiscountType.FREE; }),
         IsDecimal(),
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "discountAmount");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsBoolean(),
         __metadata("design:type", Boolean)
     ], DiscountBxgyItemDto.prototype, "isBXGYRecursive");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsEnum(BXGYType),
         __metadata("design:type", String)
     ], DiscountBxgyItemDto.prototype, "BXGYType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return !o.isBXGYRecursive; }),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "maximumQuantity");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.BXGYType === BXGYType.PRODUCTS; }),
         IsArray(),
         ValidateNested({ each: true }),
@@ -3937,6 +3978,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountBxgyItemDto.prototype, "products");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.BXGYType === BXGYType.COMPANIES; }),
         IsArray(),
         ValidateNested({ each: true }),
@@ -3945,6 +3987,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountBxgyItemDto.prototype, "companies");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.BXGYType === BXGYType.CATEGORIES; }),
         IsArray(),
         ValidateNested({ each: true }),
@@ -3966,6 +4009,7 @@ var DiscountBxgxItemDto = /** @class */ (function () {
     function DiscountBxgxItemDto() {
     }
     __decorate([
+        Expose(),
         IsOptional(),
         ValidateIf(function (_object, value) { return !!value; }),
         Type(function () { return Number; }),
@@ -3973,33 +4017,39 @@ var DiscountBxgxItemDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "id");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "minimumQuantity");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "bonusQuantity");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsEnum(BXGXDiscountType),
         __metadata("design:type", String)
     ], DiscountBxgxItemDto.prototype, "discountType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType !== BXGXDiscountType.FREE; }),
         IsDecimal(),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "discountAmount");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsBoolean(),
         __metadata("design:type", Boolean)
     ], DiscountBxgxItemDto.prototype, "isBXGXRecursive");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return !o.isBXGXRecursive; }),
         IsInt(),
         Type(function () { return Number; }),
@@ -4020,6 +4070,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
     function DiscountFilterItemDto() {
     }
     __decorate([
+        Expose(),
         IsOptional(),
         ValidateIf(function (_object, value) { return !!value; }),
         Type(function () { return Number; }),
@@ -4027,11 +4078,13 @@ var DiscountFilterItemDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountFilterItemDto.prototype, "id");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsEnum(DiscountFilterType$1),
         __metadata("design:type", String)
     ], DiscountFilterItemDto.prototype, "discountFilterType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountFilterType !== DiscountFilterType$1.ALL; }),
         Transform(function (_a) {
             var value = _a.value;
@@ -4040,6 +4093,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], DiscountFilterItemDto.prototype, "isInList");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType$1.PRODUCTS; }),
         IsArray(),
         ValidateNested({ each: true }),
@@ -4048,6 +4102,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountFilterItemDto.prototype, "products");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType$1.COMPANIES; }),
         IsArray(),
         ValidateNested({ each: true }),
@@ -4056,6 +4111,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountFilterItemDto.prototype, "companies");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType$1.CATEGORIES; }),
         IsArray(),
         ValidateNested({ each: true }),
@@ -4092,6 +4148,7 @@ var DiscountConditionItemDto = /** @class */ (function () {
     function DiscountConditionItemDto() {
     }
     __decorate([
+        Expose(),
         IsOptional(),
         ValidateIf(function (_object, value) { return !!value; }),
         Type(function () { return Number; }),
@@ -4099,21 +4156,25 @@ var DiscountConditionItemDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountConditionItemDto.prototype, "id");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsDecimal(),
         __metadata("design:type", Number)
     ], DiscountConditionItemDto.prototype, "conditionValue");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsEnum(ConditionOperator),
         __metadata("design:type", String)
     ], DiscountConditionItemDto.prototype, "conditionOperator");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsEnum(DiscountConditionType),
         __metadata("design:type", String)
     ], DiscountConditionItemDto.prototype, "conditionType");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsEnum(ConditionCountType),
         __metadata("design:type", String)
@@ -4125,16 +4186,19 @@ var DiscountBaseDto = /** @class */ (function () {
     function DiscountBaseDto() {
     }
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
     ], DiscountBaseDto.prototype, "name");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsEnum(DiscountType$1),
         __metadata("design:type", String)
     ], DiscountBaseDto.prototype, "discountType");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         Transform(function (_a) {
             var value = _a.value;
@@ -4143,6 +4207,7 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], DiscountBaseDto.prototype, "isEnabled");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         Transform(function (_a) {
             var value = _a.value;
@@ -4151,6 +4216,7 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], DiscountBaseDto.prototype, "isIgnoreOther");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         Transform(function (_a) {
             var value = _a.value;
@@ -4159,12 +4225,14 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], DiscountBaseDto.prototype, "isIgnoreThisIfOtherMatched");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "priority");
     __decorate([
+        Expose(),
         IsOptional(),
         ValidateIf(function (_object, value) { return !!value; }),
         IsInt(),
@@ -4172,36 +4240,43 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "usageLimit");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.PRODUCT_ADJUSTMENT; }),
         IsEnum(ProductAdjustmentDiscountType$1),
         __metadata("design:type", String)
     ], DiscountBaseDto.prototype, "productAdjustmentDiscountType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.PRODUCT_ADJUSTMENT; }),
         IsDecimal(),
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "productAdjustmentDiscountAmount");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.CART_ADJUSTMENT; }),
         IsEnum(CartAdjustmentDiscountType),
         __metadata("design:type", String)
     ], DiscountBaseDto.prototype, "cartAdjustmentDiscountType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.CART_ADJUSTMENT; }),
         IsDecimal(),
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "cartAdjustmentDiscountAmount");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.CART_ADJUSTMENT; }),
         IsString(),
         __metadata("design:type", String)
     ], DiscountBaseDto.prototype, "cartAdjustmentLabel");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.BULK_ADJUSTMENT; }),
         IsEnum(BulkAdjustmentCountType),
         __metadata("design:type", String)
     ], DiscountBaseDto.prototype, "bulkAdjustmentCountType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.BULK_ADJUSTMENT; }),
         IsArray(),
         ValidateNested({ each: true }),
@@ -4210,6 +4285,7 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountBaseDto.prototype, "discountBulks");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.BXGX; }),
         Transform(function (_a) {
             var value = _a.value;
@@ -4218,6 +4294,7 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], DiscountBaseDto.prototype, "isBXGXRecursive");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.BXGX; }),
         IsArray(),
         ArrayMinSize(1),
@@ -4234,21 +4311,25 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountBaseDto.prototype, "discountBXGXs");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.BXGY; }),
         IsEnum(BXGYType),
         __metadata("design:type", String)
     ], DiscountBaseDto.prototype, "BXGYType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.BXGY; }),
         IsEnum(BXGYCountType),
         __metadata("design:type", String)
     ], DiscountBaseDto.prototype, "BXGYCountType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.BXGY; }),
         IsEnum(BXGYGetType),
         __metadata("design:type", String)
     ], DiscountBaseDto.prototype, "BXGYGetType");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.BXGY; }),
         Transform(function (_a) {
             var value = _a.value;
@@ -4257,6 +4338,7 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], DiscountBaseDto.prototype, "isBXGYRecursive");
     __decorate([
+        Expose(),
         ValidateIf(function (o) { return o.discountType === DiscountType$1.BXGY; }),
         IsArray(),
         ArrayMinSize(1),
@@ -4274,18 +4356,21 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountBaseDto.prototype, "discountBXGYs");
     __decorate([
+        Expose(),
         IsOptional(),
         ValidateIf(function (_object, value) { return !!value; }),
         IsDateString(),
         __metadata("design:type", Date)
     ], DiscountBaseDto.prototype, "activeFromDateTime");
     __decorate([
+        Expose(),
         IsOptional(),
         ValidateIf(function (_object, value) { return !!value; }),
         IsDateString(),
         __metadata("design:type", Date)
     ], DiscountBaseDto.prototype, "activeToDateTime");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         Transform(function (_a) {
             var value = _a.value;
@@ -4294,6 +4379,7 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], DiscountBaseDto.prototype, "isMatchAllCondition");
     __decorate([
+        Expose(),
         IsArray(),
         ValidateNested({ each: true }),
         ArrayMinSize(1),
@@ -4301,6 +4387,7 @@ var DiscountBaseDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountBaseDto.prototype, "discountFilers");
     __decorate([
+        Expose(),
         IsOptional(),
         IsArray(),
         ValidateNested({ each: true }),
@@ -4355,11 +4442,13 @@ var LoginDTO = /** @class */ (function () {
     function LoginDTO() {
     }
     __decorate([
+        Expose(),
         IsNotEmpty(),
         Length(11, 11),
         __metadata("design:type", String)
     ], LoginDTO.prototype, "mobile");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         Length(6),
         __metadata("design:type", String)
@@ -4371,21 +4460,25 @@ var AuthResponseDTO = /** @class */ (function () {
     function AuthResponseDTO() {
     }
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
     ], AuthResponseDTO.prototype, "accessToken");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
     ], AuthResponseDTO.prototype, "expiresIn");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
     ], AuthResponseDTO.prototype, "tokenType");
     __decorate([
+        Expose(),
         IsOptional(),
         IsString(),
         __metadata("design:type", String)
@@ -4397,23 +4490,27 @@ var BaseDBFieldsDto = /** @class */ (function () {
     function BaseDBFieldsDto() {
     }
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
     ], BaseDBFieldsDto.prototype, "id");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsBoolean(),
         __metadata("design:type", Boolean)
     ], BaseDBFieldsDto.prototype, "isDeleted");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsDate(),
         Type(function () { return Date; }),
         __metadata("design:type", Date)
     ], BaseDBFieldsDto.prototype, "createdAt");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsDate(),
         Type(function () { return Date; }),
@@ -4428,11 +4525,13 @@ var CompanyItemDto = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
     ], CompanyItemDto.prototype, "name");
     __decorate([
+        Expose(),
         IsOptional(),
         IsString(),
         __metadata("design:type", String)
@@ -4444,30 +4543,35 @@ var PaginateResponseMetadataDto = /** @class */ (function () {
     function PaginateResponseMetadataDto() {
     }
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
     ], PaginateResponseMetadataDto.prototype, "itemCount");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
     ], PaginateResponseMetadataDto.prototype, "totalItems");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
     ], PaginateResponseMetadataDto.prototype, "itemsPerPage");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
     ], PaginateResponseMetadataDto.prototype, "totalPages");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
@@ -4482,6 +4586,7 @@ var CompanyPaginateResponseDto = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
+        Expose(),
         IsArray(),
         Type(function () { return CompanyItemDto; }),
         ValidateNested({ each: true }),
@@ -4496,6 +4601,7 @@ var PaginateRequestDto = /** @class */ (function () {
         this.limit = 10;
     }
     __decorate([
+        Expose(),
         IsOptional(),
         ValidateIf(function (object, value) { return !!value; }),
         Type(function () { return Number; }),
@@ -4504,6 +4610,7 @@ var PaginateRequestDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], PaginateRequestDto.prototype, "page");
     __decorate([
+        Expose(),
         IsOptional(),
         Transform(function (_a) {
             var value = _a.value;
@@ -4518,6 +4625,7 @@ var PaginateRequestDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], PaginateRequestDto.prototype, "limit");
     __decorate([
+        Expose(),
         IsOptional(),
         IsString(),
         __metadata("design:type", String)
@@ -4529,11 +4637,13 @@ var CompanyBaseDto = /** @class */ (function () {
     function CompanyBaseDto() {
     }
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
     ], CompanyBaseDto.prototype, "name");
     __decorate([
+        Expose(),
         IsOptional(),
         IsString(),
         __metadata("design:type", String)
@@ -4561,17 +4671,20 @@ var DeleteResponseDto = /** @class */ (function () {
     function DeleteResponseDto() {
     }
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
     ], DeleteResponseDto.prototype, "message");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
     ], DeleteResponseDto.prototype, "deletedId");
     __decorate([
+        Expose(),
         IsNotEmpty(),
         IsBoolean(),
         __metadata("design:type", Boolean)
@@ -4591,10 +4704,15 @@ var dtoValidator = function (dto, obj) { return __awaiter$1(void 0, void 0, void
                 if (typeof obj !== 'object') {
                     returnError.push('Received empty object');
                 }
-                objInstance = plainToInstance(dto, obj, { exposeDefaultValues: true, enableImplicitConversion: true });
+                objInstance = plainToInstance(dto, obj, {
+                    excludeExtraneousValues: true,
+                    exposeDefaultValues: true,
+                    enableImplicitConversion: true
+                });
                 return [4 /*yield*/, validate(objInstance, {
                         enableDebugMessages: true,
-                        whitelist: true,
+                        whitelist: false,
+                        forbidNonWhitelisted: true,
                         skipMissingProperties: false,
                         transform: true
                     })];
@@ -4632,7 +4750,11 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
                     returnError = __spreadArray$1(['Response is not valid'], returnError, true);
                     throw new Error(returnError === null || returnError === void 0 ? void 0 : returnError.join('. \n'));
                 }
-                return [2 /*return*/, plainToInstance(dto, obj, { exposeDefaultValues: true, enableImplicitConversion: true })];
+                return [2 /*return*/, plainToInstance(dto, obj, {
+                        excludeExtraneousValues: true,
+                        exposeDefaultValues: true,
+                        enableImplicitConversion: true
+                    })];
         }
     });
 }); };

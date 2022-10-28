@@ -51,10 +51,15 @@ var dtoValidator = function (dto, obj) { return __awaiter(void 0, void 0, void 0
                 if (typeof obj !== 'object') {
                     returnError.push('Received empty object');
                 }
-                objInstance = (0, class_transformer_1.plainToInstance)(dto, obj, { exposeDefaultValues: true, enableImplicitConversion: true });
+                objInstance = (0, class_transformer_1.plainToInstance)(dto, obj, {
+                    excludeExtraneousValues: true,
+                    exposeDefaultValues: true,
+                    enableImplicitConversion: true,
+                });
                 return [4 /*yield*/, (0, class_validator_1.validate)(objInstance, {
                         enableDebugMessages: true,
-                        whitelist: true,
+                        whitelist: false,
+                        forbidNonWhitelisted: true,
                         skipMissingProperties: false,
                         transform: true,
                     })];

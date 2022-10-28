@@ -17,6 +17,7 @@ var DiscountBulkItemDto = /** @class */ (function () {
     function DiscountBulkItemDto() {
     }
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.ValidateIf)(function (_object, value) { return !!value; }),
         (0, class_transformer_1.Type)(function () { return Number; }),
@@ -24,28 +25,33 @@ var DiscountBulkItemDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountBulkItemDto.prototype, "id", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBulkItemDto.prototype, "minimumQuantity", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBulkItemDto.prototype, "maximumQuantity", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(bulkDiscountType_1.BulkDiscountType),
         __metadata("design:type", String)
     ], DiscountBulkItemDto.prototype, "discountType", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsDecimal)(),
         __metadata("design:type", Number)
     ], DiscountBulkItemDto.prototype, "discountAmount", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)

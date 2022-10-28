@@ -35,6 +35,7 @@ var CompanyPaginateResponseDto = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsArray)(),
         (0, class_transformer_1.Type)(function () { return company_item_dto_1.CompanyItemDto; }),
         (0, class_validator_1.ValidateNested)({ each: true }),

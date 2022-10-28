@@ -11,15 +11,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginDTO = void 0;
 var class_validator_1 = require("class-validator");
+var class_transformer_1 = require("class-transformer");
 var LoginDTO = /** @class */ (function () {
     function LoginDTO() {
     }
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.Length)(11, 11),
         __metadata("design:type", String)
     ], LoginDTO.prototype, "mobile", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.Length)(6),
         __metadata("design:type", String)

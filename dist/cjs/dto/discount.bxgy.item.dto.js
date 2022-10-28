@@ -19,6 +19,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
     function DiscountBxgyItemDto() {
     }
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.ValidateIf)(function (_object, value) { return !!value; }),
         (0, class_transformer_1.Type)(function () { return Number; }),
@@ -26,44 +27,52 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "id", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "minimumQuantity", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "bonusQuantity", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(BXGYDiscountType_1.BXGYDiscountType),
         __metadata("design:type", String)
     ], DiscountBxgyItemDto.prototype, "discountType", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.ValidateIf)(function (o) { return o.discountType !== BXGYDiscountType_1.BXGYDiscountType.FREE; }),
         (0, class_validator_1.IsDecimal)(),
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "discountAmount", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsBoolean)(),
         __metadata("design:type", Boolean)
     ], DiscountBxgyItemDto.prototype, "isBXGYRecursive", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(BXGYType_1.BXGYType),
         __metadata("design:type", String)
     ], DiscountBxgyItemDto.prototype, "BXGYType", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.ValidateIf)(function (o) { return !o.isBXGYRecursive; }),
         (0, class_validator_1.IsInt)(),
         (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "maximumQuantity", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.ValidateIf)(function (o) { return o.BXGYType === BXGYType_1.BXGYType.PRODUCTS; }),
         (0, class_validator_1.IsArray)(),
         (0, class_validator_1.ValidateNested)({ each: true }),
@@ -72,6 +81,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountBxgyItemDto.prototype, "products", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.ValidateIf)(function (o) { return o.BXGYType === BXGYType_1.BXGYType.COMPANIES; }),
         (0, class_validator_1.IsArray)(),
         (0, class_validator_1.ValidateNested)({ each: true }),
@@ -80,6 +90,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         __metadata("design:type", Array)
     ], DiscountBxgyItemDto.prototype, "companies", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.ValidateIf)(function (o) { return o.BXGYType === BXGYType_1.BXGYType.CATEGORIES; }),
         (0, class_validator_1.IsArray)(),
         (0, class_validator_1.ValidateNested)({ each: true }),

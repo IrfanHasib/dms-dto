@@ -19,6 +19,7 @@ var DiscountConditionItemDto = /** @class */ (function () {
     function DiscountConditionItemDto() {
     }
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.ValidateIf)(function (_object, value) { return !!value; }),
         (0, class_transformer_1.Type)(function () { return Number; }),
@@ -26,21 +27,25 @@ var DiscountConditionItemDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], DiscountConditionItemDto.prototype, "id", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsDecimal)(),
         __metadata("design:type", Number)
     ], DiscountConditionItemDto.prototype, "conditionValue", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(conditionOperator_1.ConditionOperator),
         __metadata("design:type", String)
     ], DiscountConditionItemDto.prototype, "conditionOperator", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(discountConditionType_1.DiscountConditionType),
         __metadata("design:type", String)
     ], DiscountConditionItemDto.prototype, "conditionType", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsEnum)(conditionCountType_1.ConditionCountType),
         __metadata("design:type", String)

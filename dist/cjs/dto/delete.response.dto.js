@@ -11,21 +11,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeleteResponseDto = void 0;
 var class_validator_1 = require("class-validator");
+var class_transformer_1 = require("class-transformer");
 var DeleteResponseDto = /** @class */ (function () {
     function DeleteResponseDto() {
     }
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
     ], DeleteResponseDto.prototype, "message", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsNumber)(),
         (0, class_validator_1.IsInt)(),
         __metadata("design:type", Number)
     ], DeleteResponseDto.prototype, "deletedId", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
         (0, class_validator_1.IsBoolean)(),
         __metadata("design:type", Boolean)

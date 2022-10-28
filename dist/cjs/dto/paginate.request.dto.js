@@ -18,6 +18,7 @@ var PaginateRequestDto = /** @class */ (function () {
         this.limit = 10;
     }
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.ValidateIf)(function (object, value) { return !!value; }),
         (0, class_transformer_1.Type)(function () { return Number; }),
@@ -26,6 +27,7 @@ var PaginateRequestDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], PaginateRequestDto.prototype, "page", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsOptional)(),
         (0, class_transformer_1.Transform)(function (_a) {
             var value = _a.value;
@@ -40,6 +42,7 @@ var PaginateRequestDto = /** @class */ (function () {
         __metadata("design:type", Number)
     ], PaginateRequestDto.prototype, "limit", void 0);
     __decorate([
+        (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsOptional)(),
         (0, class_validator_1.IsString)(),
         __metadata("design:type", String)

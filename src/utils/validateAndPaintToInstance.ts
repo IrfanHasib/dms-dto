@@ -7,7 +7,11 @@ const validateAndPaintToInstance = async <T>(dto: ClassConstructor<T>, obj: T): 
     returnError = ['Response is not valid', ...returnError];
     throw new Error(returnError?.join('. \n'));
   }
-  return plainToInstance<T, T>(dto, obj, { exposeDefaultValues: true, enableImplicitConversion: true });
+  return plainToInstance<T, T>(dto, obj, {
+    excludeExtraneousValues: true,
+    exposeDefaultValues: true,
+    enableImplicitConversion: true,
+  });
 };
 
 export { validateAndPaintToInstance };

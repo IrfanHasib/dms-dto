@@ -59,7 +59,11 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter(void 0, 
                     returnError = __spreadArray(['Response is not valid'], returnError, true);
                     throw new Error(returnError === null || returnError === void 0 ? void 0 : returnError.join('. \n'));
                 }
-                return [2 /*return*/, (0, class_transformer_1.plainToInstance)(dto, obj, { exposeDefaultValues: true, enableImplicitConversion: true })];
+                return [2 /*return*/, (0, class_transformer_1.plainToInstance)(dto, obj, {
+                        excludeExtraneousValues: true,
+                        exposeDefaultValues: true,
+                        enableImplicitConversion: true,
+                    })];
         }
     });
 }); };
