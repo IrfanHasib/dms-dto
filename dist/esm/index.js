@@ -4823,6 +4823,208 @@ var CategoryPaginateRequestDto = /** @class */ (function (_super) {
     return CategoryPaginateRequestDto;
 }(PaginateRequestDto));
 
+var ProductBaseDto = /** @class */ (function () {
+    function ProductBaseDto() {
+    }
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsString(),
+        __metadata("design:type", String)
+    ], ProductBaseDto.prototype, "name");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], ProductBaseDto.prototype, "barcode");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsDecimal(),
+        __metadata("design:type", Number)
+    ], ProductBaseDto.prototype, "cost");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsDecimal(),
+        __metadata("design:type", Number)
+    ], ProductBaseDto.prototype, "price");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsDecimal(),
+        __metadata("design:type", Number)
+    ], ProductBaseDto.prototype, "mrp");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], ProductBaseDto.prototype, "description");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], ProductBaseDto.prototype, "order");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], ProductBaseDto.prototype, "categoryId");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], ProductBaseDto.prototype, "companyId");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], ProductBaseDto.prototype, "image");
+    return ProductBaseDto;
+}());
+
+var ProductCreateDto = /** @class */ (function (_super) {
+    __extends(ProductCreateDto, _super);
+    function ProductCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return ProductCreateDto;
+}(ProductBaseDto));
+
+var ProductItemDto = /** @class */ (function (_super) {
+    __extends(ProductItemDto, _super);
+    function ProductItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsString(),
+        __metadata("design:type", String)
+    ], ProductItemDto.prototype, "name");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], ProductItemDto.prototype, "barcode");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsDecimal(),
+        __metadata("design:type", Number)
+    ], ProductItemDto.prototype, "cost");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsDecimal(),
+        __metadata("design:type", Number)
+    ], ProductItemDto.prototype, "price");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsDecimal(),
+        __metadata("design:type", Number)
+    ], ProductItemDto.prototype, "mrp");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], ProductItemDto.prototype, "description");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], ProductItemDto.prototype, "order");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], ProductItemDto.prototype, "categoryId");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], ProductItemDto.prototype, "companyId");
+    __decorate([
+        Expose(),
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], ProductItemDto.prototype, "image");
+    return ProductItemDto;
+}(BaseDBFieldsDto));
+
+var ProductPaginateRequestDto = /** @class */ (function (_super) {
+    __extends(ProductPaginateRequestDto, _super);
+    function ProductPaginateRequestDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        Type(function () { return Number; }),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], ProductPaginateRequestDto.prototype, "companyId");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        Type(function () { return Number; }),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], ProductPaginateRequestDto.prototype, "categoryId");
+    return ProductPaginateRequestDto;
+}(PaginateRequestDto));
+
+var ProductPaginateResponseDto = /** @class */ (function (_super) {
+    __extends(ProductPaginateResponseDto, _super);
+    function ProductPaginateResponseDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsArray(),
+        Type(function () { return ProductItemDto; }),
+        ValidateNested({ each: true }),
+        __metadata("design:type", Array)
+    ], ProductPaginateResponseDto.prototype, "items");
+    return ProductPaginateResponseDto;
+}(PaginateResponseMetadataDto));
+
+var ProductUpdateDto = /** @class */ (function (_super) {
+    __extends(ProductUpdateDto, _super);
+    function ProductUpdateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return ProductUpdateDto;
+}(ProductBaseDto));
+
 /**
 Obj should not be empty, if there are no field then pass {}
  */
@@ -4890,5 +5092,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map

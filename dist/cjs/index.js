@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dtoValidator = exports.validateAndPaintToInstance = exports.CategoryPaginateRequestDto = exports.CategoryPaginateResponseDto = exports.CategoryItemDto = exports.CategoryCreateDto = exports.CategoryUpdateDto = exports.CategoryBaseDto = exports.DeleteResponseDto = exports.CompanyUpdateDto = exports.CompanyCreateDto = exports.CompanyBaseDto = exports.PaginateRequestDto = exports.PaginateResponseMetadataDto = exports.CompanyPaginateResponseDto = exports.CompanyItemDto = exports.BaseDBFieldsDto = exports.AuthResponseDTO = exports.LoginDTO = exports.DiscountFilterType = exports.ProductAdjustmentDiscountType = exports.DiscountType = exports.DiscountConditionType = exports.ConditionOperator = exports.ConditionCountType = exports.CartAdjustmentDiscountType = exports.BXGYType = exports.BXGYGetType = exports.BXGYDiscountType = exports.BXGYCountType = exports.BXGXDiscountType = exports.BulkDiscountType = exports.BulkAdjustmentCountType = exports.DiscountUpdateDto = exports.AutoCompleteOptionItemDto = exports.DiscountFilterItemDto = exports.DiscountCreateDto = exports.DiscountConditionItemDto = exports.DiscountBxgyItemDto = exports.DiscountBxgxItemDto = exports.DiscountBulkItemDto = exports.DiscountBaseDto = void 0;
+exports.dtoValidator = exports.validateAndPaintToInstance = exports.ProductUpdateDto = exports.ProductPaginateResponseDto = exports.ProductPaginateRequestDto = exports.ProductItemDto = exports.ProductCreateDto = exports.ProductBaseDto = exports.CategoryPaginateRequestDto = exports.CategoryPaginateResponseDto = exports.CategoryItemDto = exports.CategoryCreateDto = exports.CategoryUpdateDto = exports.CategoryBaseDto = exports.DeleteResponseDto = exports.CompanyUpdateDto = exports.CompanyCreateDto = exports.CompanyBaseDto = exports.PaginateRequestDto = exports.PaginateResponseMetadataDto = exports.CompanyPaginateResponseDto = exports.CompanyItemDto = exports.BaseDBFieldsDto = exports.AuthResponseDTO = exports.LoginDTO = exports.DiscountFilterType = exports.ProductAdjustmentDiscountType = exports.DiscountType = exports.DiscountConditionType = exports.ConditionOperator = exports.ConditionCountType = exports.CartAdjustmentDiscountType = exports.BXGYType = exports.BXGYGetType = exports.BXGYDiscountType = exports.BXGYCountType = exports.BXGXDiscountType = exports.BulkDiscountType = exports.BulkAdjustmentCountType = exports.DiscountUpdateDto = exports.AutoCompleteOptionItemDto = exports.DiscountFilterItemDto = exports.DiscountCreateDto = exports.DiscountConditionItemDto = exports.DiscountBxgyItemDto = exports.DiscountBxgxItemDto = exports.DiscountBulkItemDto = exports.DiscountBaseDto = void 0;
 require("reflect-metadata");
 var discount_base_dto_1 = require("./dto/discount.base.dto");
 Object.defineProperty(exports, "DiscountBaseDto", { enumerable: true, get: function () { return discount_base_dto_1.DiscountBaseDto; } });
@@ -82,6 +82,18 @@ var category_paginate_response_dto_1 = require("./dto/category.paginate.response
 Object.defineProperty(exports, "CategoryPaginateResponseDto", { enumerable: true, get: function () { return category_paginate_response_dto_1.CategoryPaginateResponseDto; } });
 var category_paginate_request_dto_1 = require("./dto/category.paginate.request.dto");
 Object.defineProperty(exports, "CategoryPaginateRequestDto", { enumerable: true, get: function () { return category_paginate_request_dto_1.CategoryPaginateRequestDto; } });
+var product_base_dto_1 = require("./dto/product.base.dto");
+Object.defineProperty(exports, "ProductBaseDto", { enumerable: true, get: function () { return product_base_dto_1.ProductBaseDto; } });
+var product_create_dto_1 = require("./dto/product.create.dto");
+Object.defineProperty(exports, "ProductCreateDto", { enumerable: true, get: function () { return product_create_dto_1.ProductCreateDto; } });
+var product_item_dto_1 = require("./dto/product.item.dto");
+Object.defineProperty(exports, "ProductItemDto", { enumerable: true, get: function () { return product_item_dto_1.ProductItemDto; } });
+var product_paginate_request_dto_1 = require("./dto/product.paginate.request.dto");
+Object.defineProperty(exports, "ProductPaginateRequestDto", { enumerable: true, get: function () { return product_paginate_request_dto_1.ProductPaginateRequestDto; } });
+var product_paginate_response_dto_1 = require("./dto/product.paginate.response.dto");
+Object.defineProperty(exports, "ProductPaginateResponseDto", { enumerable: true, get: function () { return product_paginate_response_dto_1.ProductPaginateResponseDto; } });
+var product_update_dto_1 = require("./dto/product.update.dto");
+Object.defineProperty(exports, "ProductUpdateDto", { enumerable: true, get: function () { return product_update_dto_1.ProductUpdateDto; } });
 var validateAndPaintToInstance_1 = require("./utils/validateAndPaintToInstance");
 Object.defineProperty(exports, "validateAndPaintToInstance", { enumerable: true, get: function () { return validateAndPaintToInstance_1.validateAndPaintToInstance; } });
 var dtoValidator_1 = require("./utils/dtoValidator");
