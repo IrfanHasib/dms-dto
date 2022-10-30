@@ -13,7 +13,6 @@ exports.BaseDBFieldsDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
 var ts_mixer_1 = require("ts-mixer");
-var typeorm_1 = require("typeorm");
 var BaseDBFieldsDto = /** @class */ (function () {
     function BaseDBFieldsDto() {
     }
@@ -22,18 +21,12 @@ var BaseDBFieldsDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
-        (0, ts_mixer_1.decorate)((0, typeorm_1.PrimaryGeneratedColumn)()),
         __metadata("design:type", Number)
     ], BaseDBFieldsDto.prototype, "id", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
-        (0, ts_mixer_1.decorate)((0, typeorm_1.Column)({
-            nullable: false,
-            default: false,
-            type: 'boolean',
-        })),
         __metadata("design:type", Boolean)
     ], BaseDBFieldsDto.prototype, "isDeleted", void 0);
     __decorate([
@@ -41,7 +34,6 @@ var BaseDBFieldsDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsDate)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Date; })),
-        (0, ts_mixer_1.decorate)((0, typeorm_1.CreateDateColumn)()),
         __metadata("design:type", Date)
     ], BaseDBFieldsDto.prototype, "createdAt", void 0);
     __decorate([
@@ -49,7 +41,6 @@ var BaseDBFieldsDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsDate)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Date; })),
-        (0, ts_mixer_1.decorate)((0, typeorm_1.UpdateDateColumn)()),
         __metadata("design:type", Date)
     ], BaseDBFieldsDto.prototype, "updatedAt", void 0);
     return BaseDBFieldsDto;
