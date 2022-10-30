@@ -27,7 +27,8 @@
     "class-validator": "^0.13.2",
     "reflect-metadata": "^0.1.13",
     "ts-mixer": "^6.0.1",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.0",
+    "typeorm": "^0.3.10"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
