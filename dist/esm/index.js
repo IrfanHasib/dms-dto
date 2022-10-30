@@ -4841,19 +4841,22 @@ var ProductBaseDto = /** @class */ (function () {
     __decorate([
         Expose(),
         IsNotEmpty(),
-        IsDecimal(),
+        Type(function () { return Number; }),
+        IsNumber(),
         __metadata("design:type", Number)
     ], ProductBaseDto.prototype, "cost");
     __decorate([
         Expose(),
         IsNotEmpty(),
-        IsDecimal(),
+        IsNumber(),
+        Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], ProductBaseDto.prototype, "price");
     __decorate([
         Expose(),
         IsNotEmpty(),
-        IsDecimal(),
+        IsNumber(),
+        Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], ProductBaseDto.prototype, "mrp");
     __decorate([
@@ -4923,19 +4926,22 @@ var ProductItemDto = /** @class */ (function (_super) {
     __decorate([
         Expose(),
         IsNotEmpty(),
-        IsDecimal(),
+        IsNumber(),
+        Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], ProductItemDto.prototype, "cost");
     __decorate([
         Expose(),
         IsNotEmpty(),
-        IsDecimal(),
+        IsNumber(),
+        Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], ProductItemDto.prototype, "price");
     __decorate([
         Expose(),
         IsNotEmpty(),
-        IsDecimal(),
+        IsNumber(),
+        Type(function () { return Number; }),
         __metadata("design:type", Number)
     ], ProductItemDto.prototype, "mrp");
     __decorate([

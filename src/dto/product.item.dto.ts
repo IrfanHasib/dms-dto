@@ -1,4 +1,4 @@
-import { IsDecimal, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateIf } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateIf } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 import { BaseDBFieldsDto } from './baseDBFields.dto';
 
@@ -15,17 +15,20 @@ export class ProductItemDto extends BaseDBFieldsDto {
 
   @Expose()
   @IsNotEmpty()
-  @IsDecimal()
+  @IsNumber()
+  @Type(() => Number)
   cost: number;
 
   @Expose()
   @IsNotEmpty()
-  @IsDecimal()
+  @IsNumber()
+  @Type(() => Number)
   price: number;
 
   @Expose()
   @IsNotEmpty()
-  @IsDecimal()
+  @IsNumber()
+  @Type(() => Number)
   mrp: number;
 
   @Expose()

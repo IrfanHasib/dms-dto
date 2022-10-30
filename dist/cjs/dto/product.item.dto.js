@@ -48,19 +48,22 @@ var ProductItemDto = /** @class */ (function (_super) {
     __decorate([
         (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
-        (0, class_validator_1.IsDecimal)(),
+        (0, class_validator_1.IsNumber)(),
+        (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
     ], ProductItemDto.prototype, "cost", void 0);
     __decorate([
         (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
-        (0, class_validator_1.IsDecimal)(),
+        (0, class_validator_1.IsNumber)(),
+        (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
     ], ProductItemDto.prototype, "price", void 0);
     __decorate([
         (0, class_transformer_1.Expose)(),
         (0, class_validator_1.IsNotEmpty)(),
-        (0, class_validator_1.IsDecimal)(),
+        (0, class_validator_1.IsNumber)(),
+        (0, class_transformer_1.Type)(function () { return Number; }),
         __metadata("design:type", Number)
     ], ProductItemDto.prototype, "mrp", void 0);
     __decorate([

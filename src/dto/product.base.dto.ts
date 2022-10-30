@@ -1,4 +1,4 @@
-import { IsDecimal, IsInt, IsNotEmpty, IsOptional, IsString, ValidateIf } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 
 export class ProductBaseDto {
@@ -14,17 +14,20 @@ export class ProductBaseDto {
 
   @Expose()
   @IsNotEmpty()
-  @IsDecimal()
+  @Type(() => Number)
+  @IsNumber()
   cost: number;
 
   @Expose()
   @IsNotEmpty()
-  @IsDecimal()
+  @IsNumber()
+  @Type(() => Number)
   price: number;
 
   @Expose()
   @IsNotEmpty()
-  @IsDecimal()
+  @IsNumber()
+  @Type(() => Number)
   mrp: number;
 
   @Expose()
