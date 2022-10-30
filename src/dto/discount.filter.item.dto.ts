@@ -9,50 +9,53 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Expose, Transform, Type } from 'class-transformer';
-import { DiscountFilterType } from './../enum/DiscountFilterType';
-import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
+import { DiscountFilterType } from '../enum/discountFilterType';
+import { AutoCompleteOptionItemDto } from './autoComplete.option.item.dto';
+import { decorate } from 'ts-mixer';
 
 export class DiscountFilterItemDto {
-  @Expose()
-  @IsOptional()
-  @ValidateIf((_object, value) => !!value)
-  @Type(() => Number)
-  @IsNumber()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((_object, value) => !!value))
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
   id: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsEnum(DiscountFilterType)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsEnum(DiscountFilterType))
   discountFilterType: DiscountFilterType;
 
-  @Expose()
-  @ValidateIf(o => o.discountFilterType !== DiscountFilterType.ALL)
-  @Transform(({ value }) => {
-    return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
-  })
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountFilterType !== DiscountFilterType.ALL))
+  @decorate(
+    Transform(({ value }) => {
+      return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+    }),
+  )
   isInList: boolean;
 
-  @Expose()
-  @ValidateIf(o => o.discountFilterType === DiscountFilterType.PRODUCTS)
-  @IsArray()
-  @ValidateNested({ each: true })
-  @ArrayMinSize(1)
-  @Type(() => AutoCompleteOptionItemDto)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountFilterType === DiscountFilterType.PRODUCTS))
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(ArrayMinSize(1))
+  @decorate(Type(() => AutoCompleteOptionItemDto))
   products: AutoCompleteOptionItemDto[];
 
-  @Expose()
-  @ValidateIf(o => o.discountFilterType === DiscountFilterType.COMPANIES)
-  @IsArray()
-  @ValidateNested({ each: true })
-  @ArrayMinSize(1)
-  @Type(() => AutoCompleteOptionItemDto)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountFilterType === DiscountFilterType.COMPANIES))
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(ArrayMinSize(1))
+  @decorate(Type(() => AutoCompleteOptionItemDto))
   companies: AutoCompleteOptionItemDto[];
 
-  @Expose()
-  @ValidateIf(o => o.discountFilterType === DiscountFilterType.CATEGORIES)
-  @IsArray()
-  @ValidateNested({ each: true })
-  @ArrayMinSize(1)
-  @Type(() => AutoCompleteOptionItemDto)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountFilterType === DiscountFilterType.CATEGORIES))
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(ArrayMinSize(1))
+  @decorate(Type(() => AutoCompleteOptionItemDto))
   categories: AutoCompleteOptionItemDto[];
 }

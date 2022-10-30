@@ -15,14 +15,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DiscountUpdateDto = void 0;
+exports.DiscountItemDto = void 0;
+var baseDBFields_dto_1 = require("./baseDBFields.dto");
+var ts_mixer_1 = require("ts-mixer");
 var discount_base_dto_1 = require("./discount.base.dto");
-var DiscountUpdateDto = /** @class */ (function (_super) {
-    __extends(DiscountUpdateDto, _super);
-    function DiscountUpdateDto() {
+var DiscountItemDto = /** @class */ (function (_super) {
+    __extends(DiscountItemDto, _super);
+    function DiscountItemDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    return DiscountUpdateDto;
-}(discount_base_dto_1.DiscountBaseDto));
-exports.DiscountUpdateDto = DiscountUpdateDto;
-//# sourceMappingURL=discount.update.dto.js.map
+    return DiscountItemDto;
+}((0, ts_mixer_1.Mixin)(baseDBFields_dto_1.BaseDBFieldsDto, discount_base_dto_1.DiscountBaseDto)));
+exports.DiscountItemDto = DiscountItemDto;
+//# sourceMappingURL=discount.item.dto.js.map

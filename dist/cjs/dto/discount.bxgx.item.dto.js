@@ -12,55 +12,56 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscountBxgxItemDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
-var BXGXDiscountType_1 = require("./../enum/BXGXDiscountType");
+var BXGXDiscountType_1 = require("../enum/BXGXDiscountType");
+var ts_mixer_1 = require("ts-mixer");
 var DiscountBxgxItemDto = /** @class */ (function () {
     function DiscountBxgxItemDto() {
     }
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.ValidateIf)(function (_object, value) { return !!value; }),
-        (0, class_transformer_1.Type)(function () { return Number; }),
-        (0, class_validator_1.IsNumber)(),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (_object, value) { return !!value; })),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "id", void 0);
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        (0, class_validator_1.IsInt)(),
-        (0, class_transformer_1.Type)(function () { return Number; }),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "minimumQuantity", void 0);
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        (0, class_validator_1.IsInt)(),
-        (0, class_transformer_1.Type)(function () { return Number; }),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "bonusQuantity", void 0);
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        (0, class_validator_1.IsEnum)(BXGXDiscountType_1.BXGXDiscountType),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsEnum)(BXGXDiscountType_1.BXGXDiscountType)),
         __metadata("design:type", String)
     ], DiscountBxgxItemDto.prototype, "discountType", void 0);
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.ValidateIf)(function (o) { return o.discountType !== BXGXDiscountType_1.BXGXDiscountType.FREE; }),
-        (0, class_validator_1.IsDecimal)(),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (o) { return o.discountType !== BXGXDiscountType_1.BXGXDiscountType.FREE; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsDecimal)()),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "discountAmount", void 0);
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        (0, class_validator_1.IsBoolean)(),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
         __metadata("design:type", Boolean)
     ], DiscountBxgxItemDto.prototype, "isBXGXRecursive", void 0);
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.ValidateIf)(function (o) { return !o.isBXGXRecursive; }),
-        (0, class_validator_1.IsInt)(),
-        (0, class_transformer_1.Type)(function () { return Number; }),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (o) { return !o.isBXGXRecursive; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "maximumQuantity", void 0);
     return DiscountBxgxItemDto;

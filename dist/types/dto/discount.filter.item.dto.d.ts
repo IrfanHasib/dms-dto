@@ -1,5 +1,5 @@
-import { DiscountFilterType } from './../enum/DiscountFilterType';
-import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
+import { DiscountFilterType } from '../enum/discountFilterType';
+import { AutoCompleteOptionItemDto } from './autoComplete.option.item.dto';
 export declare class DiscountFilterItemDto {
     id: number;
     discountFilterType: DiscountFilterType;

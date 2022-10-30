@@ -9,4 +9,4 @@ var DiscountType;
     DiscountType["BXGX"] = "BXGX";
     DiscountType["BXGY"] = "BXGY";
 })(DiscountType = exports.DiscountType || (exports.DiscountType = {}));
-//# sourceMappingURL=DiscountType.js.map
+//# sourceMappingURL=discountType.js.map

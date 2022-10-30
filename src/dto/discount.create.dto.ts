@@ -1,3 +1,3 @@
-import { DiscountBaseDto } from './../dto/discount.base.dto';
+import { DiscountBaseDto } from './discount.base.dto';
 
 export class DiscountCreateDto extends DiscountBaseDto {}

@@ -1,39 +1,40 @@
 import { IsDecimal, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
-import { BulkDiscountType } from './../enum/bulkDiscountType';
+import { BulkDiscountType } from '../enum/bulkDiscountType';
+import { decorate } from 'ts-mixer';
 
 export class DiscountBulkItemDto {
-  @Expose()
-  @IsOptional()
-  @ValidateIf((_object, value) => !!value)
-  @Type(() => Number)
-  @IsNumber()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((_object, value) => !!value))
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
   id: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   minimumQuantity: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   maximumQuantity: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsEnum(BulkDiscountType)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsEnum(BulkDiscountType))
   discountType: BulkDiscountType;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsDecimal()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsDecimal())
   discountAmount: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsString())
   label: string;
 }

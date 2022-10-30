@@ -1,6 +1,6 @@
-import { BXGYDiscountType } from './../enum/BXGYDiscountType';
-import { BXGYType } from './../enum/BXGYType';
-import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
+import { BXGYDiscountType } from '../enum/BXGYDiscountType';
+import { BXGYType } from '../enum/BXGYType';
+import { AutoCompleteOptionItemDto } from './autoComplete.option.item.dto';
 export declare class DiscountBxgyItemDto {
     id: number;
     minimumQuantity: number;

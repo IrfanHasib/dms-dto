@@ -12,77 +12,78 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
-import { BXGYDiscountType } from './../enum/BXGYDiscountType';
-import { BXGYType } from './../enum/BXGYType';
-import { AutoCompleteOptionItemDto } from './../dto/autoComplete.option.item.dto';
+import { BXGYDiscountType } from '../enum/BXGYDiscountType';
+import { BXGYType } from '../enum/BXGYType';
+import { AutoCompleteOptionItemDto } from './autoComplete.option.item.dto';
+import { decorate } from 'ts-mixer';
 
 export class DiscountBxgyItemDto {
-  @Expose()
-  @IsOptional()
-  @ValidateIf((_object, value) => !!value)
-  @Type(() => Number)
-  @IsNumber()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((_object, value) => !!value))
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
   id: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   minimumQuantity: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   bonusQuantity: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsEnum(BXGYDiscountType)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsEnum(BXGYDiscountType))
   discountType: BXGYDiscountType;
 
-  @Expose()
-  @ValidateIf(o => o.discountType !== BXGYDiscountType.FREE)
-  @IsDecimal()
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType !== BXGYDiscountType.FREE))
+  @decorate(IsDecimal())
   discountAmount: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsBoolean()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsBoolean())
   isBXGYRecursive: boolean;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsEnum(BXGYType)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsEnum(BXGYType))
   BXGYType: BXGYType;
 
-  @Expose()
-  @ValidateIf(o => !o.isBXGYRecursive)
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => !o.isBXGYRecursive))
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   maximumQuantity: number;
 
-  @Expose()
-  @ValidateIf(o => o.BXGYType === BXGYType.PRODUCTS)
-  @IsArray()
-  @ValidateNested({ each: true })
-  @ArrayMinSize(1)
-  @Type(() => AutoCompleteOptionItemDto)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.BXGYType === BXGYType.PRODUCTS))
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(ArrayMinSize(1))
+  @decorate(Type(() => AutoCompleteOptionItemDto))
   products: AutoCompleteOptionItemDto[];
 
-  @Expose()
-  @ValidateIf(o => o.BXGYType === BXGYType.COMPANIES)
-  @IsArray()
-  @ValidateNested({ each: true })
-  @ArrayMinSize(1)
-  @Type(() => AutoCompleteOptionItemDto)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.BXGYType === BXGYType.COMPANIES))
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(ArrayMinSize(1))
+  @decorate(Type(() => AutoCompleteOptionItemDto))
   companies: AutoCompleteOptionItemDto[];
 
-  @Expose()
-  @ValidateIf(o => o.BXGYType === BXGYType.CATEGORIES)
-  @IsArray()
-  @ValidateNested({ each: true })
-  @ArrayMinSize(1)
-  @Type(() => AutoCompleteOptionItemDto)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.BXGYType === BXGYType.CATEGORIES))
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(ArrayMinSize(1))
+  @decorate(Type(() => AutoCompleteOptionItemDto))
   categories: AutoCompleteOptionItemDto[];
 }

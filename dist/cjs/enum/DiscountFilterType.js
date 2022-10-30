@@ -8,4 +8,4 @@ var DiscountFilterType;
     DiscountFilterType["COMPANIES"] = "COMPANIES";
     DiscountFilterType["CATEGORIES"] = "CATEGORIES";
 })(DiscountFilterType = exports.DiscountFilterType || (exports.DiscountFilterType = {}));
-//# sourceMappingURL=DiscountFilterType.js.map
+//# sourceMappingURL=discountFilterType.js.map

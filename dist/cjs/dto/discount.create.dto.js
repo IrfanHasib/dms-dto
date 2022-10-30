@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscountCreateDto = void 0;
-var discount_base_dto_1 = require("./../dto/discount.base.dto");
+var discount_base_dto_1 = require("./discount.base.dto");
 var DiscountCreateDto = /** @class */ (function (_super) {
     __extends(DiscountCreateDto, _super);
     function DiscountCreateDto() {

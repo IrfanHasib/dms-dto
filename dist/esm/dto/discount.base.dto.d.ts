@@ -1,15 +1,15 @@
 import { BulkAdjustmentCountType } from '../enum/bulkAdjustmentCountType';
 import { CartAdjustmentDiscountType } from '../enum/cartAdjustmentDiscountType';
-import { DiscountType } from './../enum/DiscountType';
-import { ProductAdjustmentDiscountType } from './../enum/ProductAdjustmentDiscountType';
-import { BXGYType } from './../enum/BXGYType';
-import { BXGYCountType } from './../enum/BXGYCountType';
-import { BXGYGetType } from './../enum/BXGYGetType';
-import { DiscountBulkItemDto } from './../dto/discount.bulk.item.dto';
-import { DiscountBxgyItemDto } from './../dto/discount.bxgy.item.dto';
-import { DiscountBxgxItemDto } from './../dto/discount.bxgx.item.dto';
-import { DiscountFilterItemDto } from './../dto/discount.filter.item.dto';
-import { DiscountConditionItemDto } from './../dto/discount.condition.item.dto';
+import { DiscountType } from '../enum/discountType';
+import { ProductAdjustmentDiscountType } from '../enum/productAdjustmentDiscountType';
+import { BXGYType } from '../enum/BXGYType';
+import { BXGYCountType } from '../enum/BXGYCountType';
+import { BXGYGetType } from '../enum/BXGYGetType';
+import { DiscountBulkItemDto } from './discount.bulk.item.dto';
+import { DiscountBxgyItemDto } from './discount.bxgy.item.dto';
+import { DiscountBxgxItemDto } from './discount.bxgx.item.dto';
+import { DiscountFilterItemDto } from './discount.filter.item.dto';
+import { DiscountConditionItemDto } from './discount.condition.item.dto';
 export declare class DiscountBaseDto {
     name: string;
     discountType: DiscountType;

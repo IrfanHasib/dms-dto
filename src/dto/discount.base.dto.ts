@@ -14,198 +14,215 @@ import {
 import { Expose, Transform, Type } from 'class-transformer';
 import { BulkAdjustmentCountType } from '../enum/bulkAdjustmentCountType';
 import { CartAdjustmentDiscountType } from '../enum/cartAdjustmentDiscountType';
-import { DiscountType } from './../enum/DiscountType';
-import { ProductAdjustmentDiscountType } from './../enum/ProductAdjustmentDiscountType';
-import { BXGYType } from './../enum/BXGYType';
-import { BXGYCountType } from './../enum/BXGYCountType';
-import { BXGYGetType } from './../enum/BXGYGetType';
-import { DiscountBulkItemDto } from './../dto/discount.bulk.item.dto';
-import { DiscountBxgyItemDto } from './../dto/discount.bxgy.item.dto';
-import { DiscountBxgxItemDto } from './../dto/discount.bxgx.item.dto';
-import { DiscountFilterItemDto } from './../dto/discount.filter.item.dto';
-import { DiscountConditionItemDto } from './../dto/discount.condition.item.dto';
+import { DiscountType } from '../enum/discountType';
+import { ProductAdjustmentDiscountType } from '../enum/productAdjustmentDiscountType';
+import { BXGYType } from '../enum/BXGYType';
+import { BXGYCountType } from '../enum/BXGYCountType';
+import { BXGYGetType } from '../enum/BXGYGetType';
+import { DiscountBulkItemDto } from './discount.bulk.item.dto';
+import { DiscountBxgyItemDto } from './discount.bxgy.item.dto';
+import { DiscountBxgxItemDto } from './discount.bxgx.item.dto';
+import { DiscountFilterItemDto } from './discount.filter.item.dto';
+import { DiscountConditionItemDto } from './discount.condition.item.dto';
+import { decorate } from 'ts-mixer';
 
 export class DiscountBaseDto {
-  @Expose()
-  @IsNotEmpty()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsString())
   name: string;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsEnum(DiscountType)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsEnum(DiscountType))
   discountType: DiscountType;
 
-  @Expose()
-  @IsNotEmpty()
-  @Transform(({ value }) => {
-    return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
-  })
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(
+    Transform(({ value }) => {
+      return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+    }),
+  )
   isEnabled: boolean;
 
-  @Expose()
-  @IsNotEmpty()
-  @Transform(({ value }) => {
-    return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
-  })
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(
+    Transform(({ value }) => {
+      return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+    }),
+  )
   isIgnoreOther: boolean;
 
-  @Expose()
-  @IsNotEmpty()
-  @Transform(({ value }) => {
-    return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
-  })
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(
+    Transform(({ value }) => {
+      return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+    }),
+  )
   isIgnoreThisIfOtherMatched: boolean;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   priority: number;
 
-  @Expose()
-  @IsOptional()
-  @ValidateIf((_object, value) => !!value)
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((_object, value) => !!value))
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   usageLimit: number;
 
   //DiscountType.PRODUCT_ADJUSTMENT
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.PRODUCT_ADJUSTMENT)
-  @IsEnum(ProductAdjustmentDiscountType)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.PRODUCT_ADJUSTMENT))
+  @decorate(IsEnum(ProductAdjustmentDiscountType))
   productAdjustmentDiscountType: ProductAdjustmentDiscountType;
 
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.PRODUCT_ADJUSTMENT)
-  @IsDecimal()
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.PRODUCT_ADJUSTMENT))
+  @decorate(IsDecimal())
   productAdjustmentDiscountAmount: number;
 
   //DiscountType.CART_ADJUSTMENT
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT)
-  @IsEnum(CartAdjustmentDiscountType)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT))
+  @decorate(IsEnum(CartAdjustmentDiscountType))
   cartAdjustmentDiscountType: CartAdjustmentDiscountType;
 
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT)
-  @IsDecimal()
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT))
+  @decorate(IsDecimal())
   cartAdjustmentDiscountAmount: number;
 
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT)
-  @IsString()
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT))
+  @decorate(IsString())
   cartAdjustmentLabel: string;
 
   //DiscountType.BULK_ADJUSTMENT
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.BULK_ADJUSTMENT)
-  @IsEnum(BulkAdjustmentCountType)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.BULK_ADJUSTMENT))
+  @decorate(IsEnum(BulkAdjustmentCountType))
   bulkAdjustmentCountType: BulkAdjustmentCountType;
 
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.BULK_ADJUSTMENT)
-  @IsArray()
-  @ValidateNested({ each: true })
-  @ArrayMinSize(1)
-  @Type(() => DiscountBulkItemDto)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.BULK_ADJUSTMENT))
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(ArrayMinSize(1))
+  @decorate(Type(() => DiscountBulkItemDto))
   discountBulks: DiscountBulkItemDto[];
 
   //DiscountType.BXGX
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.BXGX)
-  @Transform(({ value }) => {
-    return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
-  })
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.BXGX))
+  @decorate(
+    Transform(({ value }) => {
+      return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+    }),
+  )
   isBXGXRecursive: boolean;
 
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.BXGX)
-  @IsArray()
-  @ArrayMinSize(1)
-  @Transform(({ value, obj }) =>
-    value
-      ?.filter((_valueObj: any, index: number) => !obj?.isBXGXRecursive || index < 1)
-      ?.map((valueObj: any) => {
-        valueObj.isBXGXRecursive = obj?.isBXGXRecursive;
-        return valueObj;
-      }),
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.BXGX))
+  @decorate(IsArray())
+  @decorate(ArrayMinSize(1))
+  @decorate(
+    Transform(({ value, obj }) =>
+      value
+        ?.filter((_valueObj: any, index: number) => !obj?.isBXGXRecursive || index < 1)
+        ?.map((valueObj: any) => {
+          valueObj.isBXGXRecursive = obj?.isBXGXRecursive;
+          return valueObj;
+        }),
+    ),
   )
-  @Type(() => DiscountBxgxItemDto)
-  @ValidateNested({ each: true })
+  @decorate(Type(() => DiscountBxgxItemDto))
+  @decorate(ValidateNested({ each: true }))
   discountBXGXs: DiscountBxgxItemDto[];
 
   //DiscountType.BXGY
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.BXGY)
-  @IsEnum(BXGYType)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.BXGY))
+  @decorate(IsEnum(BXGYType))
   BXGYType: BXGYType;
 
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.BXGY)
-  @IsEnum(BXGYCountType)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.BXGY))
+  @decorate(IsEnum(BXGYCountType))
   BXGYCountType: BXGYCountType;
 
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.BXGY)
-  @IsEnum(BXGYGetType)
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.BXGY))
+  @decorate(IsEnum(BXGYGetType))
   BXGYGetType: BXGYGetType;
 
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.BXGY)
-  @Transform(({ value }) => {
-    return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
-  })
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.BXGY))
+  @decorate(
+    Transform(({ value }) => {
+      return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+    }),
+  )
   isBXGYRecursive: boolean;
 
-  @Expose()
-  @ValidateIf(o => o.discountType === DiscountType.BXGY)
-  @IsArray()
-  @ArrayMinSize(1)
-  @Transform(({ value, obj }) =>
-    value
-      ?.filter((_valueObj: any, index: number) => !obj?.isBXGYRecursive || index < 1)
-      ?.map((valueObj: any) => {
-        valueObj.BXGYType = obj?.BXGYType;
-        valueObj.isBXGYRecursive = obj?.isBXGYRecursive;
-        return valueObj;
-      }),
+  @decorate(Expose())
+  @decorate(ValidateIf(o => o.discountType === DiscountType.BXGY))
+  @decorate(IsArray())
+  @decorate(ArrayMinSize(1))
+  @decorate(
+    Transform(({ value, obj }) =>
+      value
+        ?.filter((_valueObj: any, index: number) => !obj?.isBXGYRecursive || index < 1)
+        ?.map((valueObj: any) => {
+          valueObj.BXGYType = obj?.BXGYType;
+          valueObj.isBXGYRecursive = obj?.isBXGYRecursive;
+          return valueObj;
+        }),
+    ),
   )
-  @Type(() => DiscountBxgyItemDto)
-  @ValidateNested({ each: true })
+  @decorate(Type(() => DiscountBxgyItemDto))
+  @decorate(ValidateNested({ each: true }))
   discountBXGYs: DiscountBxgyItemDto[];
 
-  @Expose()
-  @IsOptional()
-  @ValidateIf((_object, value) => !!value)
-  @IsDateString()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((_object, value) => !!value))
+  @decorate(IsDateString())
   activeFromDateTime: Date;
 
-  @Expose()
-  @IsOptional()
-  @ValidateIf((_object, value) => !!value)
-  @IsDateString()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((_object, value) => !!value))
+  @decorate(IsDateString())
   activeToDateTime: Date;
 
-  @Expose()
-  @IsNotEmpty()
-  @Transform(({ value }) => {
-    return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
-  })
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(
+    Transform(({ value }) => {
+      return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+    }),
+  )
   isMatchAllCondition: boolean;
 
-  @Expose()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @ArrayMinSize(1)
-  @Type(() => DiscountFilterItemDto)
+  @decorate(Expose())
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(ArrayMinSize(1))
+  @decorate(Type(() => DiscountFilterItemDto))
   discountFilers: DiscountFilterItemDto[];
 
-  @Expose()
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @ArrayMinSize(0)
-  @Type(() => DiscountConditionItemDto)
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(ArrayMinSize(0))
+  @decorate(Type(() => DiscountConditionItemDto))
   discountConditions: DiscountConditionItemDto[];
 }
