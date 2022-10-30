@@ -28,16 +28,17 @@ exports.CategoryCreateDto = void 0;
 var category_base_dto_1 = require("./category.base.dto");
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
+var ts_mixer_1 = require("ts-mixer");
 var CategoryCreateDto = /** @class */ (function (_super) {
     __extends(CategoryCreateDto, _super);
     function CategoryCreateDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        (0, class_validator_1.IsInt)(),
-        (0, class_transformer_1.Type)(function () { return Number; }),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
     ], CategoryCreateDto.prototype, "companyId", void 0);
     return CategoryCreateDto;

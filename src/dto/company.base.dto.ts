@@ -1,14 +1,15 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
+import { decorate } from 'ts-mixer';
 
 export class CompanyBaseDto {
-  @Expose()
-  @IsNotEmpty()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsString())
   name: string;
 
-  @Expose()
-  @IsOptional()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsString())
   logo: string;
 }

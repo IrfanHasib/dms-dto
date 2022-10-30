@@ -13,7 +13,6 @@ const dtoValidator = async <T>(dto: ClassConstructor<T>, obj: T): Promise<string
     exposeDefaultValues: true,
     enableImplicitConversion: true,
   });
-  console.log(objInstance);
   // @ts-ignore
   const errors = await validate(objInstance, {
     enableDebugMessages: true,

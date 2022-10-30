@@ -1,29 +1,30 @@
 import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
+import { decorate } from 'ts-mixer';
 
 export class CategoryBaseDto {
-  @Expose()
-  @IsNotEmpty()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsString())
   name: string;
 
-  @Expose()
-  @IsOptional()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsString())
   icon?: string;
 
-  @Expose()
-  @IsOptional()
-  @ValidateIf((object, value) => !!value)
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((object, value) => !!value))
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   categoryId?: number;
 
-  @Expose()
-  @IsOptional()
-  @ValidateIf((object, value) => !!value)
-  @Type(() => Number)
-  @IsNumber()
-  @IsInt()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((object, value) => !!value))
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
+  @decorate(IsInt())
   order?: number;
 }

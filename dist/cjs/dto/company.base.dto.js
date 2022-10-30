@@ -12,19 +12,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompanyBaseDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
+var ts_mixer_1 = require("ts-mixer");
 var CompanyBaseDto = /** @class */ (function () {
     function CompanyBaseDto() {
     }
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.IsNotEmpty)(),
-        (0, class_validator_1.IsString)(),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsString)()),
         __metadata("design:type", String)
     ], CompanyBaseDto.prototype, "name", void 0);
     __decorate([
-        (0, class_transformer_1.Expose)(),
-        (0, class_validator_1.IsOptional)(),
-        (0, class_validator_1.IsString)(),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsString)()),
         __metadata("design:type", String)
     ], CompanyBaseDto.prototype, "logo", void 0);
     return CompanyBaseDto;

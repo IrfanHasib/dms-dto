@@ -1,13 +1,14 @@
 import { Allow, IsNotEmpty, IsNumber } from 'class-validator';
 import { Expose } from 'class-transformer';
+import { decorate } from 'ts-mixer';
 
 export class AutoCompleteOptionItemDto {
-  @Expose()
-  @IsNotEmpty()
-  @IsNumber()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsNumber())
   id: number;
 
-  @Expose()
-  @Allow()
+  @decorate(Expose())
+  @decorate(Allow())
   label: string;
 }

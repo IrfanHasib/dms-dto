@@ -27,8 +27,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompanyPaginateResponseDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
-var company_item_dto_1 = require("./../dto/company.item.dto");
-var paginate_response_metadata_dto_1 = require("./../dto/paginate.response.metadata.dto");
+var company_item_dto_1 = require("./company.item.dto");
+var paginate_response_metadata_dto_1 = require("./paginate.response.metadata.dto");
 var CompanyPaginateResponseDto = /** @class */ (function (_super) {
     __extends(CompanyPaginateResponseDto, _super);
     function CompanyPaginateResponseDto() {

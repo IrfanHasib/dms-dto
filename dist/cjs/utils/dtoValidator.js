@@ -56,7 +56,6 @@ var dtoValidator = function (dto, obj) { return __awaiter(void 0, void 0, void 0
                     exposeDefaultValues: true,
                     enableImplicitConversion: true,
                 });
-                console.log(objInstance);
                 return [4 /*yield*/, (0, class_validator_1.validate)(objInstance, {
                         enableDebugMessages: true,
                         whitelist: false,

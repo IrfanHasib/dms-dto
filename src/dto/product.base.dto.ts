@@ -1,63 +1,64 @@
 import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
+import { decorate } from 'ts-mixer';
 
 export class ProductBaseDto {
-  @Expose()
-  @IsNotEmpty()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsString())
   name: string;
 
-  @Expose()
-  @IsOptional()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsString())
   barcode: string;
 
-  @Expose()
-  @IsNotEmpty()
-  @Type(() => Number)
-  @IsNumber()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
   cost: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsNumber()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsNumber())
+  @decorate(Type(() => Number))
   price: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsNumber()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsNumber())
+  @decorate(Type(() => Number))
   mrp: number;
 
-  @Expose()
-  @IsOptional()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsString())
   description: string;
 
-  @Expose()
-  @IsOptional()
-  @ValidateIf((object, value) => !!value)
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((object, value) => !!value))
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   order: number;
 
-  @Expose()
-  @IsOptional()
-  @ValidateIf((object, value) => !!value)
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((object, value) => !!value))
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   categoryId: number;
 
-  @Expose()
-  @IsOptional()
-  @ValidateIf((object, value) => !!value)
-  @IsInt()
-  @Type(() => Number)
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(ValidateIf((object, value) => !!value))
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
   companyId: number;
 
-  @Expose()
-  @IsOptional()
-  @IsString()
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsString())
   image: string;
 }

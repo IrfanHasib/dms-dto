@@ -1,27 +1,28 @@
-import { IsBoolean, IsDate, IsDateString, IsInt, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsBoolean, IsDate, IsInt, IsNotEmpty, IsNumber } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
+import { decorate } from 'ts-mixer';
 
 export class BaseDBFieldsDto {
-  @Expose()
-  @IsNotEmpty()
-  @IsNumber()
-  @IsInt()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsNumber())
+  @decorate(IsInt())
   id: number;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsBoolean()
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsBoolean())
   isDeleted: boolean;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsDate())
+  @decorate(Type(() => Date))
   createdAt: Date;
 
-  @Expose()
-  @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsDate())
+  @decorate(Type(() => Date))
   updatedAt: Date;
 }

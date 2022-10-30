@@ -1,13 +1,6 @@
 import { BaseDBFieldsDto } from './baseDBFields.dto';
-export declare class ProductItemDto extends BaseDBFieldsDto {
-    name: string;
-    barcode: string;
-    cost: number;
-    price: number;
-    mrp: number;
-    description: string;
-    order: number;
-    categoryId: number;
-    companyId: number;
-    image: string;
+import { ProductBaseDto } from './product.base.dto';
+declare const ProductItemDto_base: import("ts-mixer/dist/types/types").Class<any[], BaseDBFieldsDto & ProductBaseDto, typeof BaseDBFieldsDto & typeof ProductBaseDto, false>;
+export declare class ProductItemDto extends ProductItemDto_base {
 }
+export {};
