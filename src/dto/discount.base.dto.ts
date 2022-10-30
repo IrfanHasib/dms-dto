@@ -12,8 +12,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Expose, Transform, Type } from 'class-transformer';
-import { BulkAdjustmentCountType } from './../enum/bulkAdjustmentCountType';
-import { CartAdjustmentDiscountType } from './../enum/cartAdjustmentDiscountType';
+import { BulkAdjustmentCountType } from '../enum/bulkAdjustmentCountType';
+import { CartAdjustmentDiscountType } from '../enum/cartAdjustmentDiscountType';
 import { DiscountType } from './../enum/DiscountType';
 import { ProductAdjustmentDiscountType } from './../enum/ProductAdjustmentDiscountType';
 import { BXGYType } from './../enum/BXGYType';
