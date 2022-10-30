@@ -4519,25 +4519,198 @@ var BaseDBFieldsDto = /** @class */ (function () {
     return BaseDBFieldsDto;
 }());
 
-var CompanyItemDto = /** @class */ (function (_super) {
-    __extends(CompanyItemDto, _super);
-    function CompanyItemDto() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var CompanyBaseDto = /** @class */ (function () {
+    function CompanyBaseDto() {
     }
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
-    ], CompanyItemDto.prototype, "name");
+    ], CompanyBaseDto.prototype, "name");
     __decorate([
         Expose(),
         IsOptional(),
         IsString(),
         __metadata("design:type", String)
-    ], CompanyItemDto.prototype, "logo");
+    ], CompanyBaseDto.prototype, "logo");
+    return CompanyBaseDto;
+}());
+
+/**
+ * Utility function that works like `Object.apply`, but copies getters and setters properly as well.  Additionally gives
+ * the option to exclude properties by name.
+ */
+const copyProps = (dest, src, exclude = []) => {
+    const props = Object.getOwnPropertyDescriptors(src);
+    for (let prop of exclude)
+        delete props[prop];
+    Object.defineProperties(dest, props);
+};
+/**
+ * Returns the full chain of prototypes up until Object.prototype given a starting object.  The order of prototypes will
+ * be closest to farthest in the chain.
+ */
+const protoChain = (obj, currentChain = [obj]) => {
+    const proto = Object.getPrototypeOf(obj);
+    if (proto === null)
+        return currentChain;
+    return protoChain(proto, [...currentChain, proto]);
+};
+/**
+ * Identifies the nearest ancestor common to all the given objects in their prototype chains.  For most unrelated
+ * objects, this function should return Object.prototype.
+ */
+const nearestCommonProto = (...objs) => {
+    if (objs.length === 0)
+        return undefined;
+    let commonProto = undefined;
+    const protoChains = objs.map(obj => protoChain(obj));
+    while (protoChains.every(protoChain => protoChain.length > 0)) {
+        const protos = protoChains.map(protoChain => protoChain.pop());
+        const potentialCommonProto = protos[0];
+        if (protos.every(proto => proto === potentialCommonProto))
+            commonProto = potentialCommonProto;
+        else
+            break;
+    }
+    return commonProto;
+};
+/**
+ * Creates a new prototype object that is a mixture of the given prototypes.  The mixing is achieved by first
+ * identifying the nearest common ancestor and using it as the prototype for a new object.  Then all properties/methods
+ * downstream of this prototype (ONLY downstream) are copied into the new object.
+ *
+ * The resulting prototype is more performant than softMixProtos(...), as well as ES5 compatible.  However, it's not as
+ * flexible as updates to the source prototypes aren't captured by the mixed result.  See softMixProtos for why you may
+ * want to use that instead.
+ */
+const hardMixProtos = (ingredients, constructor, exclude = []) => {
+    var _a;
+    const base = (_a = nearestCommonProto(...ingredients)) !== null && _a !== void 0 ? _a : Object.prototype;
+    const mixedProto = Object.create(base);
+    // Keeps track of prototypes we've already visited to avoid copying the same properties multiple times.  We init the
+    // list with the proto chain below the nearest common ancestor because we don't want any of those methods mixed in
+    // when they will already be accessible via prototype access.
+    const visitedProtos = protoChain(base);
+    for (let prototype of ingredients) {
+        let protos = protoChain(prototype);
+        // Apply the prototype chain in reverse order so that old methods don't override newer ones.
+        for (let i = protos.length - 1; i >= 0; i--) {
+            let newProto = protos[i];
+            if (visitedProtos.indexOf(newProto) === -1) {
+                copyProps(mixedProto, newProto, ['constructor', ...exclude]);
+                visitedProtos.push(newProto);
+            }
+        }
+    }
+    mixedProto.constructor = constructor;
+    return mixedProto;
+};
+const unique = (arr) => arr.filter((e, i) => arr.indexOf(e) == i);
+
+// Keeps track of constituent classes for every mixin class created by ts-mixer.
+const mixins = new Map();
+const getMixinsForClass = (clazz) => mixins.get(clazz);
+const registerMixins = (mixedClass, constituents) => mixins.set(mixedClass, constituents);
+
+const mergeObjectsOfDecorators = (o1, o2) => {
+    var _a, _b;
+    const allKeys = unique([...Object.getOwnPropertyNames(o1), ...Object.getOwnPropertyNames(o2)]);
+    const mergedObject = {};
+    for (let key of allKeys)
+        mergedObject[key] = unique([...((_a = o1 === null || o1 === void 0 ? void 0 : o1[key]) !== null && _a !== void 0 ? _a : []), ...((_b = o2 === null || o2 === void 0 ? void 0 : o2[key]) !== null && _b !== void 0 ? _b : [])]);
+    return mergedObject;
+};
+const mergePropertyAndMethodDecorators = (d1, d2) => {
+    var _a, _b, _c, _d;
+    return ({
+        property: mergeObjectsOfDecorators((_a = d1 === null || d1 === void 0 ? void 0 : d1.property) !== null && _a !== void 0 ? _a : {}, (_b = d2 === null || d2 === void 0 ? void 0 : d2.property) !== null && _b !== void 0 ? _b : {}),
+        method: mergeObjectsOfDecorators((_c = d1 === null || d1 === void 0 ? void 0 : d1.method) !== null && _c !== void 0 ? _c : {}, (_d = d2 === null || d2 === void 0 ? void 0 : d2.method) !== null && _d !== void 0 ? _d : {}),
+    });
+};
+const mergeDecorators = (d1, d2) => {
+    var _a, _b, _c, _d, _e, _f;
+    return ({
+        class: unique([...(_a = d1 === null || d1 === void 0 ? void 0 : d1.class) !== null && _a !== void 0 ? _a : [], ...(_b = d2 === null || d2 === void 0 ? void 0 : d2.class) !== null && _b !== void 0 ? _b : []]),
+        static: mergePropertyAndMethodDecorators((_c = d1 === null || d1 === void 0 ? void 0 : d1.static) !== null && _c !== void 0 ? _c : {}, (_d = d2 === null || d2 === void 0 ? void 0 : d2.static) !== null && _d !== void 0 ? _d : {}),
+        instance: mergePropertyAndMethodDecorators((_e = d1 === null || d1 === void 0 ? void 0 : d1.instance) !== null && _e !== void 0 ? _e : {}, (_f = d2 === null || d2 === void 0 ? void 0 : d2.instance) !== null && _f !== void 0 ? _f : {}),
+    });
+};
+const decorators = new Map();
+const findAllConstituentClasses = (...classes) => {
+    var _a;
+    const allClasses = new Set();
+    const frontier = new Set([...classes]);
+    while (frontier.size > 0) {
+        for (let clazz of frontier) {
+            const protoChainClasses = protoChain(clazz.prototype).map(proto => proto.constructor);
+            const mixinClasses = (_a = getMixinsForClass(clazz)) !== null && _a !== void 0 ? _a : [];
+            const potentiallyNewClasses = [...protoChainClasses, ...mixinClasses];
+            const newClasses = potentiallyNewClasses.filter(c => !allClasses.has(c));
+            for (let newClass of newClasses)
+                frontier.add(newClass);
+            allClasses.add(clazz);
+            frontier.delete(clazz);
+        }
+    }
+    return [...allClasses];
+};
+const deepDecoratorSearch = (...classes) => {
+    const decoratorsForClassChain = findAllConstituentClasses(...classes)
+        .map(clazz => decorators.get(clazz))
+        .filter(decorators => !!decorators);
+    if (decoratorsForClassChain.length == 0)
+        return {};
+    if (decoratorsForClassChain.length == 1)
+        return decoratorsForClassChain[0];
+    return decoratorsForClassChain.reduce((d1, d2) => mergeDecorators(d1, d2));
+};
+
+function Mixin(...constructors) {
+    var _a, _b, _c;
+    const prototypes = constructors.map(constructor => constructor.prototype);
+    function MixedClass(...args) {
+        for (const constructor of constructors)
+            // @ts-ignore: potentially abstract class
+            copyProps(this, new constructor(...args));
+    }
+    MixedClass.prototype = hardMixProtos(prototypes, MixedClass)
+        ;
+    Object.setPrototypeOf(MixedClass, hardMixProtos(constructors, null, ['prototype'])
+        );
+    let DecoratedMixedClass = MixedClass;
+    {
+        const classDecorators = deepDecoratorSearch(...constructors)
+            ;
+        for (let decorator of (_a = classDecorators === null || classDecorators === void 0 ? void 0 : classDecorators.class) !== null && _a !== void 0 ? _a : [])
+            DecoratedMixedClass = decorator(DecoratedMixedClass);
+        applyPropAndMethodDecorators((_b = classDecorators === null || classDecorators === void 0 ? void 0 : classDecorators.static) !== null && _b !== void 0 ? _b : {}, DecoratedMixedClass);
+        applyPropAndMethodDecorators((_c = classDecorators === null || classDecorators === void 0 ? void 0 : classDecorators.instance) !== null && _c !== void 0 ? _c : {}, DecoratedMixedClass.prototype);
+    }
+    registerMixins(DecoratedMixedClass, constructors);
+    return DecoratedMixedClass;
+}
+const applyPropAndMethodDecorators = (propAndMethodDecorators, target) => {
+    const propDecorators = propAndMethodDecorators.property;
+    const methodDecorators = propAndMethodDecorators.method;
+    if (propDecorators)
+        for (let key in propDecorators)
+            for (let decorator of propDecorators[key])
+                decorator(target, key);
+    if (methodDecorators)
+        for (let key in methodDecorators)
+            for (let decorator of methodDecorators[key])
+                decorator(target, key, Object.getOwnPropertyDescriptor(target, key));
+};
+
+var CompanyItemDto = /** @class */ (function (_super) {
+    __extends(CompanyItemDto, _super);
+    function CompanyItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     return CompanyItemDto;
-}(BaseDBFieldsDto));
+}(Mixin(BaseDBFieldsDto, CompanyBaseDto)));
 
 var PaginateResponseMetadataDto = /** @class */ (function () {
     function PaginateResponseMetadataDto() {
@@ -4629,24 +4802,6 @@ var PaginateRequestDto = /** @class */ (function () {
         __metadata("design:type", String)
     ], PaginateRequestDto.prototype, "search");
     return PaginateRequestDto;
-}());
-
-var CompanyBaseDto = /** @class */ (function () {
-    function CompanyBaseDto() {
-    }
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsString(),
-        __metadata("design:type", String)
-    ], CompanyBaseDto.prototype, "name");
-    __decorate([
-        Expose(),
-        IsOptional(),
-        IsString(),
-        __metadata("design:type", String)
-    ], CompanyBaseDto.prototype, "logo");
-    return CompanyBaseDto;
 }());
 
 var CompanyCreateDto = /** @class */ (function (_super) {
@@ -5048,6 +5203,7 @@ var dtoValidator = function (dto, obj) { return __awaiter$1(void 0, void 0, void
                     exposeDefaultValues: true,
                     enableImplicitConversion: true
                 });
+                console.log(objInstance);
                 return [4 /*yield*/, validate(objInstance, {
                         enableDebugMessages: true,
                         whitelist: false,

@@ -1,15 +1,7 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { BaseDBFieldsDto } from './../dto/baseDBFields.dto';
-import { Expose } from 'class-transformer';
+import { BaseDBFieldsDto } from './baseDBFields.dto';
+import { CompanyBaseDto } from './company.base.dto';
+import { Mixin } from 'ts-mixer';
 
-export class CompanyItemDto extends BaseDBFieldsDto {
-  @Expose()
-  @IsNotEmpty()
-  @IsString()
-  name: string;
+class CompanyItemDto extends Mixin(BaseDBFieldsDto, CompanyBaseDto) {}
 
-  @Expose()
-  @IsOptional()
-  @IsString()
-  logo: string;
-}
+export { CompanyItemDto };
