@@ -6,7 +6,7 @@ export declare class ProductBaseDto {
     mrp: number;
     description: string;
     order: number;
-    categoryId: number;
-    companyId: number;
-    image: string;
+    categoryId?: number;
+    companyId?: number;
+    image?: string;
 }

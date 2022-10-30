@@ -48,17 +48,17 @@ export class ProductBaseDto {
   @decorate(ValidateIf((object, value) => !!value))
   @decorate(IsInt())
   @decorate(Type(() => Number))
-  categoryId: number;
+  categoryId?: number;
 
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((object, value) => !!value))
   @decorate(IsInt())
   @decorate(Type(() => Number))
-  companyId: number;
+  companyId?: number;
 
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(IsString())
-  image: string;
+  image?: string;
 }
