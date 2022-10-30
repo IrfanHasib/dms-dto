@@ -116,7 +116,7 @@ export class DiscountBaseDto {
   @decorate(ValidateNested({ each: true }))
   @decorate(ArrayMinSize(1))
   @decorate(Type(() => DiscountBulkItemDto))
-  discountBulks: DiscountBulkItemDto[];
+  discountBulkItems: DiscountBulkItemDto[];
 
   //DiscountType.BXGX
   @decorate(Expose())
@@ -144,7 +144,7 @@ export class DiscountBaseDto {
   )
   @decorate(Type(() => DiscountBxgxItemDto))
   @decorate(ValidateNested({ each: true }))
-  discountBXGXs: DiscountBxgxItemDto[];
+  discountBXGXItems: DiscountBxgxItemDto[];
 
   //DiscountType.BXGY
   @decorate(Expose())
@@ -188,7 +188,7 @@ export class DiscountBaseDto {
   )
   @decorate(Type(() => DiscountBxgyItemDto))
   @decorate(ValidateNested({ each: true }))
-  discountBXGYs: DiscountBxgyItemDto[];
+  discountBXGYItems: DiscountBxgyItemDto[];
 
   @decorate(Expose())
   @decorate(IsOptional())
@@ -216,7 +216,7 @@ export class DiscountBaseDto {
   @decorate(ValidateNested({ each: true }))
   @decorate(ArrayMinSize(1))
   @decorate(Type(() => DiscountFilterItemDto))
-  discountFilers: DiscountFilterItemDto[];
+  discountFilterItems: DiscountFilterItemDto[];
 
   @decorate(Expose())
   @decorate(IsOptional())
@@ -224,5 +224,5 @@ export class DiscountBaseDto {
   @decorate(ValidateNested({ each: true }))
   @decorate(ArrayMinSize(0))
   @decorate(Type(() => DiscountConditionItemDto))
-  discountConditions: DiscountConditionItemDto[];
+  discountConditionItems: DiscountConditionItemDto[];
 }

@@ -126,7 +126,7 @@ var DiscountBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.ArrayMinSize)(1)),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return discount_bulk_item_dto_1.DiscountBulkItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountBulks", void 0);
+    ], DiscountBaseDto.prototype, "discountBulkItems", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (o) { return o.discountType === discountType_1.DiscountType.BXGX; })),
@@ -152,7 +152,7 @@ var DiscountBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return discount_bxgx_item_dto_1.DiscountBxgxItemDto; })),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountBXGXs", void 0);
+    ], DiscountBaseDto.prototype, "discountBXGXItems", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (o) { return o.discountType === discountType_1.DiscountType.BXGY; })),
@@ -197,7 +197,7 @@ var DiscountBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return discount_bxgy_item_dto_1.DiscountBxgyItemDto; })),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountBXGYs", void 0);
+    ], DiscountBaseDto.prototype, "discountBXGYItems", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
@@ -228,7 +228,7 @@ var DiscountBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.ArrayMinSize)(1)),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return discount_filter_item_dto_1.DiscountFilterItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountFilers", void 0);
+    ], DiscountBaseDto.prototype, "discountFilterItems", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
@@ -237,7 +237,7 @@ var DiscountBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.ArrayMinSize)(0)),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return discount_condition_item_dto_1.DiscountConditionItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountConditions", void 0);
+    ], DiscountBaseDto.prototype, "discountConditionItems", void 0);
     return DiscountBaseDto;
 }());
 exports.DiscountBaseDto = DiscountBaseDto;

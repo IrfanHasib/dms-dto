@@ -1,4 +1,7 @@
 import 'reflect-metadata';
+export { DiscountPaginateResponseDto } from './dto/discount.paginate.response.dto';
+export { DiscountPaginateRequestDto } from './dto/discount.paginate.request.dto';
+export { DiscountItemDto } from './dto/discount.item.dto';
 export { DiscountBaseDto } from './dto/discount.base.dto';
 export { DiscountBulkItemDto } from './dto/discount.bulk.item.dto';
 export { DiscountBxgxItemDto } from './dto/discount.bxgx.item.dto';

@@ -24,17 +24,17 @@ export declare class DiscountBaseDto {
     cartAdjustmentDiscountAmount: number;
     cartAdjustmentLabel: string;
     bulkAdjustmentCountType: BulkAdjustmentCountType;
-    discountBulks: DiscountBulkItemDto[];
+    discountBulkItems: DiscountBulkItemDto[];
     isBXGXRecursive: boolean;
-    discountBXGXs: DiscountBxgxItemDto[];
+    discountBXGXItems: DiscountBxgxItemDto[];
     BXGYType: BXGYType;
     BXGYCountType: BXGYCountType;
     BXGYGetType: BXGYGetType;
     isBXGYRecursive: boolean;
-    discountBXGYs: DiscountBxgyItemDto[];
+    discountBXGYItems: DiscountBxgyItemDto[];
     activeFromDateTime: Date;
     activeToDateTime: Date;
     isMatchAllCondition: boolean;
-    discountFilers: DiscountFilterItemDto[];
-    discountConditions: DiscountConditionItemDto[];
+    discountFilterItems: DiscountFilterItemDto[];
+    discountConditionItems: DiscountConditionItemDto[];
 }

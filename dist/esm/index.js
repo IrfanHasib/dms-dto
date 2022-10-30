@@ -3785,62 +3785,46 @@ function plainToInstance(cls, plain, options) {
     return classTransformer.plainToInstance(cls, plain, options);
 }
 
-var BulkAdjustmentCountType;
-(function (BulkAdjustmentCountType) {
-    BulkAdjustmentCountType["ALL"] = "ALL";
-    BulkAdjustmentCountType["INDIVIDUAL"] = "INDIVIDUAL";
-})(BulkAdjustmentCountType || (BulkAdjustmentCountType = {}));
-
-var CartAdjustmentDiscountType;
-(function (CartAdjustmentDiscountType) {
-    CartAdjustmentDiscountType["PERCENT"] = "PERCENT";
-    CartAdjustmentDiscountType["FIXED"] = "FIXED";
-    CartAdjustmentDiscountType["FIXED_PRICE_PER_PRODUCT"] = "FIXED_PRICE_PER_PRODUCT";
-})(CartAdjustmentDiscountType || (CartAdjustmentDiscountType = {}));
-
-var DiscountType;
-(function (DiscountType) {
-    DiscountType["PRODUCT_ADJUSTMENT"] = "PRODUCT_ADJUSTMENT";
-    DiscountType["CART_ADJUSTMENT"] = "CART_ADJUSTMENT";
-    DiscountType["BULK_ADJUSTMENT"] = "BULK_ADJUSTMENT";
-    DiscountType["BXGX"] = "BXGX";
-    DiscountType["BXGY"] = "BXGY";
-})(DiscountType || (DiscountType = {}));
-
-var ProductAdjustmentDiscountType;
-(function (ProductAdjustmentDiscountType) {
-    ProductAdjustmentDiscountType["PERCENT"] = "PERCENT";
-    ProductAdjustmentDiscountType["FIXED"] = "FIXED";
-    ProductAdjustmentDiscountType["FIXED_PRICE_PER_ITEM"] = "FIXED_PRICE_PER_ITEM";
-})(ProductAdjustmentDiscountType || (ProductAdjustmentDiscountType = {}));
-
-var BXGYType;
-(function (BXGYType) {
-    BXGYType["ALL"] = "ALL";
-    BXGYType["CATEGORIES"] = "CATEGORIES";
-    BXGYType["COMPANIES"] = "COMPANIES";
-    BXGYType["PRODUCTS"] = "PRODUCTS";
-})(BXGYType || (BXGYType = {}));
-
-var BXGYCountType;
-(function (BXGYCountType) {
-    BXGYCountType["ALL"] = "ALL";
-    BXGYCountType["INDIVIDUAL"] = "INDIVIDUAL";
-})(BXGYCountType || (BXGYCountType = {}));
-
-var BXGYGetType;
-(function (BXGYGetType) {
-    BXGYGetType["RANDOM"] = "RANDOM";
-    BXGYGetType["CHEAPEST_PRICE"] = "CHEAPEST_PRICE";
-    BXGYGetType["HIGHEST_PRICE"] = "HIGHEST_PRICE";
-})(BXGYGetType || (BXGYGetType = {}));
-
-var BulkDiscountType;
-(function (BulkDiscountType) {
-    BulkDiscountType["PERCENT"] = "PERCENT";
-    BulkDiscountType["FIXED"] = "FIXED";
-    BulkDiscountType["FIXED_PRICE_PER_ITEM"] = "FIXED_PRICE_PER_ITEM";
-})(BulkDiscountType || (BulkDiscountType = {}));
+var PaginateResponseMetadataDto = /** @class */ (function () {
+    function PaginateResponseMetadataDto() {
+    }
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "itemCount");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "totalItems");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "itemsPerPage");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "totalPages");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "currentPage");
+    return PaginateResponseMetadataDto;
+}());
 
 /**
  * Utility function that works like `Object.apply`, but copies getters and setters properly as well.  Additionally gives
@@ -4055,6 +4039,96 @@ const applyPropAndMethodDecorators = (propAndMethodDecorators, target) => {
             for (let decorator of methodDecorators[key])
                 decorator(target, key, Object.getOwnPropertyDescriptor(target, key));
 };
+
+var BaseDBFieldsDto = /** @class */ (function () {
+    function BaseDBFieldsDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(IsInt()),
+        __metadata("design:type", Number)
+    ], BaseDBFieldsDto.prototype, "id");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], BaseDBFieldsDto.prototype, "isDeleted");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsDate()),
+        decorate(Type(function () { return Date; })),
+        __metadata("design:type", Date)
+    ], BaseDBFieldsDto.prototype, "createdAt");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsDate()),
+        decorate(Type(function () { return Date; })),
+        __metadata("design:type", Date)
+    ], BaseDBFieldsDto.prototype, "updatedAt");
+    return BaseDBFieldsDto;
+}());
+
+var BulkAdjustmentCountType;
+(function (BulkAdjustmentCountType) {
+    BulkAdjustmentCountType["ALL"] = "ALL";
+    BulkAdjustmentCountType["INDIVIDUAL"] = "INDIVIDUAL";
+})(BulkAdjustmentCountType || (BulkAdjustmentCountType = {}));
+
+var CartAdjustmentDiscountType;
+(function (CartAdjustmentDiscountType) {
+    CartAdjustmentDiscountType["PERCENT"] = "PERCENT";
+    CartAdjustmentDiscountType["FIXED"] = "FIXED";
+    CartAdjustmentDiscountType["FIXED_PRICE_PER_PRODUCT"] = "FIXED_PRICE_PER_PRODUCT";
+})(CartAdjustmentDiscountType || (CartAdjustmentDiscountType = {}));
+
+var DiscountType;
+(function (DiscountType) {
+    DiscountType["PRODUCT_ADJUSTMENT"] = "PRODUCT_ADJUSTMENT";
+    DiscountType["CART_ADJUSTMENT"] = "CART_ADJUSTMENT";
+    DiscountType["BULK_ADJUSTMENT"] = "BULK_ADJUSTMENT";
+    DiscountType["BXGX"] = "BXGX";
+    DiscountType["BXGY"] = "BXGY";
+})(DiscountType || (DiscountType = {}));
+
+var ProductAdjustmentDiscountType;
+(function (ProductAdjustmentDiscountType) {
+    ProductAdjustmentDiscountType["PERCENT"] = "PERCENT";
+    ProductAdjustmentDiscountType["FIXED"] = "FIXED";
+    ProductAdjustmentDiscountType["FIXED_PRICE_PER_ITEM"] = "FIXED_PRICE_PER_ITEM";
+})(ProductAdjustmentDiscountType || (ProductAdjustmentDiscountType = {}));
+
+var BXGYType;
+(function (BXGYType) {
+    BXGYType["ALL"] = "ALL";
+    BXGYType["CATEGORIES"] = "CATEGORIES";
+    BXGYType["COMPANIES"] = "COMPANIES";
+    BXGYType["PRODUCTS"] = "PRODUCTS";
+})(BXGYType || (BXGYType = {}));
+
+var BXGYCountType;
+(function (BXGYCountType) {
+    BXGYCountType["ALL"] = "ALL";
+    BXGYCountType["INDIVIDUAL"] = "INDIVIDUAL";
+})(BXGYCountType || (BXGYCountType = {}));
+
+var BXGYGetType;
+(function (BXGYGetType) {
+    BXGYGetType["RANDOM"] = "RANDOM";
+    BXGYGetType["CHEAPEST_PRICE"] = "CHEAPEST_PRICE";
+    BXGYGetType["HIGHEST_PRICE"] = "HIGHEST_PRICE";
+})(BXGYGetType || (BXGYGetType = {}));
+
+var BulkDiscountType;
+(function (BulkDiscountType) {
+    BulkDiscountType["PERCENT"] = "PERCENT";
+    BulkDiscountType["FIXED"] = "FIXED";
+    BulkDiscountType["FIXED_PRICE_PER_ITEM"] = "FIXED_PRICE_PER_ITEM";
+})(BulkDiscountType || (BulkDiscountType = {}));
 
 var DiscountBulkItemDto = /** @class */ (function () {
     function DiscountBulkItemDto() {
@@ -4497,7 +4571,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(ArrayMinSize(1)),
         decorate(Type(function () { return DiscountBulkItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountBulks");
+    ], DiscountBaseDto.prototype, "discountBulkItems");
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BXGX; })),
@@ -4523,7 +4597,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(Type(function () { return DiscountBxgxItemDto; })),
         decorate(ValidateNested({ each: true })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountBXGXs");
+    ], DiscountBaseDto.prototype, "discountBXGXItems");
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BXGY; })),
@@ -4568,7 +4642,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(Type(function () { return DiscountBxgyItemDto; })),
         decorate(ValidateNested({ each: true })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountBXGYs");
+    ], DiscountBaseDto.prototype, "discountBXGYItems");
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -4599,7 +4673,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(ArrayMinSize(1)),
         decorate(Type(function () { return DiscountFilterItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountFilers");
+    ], DiscountBaseDto.prototype, "discountFilterItems");
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -4608,9 +4682,76 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(ArrayMinSize(0)),
         decorate(Type(function () { return DiscountConditionItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountConditions");
+    ], DiscountBaseDto.prototype, "discountConditionItems");
     return DiscountBaseDto;
 }());
+
+var DiscountItemDto = /** @class */ (function (_super) {
+    __extends(DiscountItemDto, _super);
+    function DiscountItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return DiscountItemDto;
+}(Mixin(BaseDBFieldsDto, DiscountBaseDto)));
+
+var DiscountPaginateResponseDto = /** @class */ (function (_super) {
+    __extends(DiscountPaginateResponseDto, _super);
+    function DiscountPaginateResponseDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsArray(),
+        Type(function () { return DiscountItemDto; }),
+        ValidateNested({ each: true }),
+        __metadata("design:type", Array)
+    ], DiscountPaginateResponseDto.prototype, "items");
+    return DiscountPaginateResponseDto;
+}(PaginateResponseMetadataDto));
+
+var PaginateRequestDto = /** @class */ (function () {
+    function PaginateRequestDto() {
+        this.page = 1;
+        this.limit = 10;
+    }
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        Type(function () { return Number; }),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateRequestDto.prototype, "page");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        Transform(function (_a) {
+            var value = _a.value;
+            var limit = value;
+            limit = limit > 100 ? 100 : limit;
+            return limit;
+        }),
+        Type(function () { return Number; }),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateRequestDto.prototype, "limit");
+    __decorate([
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], PaginateRequestDto.prototype, "search");
+    return PaginateRequestDto;
+}());
+
+var DiscountPaginateRequestDto = /** @class */ (function (_super) {
+    __extends(DiscountPaginateRequestDto, _super);
+    function DiscountPaginateRequestDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return DiscountPaginateRequestDto;
+}(PaginateRequestDto));
 
 var DiscountCreateDto = /** @class */ (function (_super) {
     __extends(DiscountCreateDto, _super);
@@ -4676,39 +4817,6 @@ var AuthResponseDTO = /** @class */ (function () {
     return AuthResponseDTO;
 }());
 
-var BaseDBFieldsDto = /** @class */ (function () {
-    function BaseDBFieldsDto() {
-    }
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        decorate(IsInt()),
-        __metadata("design:type", Number)
-    ], BaseDBFieldsDto.prototype, "id");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsBoolean()),
-        __metadata("design:type", Boolean)
-    ], BaseDBFieldsDto.prototype, "isDeleted");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsDate()),
-        decorate(Type(function () { return Date; })),
-        __metadata("design:type", Date)
-    ], BaseDBFieldsDto.prototype, "createdAt");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsDate()),
-        decorate(Type(function () { return Date; })),
-        __metadata("design:type", Date)
-    ], BaseDBFieldsDto.prototype, "updatedAt");
-    return BaseDBFieldsDto;
-}());
-
 var CompanyBaseDto = /** @class */ (function () {
     function CompanyBaseDto() {
     }
@@ -4735,47 +4843,6 @@ var CompanyItemDto = /** @class */ (function (_super) {
     return CompanyItemDto;
 }(Mixin(BaseDBFieldsDto, CompanyBaseDto)));
 
-var PaginateResponseMetadataDto = /** @class */ (function () {
-    function PaginateResponseMetadataDto() {
-    }
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "itemCount");
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "totalItems");
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "itemsPerPage");
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "totalPages");
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "currentPage");
-    return PaginateResponseMetadataDto;
-}());
-
 var CompanyPaginateResponseDto = /** @class */ (function (_super) {
     __extends(CompanyPaginateResponseDto, _super);
     function CompanyPaginateResponseDto() {
@@ -4790,42 +4857,6 @@ var CompanyPaginateResponseDto = /** @class */ (function (_super) {
     ], CompanyPaginateResponseDto.prototype, "items");
     return CompanyPaginateResponseDto;
 }(PaginateResponseMetadataDto));
-
-var PaginateRequestDto = /** @class */ (function () {
-    function PaginateRequestDto() {
-        this.page = 1;
-        this.limit = 10;
-    }
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        Type(function () { return Number; }),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateRequestDto.prototype, "page");
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        Transform(function (_a) {
-            var value = _a.value;
-            var limit = value;
-            limit = limit > 100 ? 100 : limit;
-            return limit;
-        }),
-        Type(function () { return Number; }),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateRequestDto.prototype, "limit");
-    __decorate([
-        Expose(),
-        IsOptional(),
-        IsString(),
-        __metadata("design:type", String)
-    ], PaginateRequestDto.prototype, "search");
-    return PaginateRequestDto;
-}());
 
 var CompanyCreateDto = /** @class */ (function (_super) {
     __extends(CompanyCreateDto, _super);
@@ -5171,5 +5202,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map
