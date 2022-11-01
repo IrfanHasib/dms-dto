@@ -2264,78 +2264,6 @@ function IsNotEmpty(validationOptions) {
     }, validationOptions);
 }
 
-var isISO8601_1 = createCommonjsModule(function (module, exports) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = isISO8601;
-
-var _assertString = _interopRequireDefault(require$$0);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/* eslint-disable max-len */
-// from http://goo.gl/0ejHHW
-var iso8601 = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-3])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/; // same as above, except with a strict 'T' separator between date and time
-
-var iso8601StrictSeparator = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-3])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
-/* eslint-enable max-len */
-
-var isValidDate = function isValidDate(str) {
-  // str must have passed the ISO8601 check
-  // this check is meant to catch invalid dates
-  // like 2009-02-31
-  // first check for ordinal dates
-  var ordinalMatch = str.match(/^(\d{4})-?(\d{3})([ T]{1}\.*|$)/);
-
-  if (ordinalMatch) {
-    var oYear = Number(ordinalMatch[1]);
-    var oDay = Number(ordinalMatch[2]); // if is leap year
-
-    if (oYear % 4 === 0 && oYear % 100 !== 0 || oYear % 400 === 0) return oDay <= 366;
-    return oDay <= 365;
-  }
-
-  var match = str.match(/(\d{4})-?(\d{0,2})-?(\d*)/).map(Number);
-  var year = match[1];
-  var month = match[2];
-  var day = match[3];
-  var monthString = month ? "0".concat(month).slice(-2) : month;
-  var dayString = day ? "0".concat(day).slice(-2) : day; // create a date object and compare
-
-  var d = new Date("".concat(year, "-").concat(monthString || '01', "-").concat(dayString || '01'));
-
-  if (month && day) {
-    return d.getUTCFullYear() === year && d.getUTCMonth() + 1 === month && d.getUTCDate() === day;
-  }
-
-  return true;
-};
-
-function isISO8601(str) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  (0, _assertString.default)(str);
-  var check = options.strictSeparator ? iso8601StrictSeparator.test(str) : iso8601.test(str);
-  if (check && options.strict) return isValidDate(str);
-  return check;
-}
-
-module.exports = exports.default;
-module.exports.default = exports.default;
-});
-
-var isIso8601Validator = unwrapExports(isISO8601_1);
-
-/**
- * Checks if the string is a valid ISO 8601 date.
- * If given value is not a string, then it returns false.
- * Use the option strict = true for additional checks for a valid date, e.g. invalidates dates like 2019-02-29.
- */
-function isISO8601(value, options) {
-    return typeof value === 'string' && isIso8601Validator(value, options);
-}
-
 var isLength_1 = createCommonjsModule(function (module, exports) {
 
 Object.defineProperty(exports, "__esModule", {
@@ -2405,27 +2333,6 @@ function Length(min, max, validationOptions) {
                 return (eachPrefix +
                     '$property must be longer than or equal to $constraint1 and shorter than or equal to $constraint2 characters');
             }, validationOptions),
-        },
-    }, validationOptions);
-}
-
-var IS_DATE_STRING = 'isDateString';
-/**
- * Alias for IsISO8601 validator
- */
-function isDateString(value, options) {
-    return isISO8601(value, options);
-}
-/**
- * Alias for IsISO8601 validator
- */
-function IsDateString(options, validationOptions) {
-    return ValidateBy({
-        name: IS_DATE_STRING,
-        constraints: [options],
-        validator: {
-            validate: function (value, args) { return isDateString(value); },
-            defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must be a valid ISO 8601 date string'; }, validationOptions),
         },
     }, validationOptions);
 }
@@ -4359,14 +4266,16 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(ValidateIf(function (_object, value) { return !!value; })),
-        decorate(IsDateString()),
+        decorate(IsDate()),
+        decorate(Type(function () { return Date; })),
         __metadata("design:type", Date)
     ], DiscountBaseDto.prototype, "activeFromDateTime");
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(ValidateIf(function (_object, value) { return !!value; })),
-        decorate(IsDateString()),
+        decorate(IsDate()),
+        decorate(Type(function () { return Date; })),
         __metadata("design:type", Date)
     ], DiscountBaseDto.prototype, "activeToDateTime");
     __decorate([

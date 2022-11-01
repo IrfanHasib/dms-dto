@@ -1,7 +1,7 @@
 import {
   ArrayMinSize,
   IsArray,
-  IsDateString,
+  IsDate,
   IsEnum,
   IsInt,
   IsNotEmpty,
@@ -195,13 +195,15 @@ export class DiscountBaseDto {
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((_object, value) => !!value))
-  @decorate(IsDateString())
+  @decorate(IsDate())
+  @decorate(Type(() => Date))
   activeFromDateTime: Date;
 
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((_object, value) => !!value))
-  @decorate(IsDateString())
+  @decorate(IsDate())
+  @decorate(Type(() => Date))
   activeToDateTime: Date;
 
   @decorate(Expose())
