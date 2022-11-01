@@ -3926,14 +3926,6 @@ var DiscountBulkItemDto = /** @class */ (function () {
     }
     __decorate([
         decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(ValidateIf(function (_object, value) { return !!value; })),
-        decorate(Type(function () { return Number; })),
-        decorate(IsNumber()),
-        __metadata("design:type", Number)
-    ], DiscountBulkItemDto.prototype, "id");
-    __decorate([
-        decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
@@ -3979,14 +3971,6 @@ var DiscountBxgyItemDto = /** @class */ (function () {
     function DiscountBxgyItemDto() {
         this.isBXGYRecursive = false;
     }
-    __decorate([
-        decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(ValidateIf(function (_object, value) { return !!value; })),
-        decorate(Type(function () { return Number; })),
-        decorate(IsNumber()),
-        __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "id");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -4065,14 +4049,6 @@ var DiscountBxgxItemDto = /** @class */ (function () {
     }
     __decorate([
         decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(ValidateIf(function (_object, value) { return !!value; })),
-        decorate(Type(function () { return Number; })),
-        decorate(IsNumber()),
-        __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "id");
-    __decorate([
-        decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
@@ -4117,14 +4093,6 @@ var DiscountBxgxItemDto = /** @class */ (function () {
 var DiscountFilterItemDto = /** @class */ (function () {
     function DiscountFilterItemDto() {
     }
-    __decorate([
-        decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(ValidateIf(function (_object, value) { return !!value; })),
-        decorate(Type(function () { return Number; })),
-        decorate(IsNumber()),
-        __metadata("design:type", Number)
-    ], DiscountFilterItemDto.prototype, "id");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),

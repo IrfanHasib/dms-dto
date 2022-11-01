@@ -20,14 +20,6 @@ var DiscountBxgxItemDto = /** @class */ (function () {
     }
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (_object, value) { return !!value; })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
-        __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "id", void 0);
-    __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),

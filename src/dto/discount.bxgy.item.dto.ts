@@ -18,13 +18,6 @@ import { DiscountBxgyItemItemDto } from './discount.bxgy.item.item.dto';
 
 export class DiscountBxgyItemDto {
   @decorate(Expose())
-  @decorate(IsOptional())
-  @decorate(ValidateIf((_object, value) => !!value))
-  @decorate(Type(() => Number))
-  @decorate(IsNumber())
-  id: number;
-
-  @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsInt())
   @decorate(Type(() => Number))
@@ -45,7 +38,7 @@ export class DiscountBxgyItemDto {
   @decorate(ValidateIf(o => o.discountType !== BXGYDiscountType.FREE))
   @decorate(Type(() => Number))
   @decorate(IsNumber())
-  discountAmount: number;
+  discountAmount?: number;
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
@@ -61,7 +54,7 @@ export class DiscountBxgyItemDto {
   @decorate(ValidateIf(o => !o.isBXGYRecursive))
   @decorate(IsInt())
   @decorate(Type(() => Number))
-  maximumQuantity: number;
+  maximumQuantity?: number;
 
   @decorate(Expose())
   @decorate(ValidateIf(o => o.BXGYType !== BXGYType.ALL))

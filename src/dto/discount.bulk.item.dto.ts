@@ -5,13 +5,6 @@ import { decorate } from 'ts-mixer';
 
 export class DiscountBulkItemDto {
   @decorate(Expose())
-  @decorate(IsOptional())
-  @decorate(ValidateIf((_object, value) => !!value))
-  @decorate(Type(() => Number))
-  @decorate(IsNumber())
-  id: number;
-
-  @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsInt())
   @decorate(Type(() => Number))

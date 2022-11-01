@@ -15,13 +15,6 @@ import { DiscountFilterItemItemDto } from './discount.filter.item.item.dto';
 
 export class DiscountFilterItemDto {
   @decorate(Expose())
-  @decorate(IsOptional())
-  @decorate(ValidateIf((_object, value) => !!value))
-  @decorate(Type(() => Number))
-  @decorate(IsNumber())
-  id: number;
-
-  @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsEnum(DiscountFilterType))
   discountFilterType: DiscountFilterType;
