@@ -1,6 +1,6 @@
 import { BXGYDiscountType } from '../enum/BXGYDiscountType';
 import { BXGYType } from '../enum/BXGYType';
-import { AutoCompleteOptionItemDto } from './autoComplete.option.item.dto';
+import { DiscountBxgyItemItemDto } from './discount.bxgy.item.item.dto';
 export declare class DiscountBxgyItemDto {
     id: number;
     minimumQuantity: number;
@@ -10,7 +10,5 @@ export declare class DiscountBxgyItemDto {
     isBXGYRecursive: boolean;
     BXGYType: BXGYType;
     maximumQuantity: number;
-    products: AutoCompleteOptionItemDto[];
-    companies: AutoCompleteOptionItemDto[];
-    categories: AutoCompleteOptionItemDto[];
+    discountBXGYItemItems: DiscountBxgyItemItemDto[];
 }

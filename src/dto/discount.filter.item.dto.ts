@@ -10,8 +10,8 @@ import {
 } from 'class-validator';
 import { Expose, Transform, Type } from 'class-transformer';
 import { DiscountFilterType } from '../enum/discountFilterType';
-import { AutoCompleteOptionItemDto } from './autoComplete.option.item.dto';
 import { decorate } from 'ts-mixer';
+import { DiscountFilterItemItemDto } from './discount.filter.item.item.dto';
 
 export class DiscountFilterItemDto {
   @decorate(Expose())
@@ -36,26 +36,18 @@ export class DiscountFilterItemDto {
   isInList: boolean;
 
   @decorate(Expose())
-  @decorate(ValidateIf(o => o.discountFilterType === DiscountFilterType.PRODUCTS))
+  @decorate(ValidateIf(o => o.discountFilterType !== DiscountFilterType.ALL))
+  @decorate(
+    Transform(({ value, obj }) =>
+      value?.map((valueObj: any) => {
+        valueObj.discountFilterType = obj?.discountFilterType;
+        return valueObj;
+      }),
+    ),
+  )
   @decorate(IsArray())
   @decorate(ValidateNested({ each: true }))
   @decorate(ArrayMinSize(1))
-  @decorate(Type(() => AutoCompleteOptionItemDto))
-  products: AutoCompleteOptionItemDto[];
-
-  @decorate(Expose())
-  @decorate(ValidateIf(o => o.discountFilterType === DiscountFilterType.COMPANIES))
-  @decorate(IsArray())
-  @decorate(ValidateNested({ each: true }))
-  @decorate(ArrayMinSize(1))
-  @decorate(Type(() => AutoCompleteOptionItemDto))
-  companies: AutoCompleteOptionItemDto[];
-
-  @decorate(Expose())
-  @decorate(ValidateIf(o => o.discountFilterType === DiscountFilterType.CATEGORIES))
-  @decorate(IsArray())
-  @decorate(ValidateNested({ each: true }))
-  @decorate(ArrayMinSize(1))
-  @decorate(Type(() => AutoCompleteOptionItemDto))
-  categories: AutoCompleteOptionItemDto[];
+  @decorate(Type(() => DiscountFilterItemItemDto))
+  discountFilterItemItems: DiscountFilterItemItemDto[];
 }

@@ -1,4 +1,4 @@
-import { IsDecimal, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 import { BulkDiscountType } from '../enum/bulkDiscountType';
 import { decorate } from 'ts-mixer';
@@ -30,7 +30,8 @@ export class DiscountBulkItemDto {
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
-  @decorate(IsDecimal())
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
   discountAmount: number;
 
   @decorate(Expose())

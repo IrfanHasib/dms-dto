@@ -1,4 +1,4 @@
-import { IsBoolean, IsDecimal, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, ValidateIf } from 'class-validator';
+import { IsBoolean, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, ValidateIf } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 import { BXGXDiscountType } from '../enum/BXGXDiscountType';
 import { decorate } from 'ts-mixer';
@@ -30,13 +30,14 @@ export class DiscountBxgxItemDto {
 
   @decorate(Expose())
   @decorate(ValidateIf(o => o.discountType !== BXGXDiscountType.FREE))
-  @decorate(IsDecimal())
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
   discountAmount: number;
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsBoolean())
-  isBXGXRecursive: boolean;
+  isBXGXRecursive: boolean = false;
 
   @decorate(Expose())
   @decorate(ValidateIf(o => !o.isBXGXRecursive))

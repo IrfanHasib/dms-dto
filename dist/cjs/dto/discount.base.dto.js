@@ -70,8 +70,8 @@ var DiscountBaseDto = /** @class */ (function () {
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "priority", void 0);
     __decorate([
@@ -91,7 +91,8 @@ var DiscountBaseDto = /** @class */ (function () {
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (o) { return o.discountType === discountType_1.DiscountType.PRODUCT_ADJUSTMENT; })),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsDecimal)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "productAdjustmentDiscountAmount", void 0);
     __decorate([
@@ -103,7 +104,8 @@ var DiscountBaseDto = /** @class */ (function () {
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (o) { return o.discountType === discountType_1.DiscountType.CART_ADJUSTMENT; })),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsDecimal)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "cartAdjustmentDiscountAmount", void 0);
     __decorate([
@@ -234,7 +236,6 @@ var DiscountBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.ArrayMinSize)(0)),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return discount_condition_item_dto_1.DiscountConditionItemDto; })),
         __metadata("design:type", Array)
     ], DiscountBaseDto.prototype, "discountConditionItems", void 0);

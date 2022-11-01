@@ -16,6 +16,7 @@ var BXGXDiscountType_1 = require("../enum/BXGXDiscountType");
 var ts_mixer_1 = require("ts-mixer");
 var DiscountBxgxItemDto = /** @class */ (function () {
     function DiscountBxgxItemDto() {
+        this.isBXGXRecursive = false;
     }
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
@@ -48,7 +49,8 @@ var DiscountBxgxItemDto = /** @class */ (function () {
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (o) { return o.discountType !== BXGXDiscountType_1.BXGXDiscountType.FREE; })),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsDecimal)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "discountAmount", void 0);
     __decorate([

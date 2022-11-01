@@ -2,7 +2,6 @@ import {
   ArrayMinSize,
   IsArray,
   IsBoolean,
-  IsDecimal,
   IsEnum,
   IsInt,
   IsNotEmpty,
@@ -11,11 +10,11 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { BXGYDiscountType } from '../enum/BXGYDiscountType';
 import { BXGYType } from '../enum/BXGYType';
-import { AutoCompleteOptionItemDto } from './autoComplete.option.item.dto';
 import { decorate } from 'ts-mixer';
+import { DiscountBxgyItemItemDto } from './discount.bxgy.item.item.dto';
 
 export class DiscountBxgyItemDto {
   @decorate(Expose())
@@ -44,13 +43,14 @@ export class DiscountBxgyItemDto {
 
   @decorate(Expose())
   @decorate(ValidateIf(o => o.discountType !== BXGYDiscountType.FREE))
-  @decorate(IsDecimal())
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
   discountAmount: number;
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsBoolean())
-  isBXGYRecursive: boolean;
+  isBXGYRecursive: boolean = false;
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
@@ -64,26 +64,18 @@ export class DiscountBxgyItemDto {
   maximumQuantity: number;
 
   @decorate(Expose())
-  @decorate(ValidateIf(o => o.BXGYType === BXGYType.PRODUCTS))
+  @decorate(ValidateIf(o => o.BXGYType !== BXGYType.ALL))
+  @decorate(
+    Transform(({ value, obj }) =>
+      value?.map((valueObj: any) => {
+        valueObj.BXGYType = obj?.BXGYType;
+        return valueObj;
+      }),
+    ),
+  )
   @decorate(IsArray())
   @decorate(ValidateNested({ each: true }))
   @decorate(ArrayMinSize(1))
-  @decorate(Type(() => AutoCompleteOptionItemDto))
-  products: AutoCompleteOptionItemDto[];
-
-  @decorate(Expose())
-  @decorate(ValidateIf(o => o.BXGYType === BXGYType.COMPANIES))
-  @decorate(IsArray())
-  @decorate(ValidateNested({ each: true }))
-  @decorate(ArrayMinSize(1))
-  @decorate(Type(() => AutoCompleteOptionItemDto))
-  companies: AutoCompleteOptionItemDto[];
-
-  @decorate(Expose())
-  @decorate(ValidateIf(o => o.BXGYType === BXGYType.CATEGORIES))
-  @decorate(IsArray())
-  @decorate(ValidateNested({ each: true }))
-  @decorate(ArrayMinSize(1))
-  @decorate(Type(() => AutoCompleteOptionItemDto))
-  categories: AutoCompleteOptionItemDto[];
+  @decorate(Type(() => DiscountBxgyItemItemDto))
+  discountBXGYItemItems: DiscountBxgyItemItemDto[];
 }

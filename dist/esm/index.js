@@ -2242,35 +2242,7 @@ module.exports.default = exports.default;
 
 unwrapExports(assertString_1);
 
-var merge_1 = createCommonjsModule(function (module, exports) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = merge;
-
-function merge() {
-  var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var defaults = arguments.length > 1 ? arguments[1] : undefined;
-
-  for (var key in defaults) {
-    if (typeof obj[key] === 'undefined') {
-      obj[key] = defaults[key];
-    }
-  }
-
-  return obj;
-}
-
-module.exports = exports.default;
-module.exports.default = exports.default;
-});
-
-unwrapExports(merge_1);
-
 var require$$0 = assertString_1;
-
-var require$$3 = merge_1;
 
 var IS_NOT_EMPTY = 'isNotEmpty';
 /**
@@ -2288,249 +2260,6 @@ function IsNotEmpty(validationOptions) {
         validator: {
             validate: function (value, args) { return isNotEmpty(value); },
             defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property should not be empty'; }, validationOptions),
-        },
-    }, validationOptions);
-}
-
-var alpha_1 = createCommonjsModule(function (module, exports) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.commaDecimal = exports.dotDecimal = exports.farsiLocales = exports.arabicLocales = exports.englishLocales = exports.decimal = exports.alphanumeric = exports.alpha = void 0;
-var alpha = {
-  'en-US': /^[A-Z]+$/i,
-  'az-AZ': /^[A-VXYZÇƏĞİıÖŞÜ]+$/i,
-  'bg-BG': /^[А-Я]+$/i,
-  'cs-CZ': /^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]+$/i,
-  'da-DK': /^[A-ZÆØÅ]+$/i,
-  'de-DE': /^[A-ZÄÖÜß]+$/i,
-  'el-GR': /^[Α-ώ]+$/i,
-  'es-ES': /^[A-ZÁÉÍÑÓÚÜ]+$/i,
-  'fa-IR': /^[ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی]+$/i,
-  'fi-FI': /^[A-ZÅÄÖ]+$/i,
-  'fr-FR': /^[A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
-  'it-IT': /^[A-ZÀÉÈÌÎÓÒÙ]+$/i,
-  'nb-NO': /^[A-ZÆØÅ]+$/i,
-  'nl-NL': /^[A-ZÁÉËÏÓÖÜÚ]+$/i,
-  'nn-NO': /^[A-ZÆØÅ]+$/i,
-  'hu-HU': /^[A-ZÁÉÍÓÖŐÚÜŰ]+$/i,
-  'pl-PL': /^[A-ZĄĆĘŚŁŃÓŻŹ]+$/i,
-  'pt-PT': /^[A-ZÃÁÀÂÄÇÉÊËÍÏÕÓÔÖÚÜ]+$/i,
-  'ru-RU': /^[А-ЯЁ]+$/i,
-  'sl-SI': /^[A-ZČĆĐŠŽ]+$/i,
-  'sk-SK': /^[A-ZÁČĎÉÍŇÓŠŤÚÝŽĹŔĽÄÔ]+$/i,
-  'sr-RS@latin': /^[A-ZČĆŽŠĐ]+$/i,
-  'sr-RS': /^[А-ЯЂЈЉЊЋЏ]+$/i,
-  'sv-SE': /^[A-ZÅÄÖ]+$/i,
-  'th-TH': /^[ก-๐\s]+$/i,
-  'tr-TR': /^[A-ZÇĞİıÖŞÜ]+$/i,
-  'uk-UA': /^[А-ЩЬЮЯЄIЇҐі]+$/i,
-  'vi-VN': /^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸ]+$/i,
-  'ku-IQ': /^[ئابپتجچحخدرڕزژسشعغفڤقکگلڵمنوۆھەیێيطؤثآإأكضصةظذ]+$/i,
-  ar: /^[ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/,
-  he: /^[א-ת]+$/,
-  fa: /^['آاءأؤئبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهةی']+$/i,
-  'hi-IN': /^[\u0900-\u0961]+[\u0972-\u097F]*$/i
-};
-exports.alpha = alpha;
-var alphanumeric = {
-  'en-US': /^[0-9A-Z]+$/i,
-  'az-AZ': /^[0-9A-VXYZÇƏĞİıÖŞÜ]+$/i,
-  'bg-BG': /^[0-9А-Я]+$/i,
-  'cs-CZ': /^[0-9A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]+$/i,
-  'da-DK': /^[0-9A-ZÆØÅ]+$/i,
-  'de-DE': /^[0-9A-ZÄÖÜß]+$/i,
-  'el-GR': /^[0-9Α-ω]+$/i,
-  'es-ES': /^[0-9A-ZÁÉÍÑÓÚÜ]+$/i,
-  'fi-FI': /^[0-9A-ZÅÄÖ]+$/i,
-  'fr-FR': /^[0-9A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
-  'it-IT': /^[0-9A-ZÀÉÈÌÎÓÒÙ]+$/i,
-  'hu-HU': /^[0-9A-ZÁÉÍÓÖŐÚÜŰ]+$/i,
-  'nb-NO': /^[0-9A-ZÆØÅ]+$/i,
-  'nl-NL': /^[0-9A-ZÁÉËÏÓÖÜÚ]+$/i,
-  'nn-NO': /^[0-9A-ZÆØÅ]+$/i,
-  'pl-PL': /^[0-9A-ZĄĆĘŚŁŃÓŻŹ]+$/i,
-  'pt-PT': /^[0-9A-ZÃÁÀÂÄÇÉÊËÍÏÕÓÔÖÚÜ]+$/i,
-  'ru-RU': /^[0-9А-ЯЁ]+$/i,
-  'sl-SI': /^[0-9A-ZČĆĐŠŽ]+$/i,
-  'sk-SK': /^[0-9A-ZÁČĎÉÍŇÓŠŤÚÝŽĹŔĽÄÔ]+$/i,
-  'sr-RS@latin': /^[0-9A-ZČĆŽŠĐ]+$/i,
-  'sr-RS': /^[0-9А-ЯЂЈЉЊЋЏ]+$/i,
-  'sv-SE': /^[0-9A-ZÅÄÖ]+$/i,
-  'th-TH': /^[ก-๙\s]+$/i,
-  'tr-TR': /^[0-9A-ZÇĞİıÖŞÜ]+$/i,
-  'uk-UA': /^[0-9А-ЩЬЮЯЄIЇҐі]+$/i,
-  'ku-IQ': /^[٠١٢٣٤٥٦٧٨٩0-9ئابپتجچحخدرڕزژسشعغفڤقکگلڵمنوۆھەیێيطؤثآإأكضصةظذ]+$/i,
-  'vi-VN': /^[0-9A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸ]+$/i,
-  ar: /^[٠١٢٣٤٥٦٧٨٩0-9ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/,
-  he: /^[0-9א-ת]+$/,
-  fa: /^['0-9آاءأؤئبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهةی۱۲۳۴۵۶۷۸۹۰']+$/i,
-  'hi-IN': /^[\u0900-\u0963]+[\u0966-\u097F]*$/i
-};
-exports.alphanumeric = alphanumeric;
-var decimal = {
-  'en-US': '.',
-  ar: '٫'
-};
-exports.decimal = decimal;
-var englishLocales = ['AU', 'GB', 'HK', 'IN', 'NZ', 'ZA', 'ZM'];
-exports.englishLocales = englishLocales;
-
-for (var locale, i = 0; i < englishLocales.length; i++) {
-  locale = "en-".concat(englishLocales[i]);
-  alpha[locale] = alpha['en-US'];
-  alphanumeric[locale] = alphanumeric['en-US'];
-  decimal[locale] = decimal['en-US'];
-} // Source: http://www.localeplanet.com/java/
-
-
-var arabicLocales = ['AE', 'BH', 'DZ', 'EG', 'IQ', 'JO', 'KW', 'LB', 'LY', 'MA', 'QM', 'QA', 'SA', 'SD', 'SY', 'TN', 'YE'];
-exports.arabicLocales = arabicLocales;
-
-for (var _locale, _i = 0; _i < arabicLocales.length; _i++) {
-  _locale = "ar-".concat(arabicLocales[_i]);
-  alpha[_locale] = alpha.ar;
-  alphanumeric[_locale] = alphanumeric.ar;
-  decimal[_locale] = decimal.ar;
-}
-
-var farsiLocales = ['IR', 'AF'];
-exports.farsiLocales = farsiLocales;
-
-for (var _locale2, _i2 = 0; _i2 < farsiLocales.length; _i2++) {
-  _locale2 = "fa-".concat(farsiLocales[_i2]);
-  alphanumeric[_locale2] = alphanumeric.fa;
-  decimal[_locale2] = decimal.ar;
-} // Source: https://en.wikipedia.org/wiki/Decimal_mark
-
-
-var dotDecimal = ['ar-EG', 'ar-LB', 'ar-LY'];
-exports.dotDecimal = dotDecimal;
-var commaDecimal = ['bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-ZM', 'es-ES', 'fr-CA', 'fr-FR', 'id-ID', 'it-IT', 'ku-IQ', 'hi-IN', 'hu-HU', 'nb-NO', 'nn-NO', 'nl-NL', 'pl-PL', 'pt-PT', 'ru-RU', 'sl-SI', 'sr-RS@latin', 'sr-RS', 'sv-SE', 'tr-TR', 'uk-UA', 'vi-VN'];
-exports.commaDecimal = commaDecimal;
-
-for (var _i3 = 0; _i3 < dotDecimal.length; _i3++) {
-  decimal[dotDecimal[_i3]] = decimal['en-US'];
-}
-
-for (var _i4 = 0; _i4 < commaDecimal.length; _i4++) {
-  decimal[commaDecimal[_i4]] = ',';
-}
-
-alpha['fr-CA'] = alpha['fr-FR'];
-alphanumeric['fr-CA'] = alphanumeric['fr-FR'];
-alpha['pt-BR'] = alpha['pt-PT'];
-alphanumeric['pt-BR'] = alphanumeric['pt-PT'];
-decimal['pt-BR'] = decimal['pt-PT']; // see #862
-
-alpha['pl-Pl'] = alpha['pl-PL'];
-alphanumeric['pl-Pl'] = alphanumeric['pl-PL'];
-decimal['pl-Pl'] = decimal['pl-PL']; // see #1455
-
-alpha['fa-AF'] = alpha.fa;
-});
-
-unwrapExports(alpha_1);
-alpha_1.commaDecimal;
-alpha_1.dotDecimal;
-alpha_1.farsiLocales;
-alpha_1.arabicLocales;
-alpha_1.englishLocales;
-alpha_1.decimal;
-alpha_1.alphanumeric;
-alpha_1.alpha;
-
-var _alpha = alpha_1;
-
-var includes_1 = createCommonjsModule(function (module, exports) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var includes = function includes(arr, val) {
-  return arr.some(function (arrVal) {
-    return val === arrVal;
-  });
-};
-
-var _default = includes;
-exports.default = _default;
-module.exports = exports.default;
-module.exports.default = exports.default;
-});
-
-unwrapExports(includes_1);
-
-var require$$2 = includes_1;
-
-var isDecimal_1 = createCommonjsModule(function (module, exports) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = isDecimal;
-
-var _merge = _interopRequireDefault(require$$3);
-
-var _assertString = _interopRequireDefault(require$$0);
-
-var _includes = _interopRequireDefault(require$$2);
-
-
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function decimalRegExp(options) {
-  var regExp = new RegExp("^[-+]?([0-9]+)?(\\".concat(_alpha.decimal[options.locale], "[0-9]{").concat(options.decimal_digits, "})").concat(options.force_decimal ? '' : '?', "$"));
-  return regExp;
-}
-
-var default_decimal_options = {
-  force_decimal: false,
-  decimal_digits: '1,',
-  locale: 'en-US'
-};
-var blacklist = ['', '-', '+'];
-
-function isDecimal(str, options) {
-  (0, _assertString.default)(str);
-  options = (0, _merge.default)(options, default_decimal_options);
-
-  if (options.locale in _alpha.decimal) {
-    return !(0, _includes.default)(blacklist, str.replace(/ /g, '')) && decimalRegExp(options).test(str);
-  }
-
-  throw new Error("Invalid locale '".concat(options.locale, "'"));
-}
-
-module.exports = exports.default;
-module.exports.default = exports.default;
-});
-
-var isDecimalValidator = unwrapExports(isDecimal_1);
-
-var IS_DECIMAL = 'isDecimal';
-/**
- * Checks if the string is a valid decimal.
- * If given value is not a string, then it returns false.
- */
-function isDecimal(value, options) {
-    return typeof value === 'string' && isDecimalValidator(value, options);
-}
-/**
- * Checks if the string contains only letters and numbers.
- * If given value is not a string, then it returns false.
- */
-function IsDecimal(options, validationOptions) {
-    return ValidateBy({
-        name: IS_DECIMAL,
-        constraints: [options],
-        validator: {
-            validate: function (value, args) { return isDecimal(value, args.constraints[0]); },
-            defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property is not a valid decimal number.'; }, validationOptions),
         },
     }, validationOptions);
 }
@@ -3785,47 +3514,6 @@ function plainToInstance(cls, plain, options) {
     return classTransformer.plainToInstance(cls, plain, options);
 }
 
-var PaginateResponseMetadataDto = /** @class */ (function () {
-    function PaginateResponseMetadataDto() {
-    }
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "itemCount");
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "totalItems");
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "itemsPerPage");
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "totalPages");
-    __decorate([
-        Expose(),
-        IsNotEmpty(),
-        IsNumber(),
-        IsInt(),
-        __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "currentPage");
-    return PaginateResponseMetadataDto;
-}());
-
 /**
  * Utility function that works like `Object.apply`, but copies getters and setters properly as well.  Additionally gives
  * the option to exclude properties by name.
@@ -4040,6 +3728,117 @@ const applyPropAndMethodDecorators = (propAndMethodDecorators, target) => {
                 decorator(target, key, Object.getOwnPropertyDescriptor(target, key));
 };
 
+var BXGYType;
+(function (BXGYType) {
+    BXGYType["ALL"] = "ALL";
+    BXGYType["CATEGORIES"] = "CATEGORIES";
+    BXGYType["COMPANIES"] = "COMPANIES";
+    BXGYType["PRODUCTS"] = "PRODUCTS";
+})(BXGYType || (BXGYType = {}));
+
+var DiscountBxgyItemItemDto = /** @class */ (function () {
+    function DiscountBxgyItemItemDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(ValidateIf(function (o) { return o.BXGYType === BXGYType.PRODUCTS; })),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DiscountBxgyItemItemDto.prototype, "productId");
+    __decorate([
+        decorate(Expose()),
+        decorate(ValidateIf(function (o) { return o.BXGYType === BXGYType.COMPANIES; })),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DiscountBxgyItemItemDto.prototype, "companyId");
+    __decorate([
+        decorate(Expose()),
+        decorate(ValidateIf(function (o) { return o.BXGYType === BXGYType.CATEGORIES; })),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DiscountBxgyItemItemDto.prototype, "categoryId");
+    return DiscountBxgyItemItemDto;
+}());
+
+var DiscountFilterType;
+(function (DiscountFilterType) {
+    DiscountFilterType["ALL"] = "ALL";
+    DiscountFilterType["PRODUCTS"] = "PRODUCTS";
+    DiscountFilterType["COMPANIES"] = "COMPANIES";
+    DiscountFilterType["CATEGORIES"] = "CATEGORIES";
+})(DiscountFilterType || (DiscountFilterType = {}));
+
+var DiscountFilterItemItemDto = /** @class */ (function () {
+    function DiscountFilterItemItemDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType.PRODUCTS; })),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DiscountFilterItemItemDto.prototype, "productId");
+    __decorate([
+        decorate(Expose()),
+        decorate(ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType.COMPANIES; })),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DiscountFilterItemItemDto.prototype, "companyId");
+    __decorate([
+        decorate(Expose()),
+        decorate(ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType.CATEGORIES; })),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DiscountFilterItemItemDto.prototype, "categoryId");
+    return DiscountFilterItemItemDto;
+}());
+
+var PaginateResponseMetadataDto = /** @class */ (function () {
+    function PaginateResponseMetadataDto() {
+    }
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "itemCount");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "totalItems");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "itemsPerPage");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "totalPages");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PaginateResponseMetadataDto.prototype, "currentPage");
+    return PaginateResponseMetadataDto;
+}());
+
 var BaseDBFieldsDto = /** @class */ (function () {
     function BaseDBFieldsDto() {
     }
@@ -4102,14 +3901,6 @@ var ProductAdjustmentDiscountType;
     ProductAdjustmentDiscountType["FIXED_PRICE_PER_ITEM"] = "FIXED_PRICE_PER_ITEM";
 })(ProductAdjustmentDiscountType || (ProductAdjustmentDiscountType = {}));
 
-var BXGYType;
-(function (BXGYType) {
-    BXGYType["ALL"] = "ALL";
-    BXGYType["CATEGORIES"] = "CATEGORIES";
-    BXGYType["COMPANIES"] = "COMPANIES";
-    BXGYType["PRODUCTS"] = "PRODUCTS";
-})(BXGYType || (BXGYType = {}));
-
 var BXGYCountType;
 (function (BXGYCountType) {
     BXGYCountType["ALL"] = "ALL";
@@ -4164,7 +3955,8 @@ var DiscountBulkItemDto = /** @class */ (function () {
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
-        decorate(IsDecimal()),
+        decorate(Type(function () { return Number; })),
+        decorate(IsNumber()),
         __metadata("design:type", Number)
     ], DiscountBulkItemDto.prototype, "discountAmount");
     __decorate([
@@ -4183,25 +3975,9 @@ var BXGYDiscountType;
     BXGYDiscountType["FREE"] = "FREE";
 })(BXGYDiscountType || (BXGYDiscountType = {}));
 
-var AutoCompleteOptionItemDto = /** @class */ (function () {
-    function AutoCompleteOptionItemDto() {
-    }
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        __metadata("design:type", Number)
-    ], AutoCompleteOptionItemDto.prototype, "id");
-    __decorate([
-        decorate(Expose()),
-        decorate(Allow()),
-        __metadata("design:type", String)
-    ], AutoCompleteOptionItemDto.prototype, "label");
-    return AutoCompleteOptionItemDto;
-}());
-
 var DiscountBxgyItemDto = /** @class */ (function () {
     function DiscountBxgyItemDto() {
+        this.isBXGYRecursive = false;
     }
     __decorate([
         decorate(Expose()),
@@ -4234,7 +4010,8 @@ var DiscountBxgyItemDto = /** @class */ (function () {
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType !== BXGYDiscountType.FREE; })),
-        decorate(IsDecimal()),
+        decorate(Type(function () { return Number; })),
+        decorate(IsNumber()),
         __metadata("design:type", Number)
     ], DiscountBxgyItemDto.prototype, "discountAmount");
     __decorate([
@@ -4258,31 +4035,20 @@ var DiscountBxgyItemDto = /** @class */ (function () {
     ], DiscountBxgyItemDto.prototype, "maximumQuantity");
     __decorate([
         decorate(Expose()),
-        decorate(ValidateIf(function (o) { return o.BXGYType === BXGYType.PRODUCTS; })),
+        decorate(ValidateIf(function (o) { return o.BXGYType !== BXGYType.ALL; })),
+        decorate(Transform(function (_a) {
+            var value = _a.value, obj = _a.obj;
+            return value === null || value === void 0 ? void 0 : value.map(function (valueObj) {
+                valueObj.BXGYType = obj === null || obj === void 0 ? void 0 : obj.BXGYType;
+                return valueObj;
+            });
+        })),
         decorate(IsArray()),
         decorate(ValidateNested({ each: true })),
         decorate(ArrayMinSize(1)),
-        decorate(Type(function () { return AutoCompleteOptionItemDto; })),
+        decorate(Type(function () { return DiscountBxgyItemItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBxgyItemDto.prototype, "products");
-    __decorate([
-        decorate(Expose()),
-        decorate(ValidateIf(function (o) { return o.BXGYType === BXGYType.COMPANIES; })),
-        decorate(IsArray()),
-        decorate(ValidateNested({ each: true })),
-        decorate(ArrayMinSize(1)),
-        decorate(Type(function () { return AutoCompleteOptionItemDto; })),
-        __metadata("design:type", Array)
-    ], DiscountBxgyItemDto.prototype, "companies");
-    __decorate([
-        decorate(Expose()),
-        decorate(ValidateIf(function (o) { return o.BXGYType === BXGYType.CATEGORIES; })),
-        decorate(IsArray()),
-        decorate(ValidateNested({ each: true })),
-        decorate(ArrayMinSize(1)),
-        decorate(Type(function () { return AutoCompleteOptionItemDto; })),
-        __metadata("design:type", Array)
-    ], DiscountBxgyItemDto.prototype, "categories");
+    ], DiscountBxgyItemDto.prototype, "discountBXGYItemItems");
     return DiscountBxgyItemDto;
 }());
 
@@ -4295,6 +4061,7 @@ var BXGXDiscountType;
 
 var DiscountBxgxItemDto = /** @class */ (function () {
     function DiscountBxgxItemDto() {
+        this.isBXGXRecursive = false;
     }
     __decorate([
         decorate(Expose()),
@@ -4327,7 +4094,8 @@ var DiscountBxgxItemDto = /** @class */ (function () {
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType !== BXGXDiscountType.FREE; })),
-        decorate(IsDecimal()),
+        decorate(Type(function () { return Number; })),
+        decorate(IsNumber()),
         __metadata("design:type", Number)
     ], DiscountBxgxItemDto.prototype, "discountAmount");
     __decorate([
@@ -4345,14 +4113,6 @@ var DiscountBxgxItemDto = /** @class */ (function () {
     ], DiscountBxgxItemDto.prototype, "maximumQuantity");
     return DiscountBxgxItemDto;
 }());
-
-var DiscountFilterType;
-(function (DiscountFilterType) {
-    DiscountFilterType["ALL"] = "ALL";
-    DiscountFilterType["PRODUCTS"] = "PRODUCTS";
-    DiscountFilterType["COMPANIES"] = "COMPANIES";
-    DiscountFilterType["CATEGORIES"] = "CATEGORIES";
-})(DiscountFilterType || (DiscountFilterType = {}));
 
 var DiscountFilterItemDto = /** @class */ (function () {
     function DiscountFilterItemDto() {
@@ -4382,31 +4142,20 @@ var DiscountFilterItemDto = /** @class */ (function () {
     ], DiscountFilterItemDto.prototype, "isInList");
     __decorate([
         decorate(Expose()),
-        decorate(ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType.PRODUCTS; })),
+        decorate(ValidateIf(function (o) { return o.discountFilterType !== DiscountFilterType.ALL; })),
+        decorate(Transform(function (_a) {
+            var value = _a.value, obj = _a.obj;
+            return value === null || value === void 0 ? void 0 : value.map(function (valueObj) {
+                valueObj.discountFilterType = obj === null || obj === void 0 ? void 0 : obj.discountFilterType;
+                return valueObj;
+            });
+        })),
         decorate(IsArray()),
         decorate(ValidateNested({ each: true })),
         decorate(ArrayMinSize(1)),
-        decorate(Type(function () { return AutoCompleteOptionItemDto; })),
+        decorate(Type(function () { return DiscountFilterItemItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountFilterItemDto.prototype, "products");
-    __decorate([
-        decorate(Expose()),
-        decorate(ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType.COMPANIES; })),
-        decorate(IsArray()),
-        decorate(ValidateNested({ each: true })),
-        decorate(ArrayMinSize(1)),
-        decorate(Type(function () { return AutoCompleteOptionItemDto; })),
-        __metadata("design:type", Array)
-    ], DiscountFilterItemDto.prototype, "companies");
-    __decorate([
-        decorate(Expose()),
-        decorate(ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType.CATEGORIES; })),
-        decorate(IsArray()),
-        decorate(ValidateNested({ each: true })),
-        decorate(ArrayMinSize(1)),
-        decorate(Type(function () { return AutoCompleteOptionItemDto; })),
-        __metadata("design:type", Array)
-    ], DiscountFilterItemDto.prototype, "categories");
+    ], DiscountFilterItemDto.prototype, "discountFilterItemItems");
     return DiscountFilterItemDto;
 }());
 
@@ -4437,16 +4186,9 @@ var DiscountConditionItemDto = /** @class */ (function () {
     }
     __decorate([
         decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(ValidateIf(function (_object, value) { return !!value; })),
+        decorate(IsNotEmpty()),
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
-        __metadata("design:type", Number)
-    ], DiscountConditionItemDto.prototype, "id");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsDecimal()),
         __metadata("design:type", Number)
     ], DiscountConditionItemDto.prototype, "conditionValue");
     __decorate([
@@ -4515,8 +4257,8 @@ var DiscountBaseDto = /** @class */ (function () {
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
-        decorate(IsInt()),
         decorate(Type(function () { return Number; })),
+        decorate(IsInt()),
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "priority");
     __decorate([
@@ -4536,7 +4278,8 @@ var DiscountBaseDto = /** @class */ (function () {
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.PRODUCT_ADJUSTMENT; })),
-        decorate(IsDecimal()),
+        decorate(Type(function () { return Number; })),
+        decorate(IsNumber()),
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "productAdjustmentDiscountAmount");
     __decorate([
@@ -4548,7 +4291,8 @@ var DiscountBaseDto = /** @class */ (function () {
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.CART_ADJUSTMENT; })),
-        decorate(IsDecimal()),
+        decorate(Type(function () { return Number; })),
+        decorate(IsNumber()),
         __metadata("design:type", Number)
     ], DiscountBaseDto.prototype, "cartAdjustmentDiscountAmount");
     __decorate([
@@ -4679,7 +4423,6 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(IsOptional()),
         decorate(IsArray()),
         decorate(ValidateNested({ each: true })),
-        decorate(ArrayMinSize(0)),
         decorate(Type(function () { return DiscountConditionItemDto; })),
         __metadata("design:type", Array)
     ], DiscountBaseDto.prototype, "discountConditionItems");
@@ -4760,6 +4503,23 @@ var DiscountCreateDto = /** @class */ (function (_super) {
     }
     return DiscountCreateDto;
 }(DiscountBaseDto));
+
+var AutoCompleteOptionItemDto = /** @class */ (function () {
+    function AutoCompleteOptionItemDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        __metadata("design:type", Number)
+    ], AutoCompleteOptionItemDto.prototype, "id");
+    __decorate([
+        decorate(Expose()),
+        decorate(Allow()),
+        __metadata("design:type", String)
+    ], AutoCompleteOptionItemDto.prototype, "label");
+    return AutoCompleteOptionItemDto;
+}());
 
 var DiscountUpdateDto = /** @class */ (function (_super) {
     __extends(DiscountUpdateDto, _super);
@@ -5202,5 +4962,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map

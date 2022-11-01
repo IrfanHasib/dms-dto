@@ -1,4 +1,4 @@
-import { IsDecimal, IsEnum, IsNotEmpty, IsNumber, IsOptional, ValidateIf } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 import { ConditionCountType } from '../enum/conditionCountType';
 import { ConditionOperator } from '../enum/conditionOperator';
@@ -7,15 +7,9 @@ import { decorate } from 'ts-mixer';
 
 export class DiscountConditionItemDto {
   @decorate(Expose())
-  @decorate(IsOptional())
-  @decorate(ValidateIf((_object, value) => !!value))
+  @decorate(IsNotEmpty())
   @decorate(Type(() => Number))
   @decorate(IsNumber())
-  id: number;
-
-  @decorate(Expose())
-  @decorate(IsNotEmpty())
-  @decorate(IsDecimal())
   conditionValue: number;
 
   @decorate(Expose())

@@ -2,10 +2,10 @@ import {
   ArrayMinSize,
   IsArray,
   IsDateString,
-  IsDecimal,
   IsEnum,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   ValidateIf,
@@ -66,8 +66,8 @@ export class DiscountBaseDto {
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
-  @decorate(IsInt())
   @decorate(Type(() => Number))
+  @decorate(IsInt())
   priority: number;
 
   @decorate(Expose())
@@ -85,7 +85,8 @@ export class DiscountBaseDto {
 
   @decorate(Expose())
   @decorate(ValidateIf(o => o.discountType === DiscountType.PRODUCT_ADJUSTMENT))
-  @decorate(IsDecimal())
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
   productAdjustmentDiscountAmount: number;
 
   //DiscountType.CART_ADJUSTMENT
@@ -96,7 +97,8 @@ export class DiscountBaseDto {
 
   @decorate(Expose())
   @decorate(ValidateIf(o => o.discountType === DiscountType.CART_ADJUSTMENT))
-  @decorate(IsDecimal())
+  @decorate(Type(() => Number))
+  @decorate(IsNumber())
   cartAdjustmentDiscountAmount: number;
 
   @decorate(Expose())
@@ -222,7 +224,6 @@ export class DiscountBaseDto {
   @decorate(IsOptional())
   @decorate(IsArray())
   @decorate(ValidateNested({ each: true }))
-  @decorate(ArrayMinSize(0))
   @decorate(Type(() => DiscountConditionItemDto))
   discountConditionItems: DiscountConditionItemDto[];
 }
