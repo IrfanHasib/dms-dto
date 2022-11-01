@@ -4772,6 +4772,158 @@ var ProductUpdateDto = /** @class */ (function (_super) {
     return ProductUpdateDto;
 }(ProductBaseDto));
 
+var PurchaseItemBaseDto = /** @class */ (function () {
+    function PurchaseItemBaseDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], PurchaseItemBaseDto.prototype, "productId");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], PurchaseItemBaseDto.prototype, "cost");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], PurchaseItemBaseDto.prototype, "quantity");
+    return PurchaseItemBaseDto;
+}());
+
+var PurchaseBaseDto = /** @class */ (function () {
+    function PurchaseBaseDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsString()),
+        __metadata("design:type", String)
+    ], PurchaseBaseDto.prototype, "title");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsString()),
+        __metadata("design:type", String)
+    ], PurchaseBaseDto.prototype, "invoiceNumber");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsString()),
+        __metadata("design:type", String)
+    ], PurchaseBaseDto.prototype, "invoiceImage");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsString()),
+        __metadata("design:type", String)
+    ], PurchaseBaseDto.prototype, "comment");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(Transform(function (_a) {
+            var value = _a.value;
+            return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
+        })),
+        __metadata("design:type", Boolean)
+    ], PurchaseBaseDto.prototype, "isDraft");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], PurchaseBaseDto.prototype, "companyId");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsArray()),
+        decorate(ArrayMinSize(1)),
+        decorate(ValidateNested({ each: true })),
+        decorate(Type(function () { return PurchaseItemBaseDto; })),
+        __metadata("design:type", Array)
+    ], PurchaseBaseDto.prototype, "purchaseItems");
+    return PurchaseBaseDto;
+}());
+
+var PurchaseCreateDto = /** @class */ (function (_super) {
+    __extends(PurchaseCreateDto, _super);
+    function PurchaseCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return PurchaseCreateDto;
+}(PurchaseBaseDto));
+
+var PurchaseItemDto = /** @class */ (function (_super) {
+    __extends(PurchaseItemDto, _super);
+    function PurchaseItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], PurchaseItemDto.prototype, "userId");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], PurchaseItemDto.prototype, "totalAmount");
+    return PurchaseItemDto;
+}(Mixin(BaseDBFieldsDto, PurchaseBaseDto)));
+
+var PurchasePaginateRequestDto = /** @class */ (function (_super) {
+    __extends(PurchasePaginateRequestDto, _super);
+    function PurchasePaginateRequestDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        Type(function () { return Number; }),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], PurchasePaginateRequestDto.prototype, "companyId");
+    return PurchasePaginateRequestDto;
+}(PaginateRequestDto));
+
+var PurchasePaginateResponseDto = /** @class */ (function (_super) {
+    __extends(PurchasePaginateResponseDto, _super);
+    function PurchasePaginateResponseDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsArray(),
+        Type(function () { return PurchaseItemDto; }),
+        ValidateNested({ each: true }),
+        __metadata("design:type", Array)
+    ], PurchasePaginateResponseDto.prototype, "items");
+    return PurchasePaginateResponseDto;
+}(PaginateResponseMetadataDto));
+
+var PurchaseUpdateDto = /** @class */ (function (_super) {
+    __extends(PurchaseUpdateDto, _super);
+    function PurchaseUpdateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return PurchaseUpdateDto;
+}(PurchaseBaseDto));
+
 /**
 Obj should not be empty, if there are no field then pass {}
  */
@@ -4839,5 +4991,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map
