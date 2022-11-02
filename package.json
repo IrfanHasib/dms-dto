@@ -27,11 +27,11 @@
     "class-validator": "^0.13.2",
     "reflect-metadata": "^0.1.13",
     "ts-mixer": "^6.0.1",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.1"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
-    "rollup": "^3.2.3",
+    "rollup": "^3.2.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
