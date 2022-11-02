@@ -28,6 +28,7 @@ var PurchaseItemBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.Min)(0)),
         __metadata("design:type", Number)
     ], PurchaseItemBaseDto.prototype, "cost", void 0);
     __decorate([
@@ -35,6 +36,7 @@ var PurchaseItemBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.Min)(1)),
         __metadata("design:type", Number)
     ], PurchaseItemBaseDto.prototype, "quantity", void 0);
     __decorate([

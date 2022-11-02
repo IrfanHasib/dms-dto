@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateIf } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 import { decorate } from 'ts-mixer';
 
@@ -17,18 +17,21 @@ export class ProductBaseDto {
   @decorate(IsNotEmpty())
   @decorate(Type(() => Number))
   @decorate(IsNumber())
+  @decorate(Min(0))
   cost: number;
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsNumber())
   @decorate(Type(() => Number))
+  @decorate(Min(0))
   price: number;
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(IsNumber())
   @decorate(Type(() => Number))
+  @decorate(Min(0))
   mrp: number;
 
   @decorate(Expose())

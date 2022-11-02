@@ -33,6 +33,7 @@ var ProductBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.Min)(0)),
         __metadata("design:type", Number)
     ], ProductBaseDto.prototype, "cost", void 0);
     __decorate([
@@ -40,6 +41,7 @@ var ProductBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.Min)(0)),
         __metadata("design:type", Number)
     ], ProductBaseDto.prototype, "price", void 0);
     __decorate([
@@ -47,6 +49,7 @@ var ProductBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.Min)(0)),
         __metadata("design:type", Number)
     ], ProductBaseDto.prototype, "mrp", void 0);
     __decorate([

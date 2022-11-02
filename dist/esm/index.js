@@ -2264,6 +2264,27 @@ function IsNotEmpty(validationOptions) {
     }, validationOptions);
 }
 
+var MIN = 'min';
+/**
+ * Checks if the first number is greater than or equal to the second.
+ */
+function min(num, min) {
+    return typeof num === 'number' && typeof min === 'number' && num >= min;
+}
+/**
+ * Checks if the first number is greater than or equal to the second.
+ */
+function Min(minValue, validationOptions) {
+    return ValidateBy({
+        name: MIN,
+        constraints: [minValue],
+        validator: {
+            validate: function (value, args) { return min(value, args.constraints[0]); },
+            defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must not be less than $constraint1'; }, validationOptions),
+        },
+    }, validationOptions);
+}
+
 var isLength_1 = createCommonjsModule(function (module, exports) {
 
 Object.defineProperty(exports, "__esModule", {
@@ -4654,6 +4675,7 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
+        decorate(Min(0)),
         __metadata("design:type", Number)
     ], ProductBaseDto.prototype, "cost");
     __decorate([
@@ -4661,6 +4683,7 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
+        decorate(Min(0)),
         __metadata("design:type", Number)
     ], ProductBaseDto.prototype, "price");
     __decorate([
@@ -4668,6 +4691,7 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
+        decorate(Min(0)),
         __metadata("design:type", Number)
     ], ProductBaseDto.prototype, "mrp");
     __decorate([
@@ -4787,6 +4811,7 @@ var PurchaseItemBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
+        decorate(Min(0)),
         __metadata("design:type", Number)
     ], PurchaseItemBaseDto.prototype, "cost");
     __decorate([
@@ -4794,6 +4819,7 @@ var PurchaseItemBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
+        decorate(Min(1)),
         __metadata("design:type", Number)
     ], PurchaseItemBaseDto.prototype, "quantity");
     __decorate([
