@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductPaginateResponseDto = exports.ProductPaginateRequestDto = exports.ProductItemDto = exports.ProductCreateDto = exports.ProductBaseDto = exports.CategoryPaginateRequestDto = exports.CategoryPaginateResponseDto = exports.CategoryItemDto = exports.CategoryCreateDto = exports.CategoryUpdateDto = exports.CategoryBaseDto = exports.DeleteResponseDto = exports.CompanyUpdateDto = exports.CompanyCreateDto = exports.CompanyBaseDto = exports.PaginateRequestDto = exports.PaginateResponseMetadataDto = exports.CompanyPaginateResponseDto = exports.CompanyItemDto = exports.BaseDBFieldsDto = exports.AuthResponseDTO = exports.LoginDTO = exports.DiscountFilterType = exports.ProductAdjustmentDiscountType = exports.DiscountType = exports.DiscountConditionType = exports.ConditionOperator = exports.ConditionCountType = exports.CartAdjustmentDiscountType = exports.BXGYType = exports.BXGYGetType = exports.BXGYDiscountType = exports.BXGYCountType = exports.BXGXDiscountType = exports.BulkDiscountType = exports.BulkAdjustmentCountType = exports.DiscountUpdateDto = exports.AutoCompleteOptionItemDto = exports.DiscountFilterItemDto = exports.DiscountCreateDto = exports.DiscountConditionItemDto = exports.DiscountBxgyItemDto = exports.DiscountBxgxItemDto = exports.DiscountBulkItemDto = exports.DiscountBaseDto = exports.DiscountItemDto = exports.DiscountPaginateRequestDto = exports.DiscountPaginateResponseDto = exports.DiscountFilterItemItemDto = exports.DiscountBxgyItemItemDto = void 0;
-exports.dtoValidator = exports.validateAndPaintToInstance = exports.PurchaseUpdateDto = exports.PurchasePaginateResponseDto = exports.PurchasePaginateRequestDto = exports.PurchaseItemBaseDto = exports.PurchaseItemDto = exports.PurchaseCreateDto = exports.PurchaseBaseDto = exports.ProductUpdateDto = void 0;
+exports.dtoValidator = exports.validateAndPaintToInstance = exports.CustomerPaginateResponseDto = exports.CustomerPaginateRequestDto = exports.CustomerUpdateDto = exports.CustomerItemDto = exports.CustomerCreateDto = exports.CustomerBaseDto = exports.PurchaseUpdateDto = exports.PurchasePaginateResponseDto = exports.PurchasePaginateRequestDto = exports.PurchaseItemBaseDto = exports.PurchaseItemDto = exports.PurchaseCreateDto = exports.PurchaseBaseDto = exports.ProductUpdateDto = void 0;
 require("reflect-metadata");
 var discount_bxgy_item_item_dto_1 = require("./dto/discount.bxgy.item.item.dto");
 Object.defineProperty(exports, "DiscountBxgyItemItemDto", { enumerable: true, get: function () { return discount_bxgy_item_item_dto_1.DiscountBxgyItemItemDto; } });
@@ -119,6 +119,18 @@ var purchase_paginate_response_dto_1 = require("./dto/purchase.paginate.response
 Object.defineProperty(exports, "PurchasePaginateResponseDto", { enumerable: true, get: function () { return purchase_paginate_response_dto_1.PurchasePaginateResponseDto; } });
 var purchase_update_dto_1 = require("./dto/purchase.update.dto");
 Object.defineProperty(exports, "PurchaseUpdateDto", { enumerable: true, get: function () { return purchase_update_dto_1.PurchaseUpdateDto; } });
+var customer_base_dto_1 = require("./dto/customer.base.dto");
+Object.defineProperty(exports, "CustomerBaseDto", { enumerable: true, get: function () { return customer_base_dto_1.CustomerBaseDto; } });
+var customer_create_dto_1 = require("./dto/customer.create.dto");
+Object.defineProperty(exports, "CustomerCreateDto", { enumerable: true, get: function () { return customer_create_dto_1.CustomerCreateDto; } });
+var customer_item_dto_1 = require("./dto/customer.item.dto");
+Object.defineProperty(exports, "CustomerItemDto", { enumerable: true, get: function () { return customer_item_dto_1.CustomerItemDto; } });
+var customer_update__dto_1 = require("./dto/customer.update..dto");
+Object.defineProperty(exports, "CustomerUpdateDto", { enumerable: true, get: function () { return customer_update__dto_1.CustomerUpdateDto; } });
+var customer_paginate_request_dto_1 = require("./dto/customer.paginate.request.dto");
+Object.defineProperty(exports, "CustomerPaginateRequestDto", { enumerable: true, get: function () { return customer_paginate_request_dto_1.CustomerPaginateRequestDto; } });
+var customer_paginate_response_dto_1 = require("./dto/customer.paginate.response.dto");
+Object.defineProperty(exports, "CustomerPaginateResponseDto", { enumerable: true, get: function () { return customer_paginate_response_dto_1.CustomerPaginateResponseDto; } });
 var validateAndPaintToInstance_1 = require("./utils/validateAndPaintToInstance");
 Object.defineProperty(exports, "validateAndPaintToInstance", { enumerable: true, get: function () { return validateAndPaintToInstance_1.validateAndPaintToInstance; } });
 var dtoValidator_1 = require("./utils/dtoValidator");

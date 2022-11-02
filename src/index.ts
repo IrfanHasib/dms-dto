@@ -57,5 +57,12 @@ export { PurchaseItemBaseDto } from './dto/purchase.item.base.dto';
 export { PurchasePaginateRequestDto } from './dto/purchase.paginate.request.dto';
 export { PurchasePaginateResponseDto } from './dto/purchase.paginate.response.dto';
 export { PurchaseUpdateDto } from './dto/purchase.update.dto';
+export { CustomerBaseDto } from './dto/customer.base.dto';
+export { CustomerCreateDto } from './dto/customer.create.dto';
+export { CustomerItemDto } from './dto/customer.item.dto';
+export { CustomerUpdateDto } from './dto/customer.update..dto';
+export { CustomerPaginateRequestDto } from './dto/customer.paginate.request.dto';
+export { CustomerPaginateResponseDto } from './dto/customer.paginate.response.dto';
+
 export { validateAndPaintToInstance } from './utils/validateAndPaintToInstance';
 export { dtoValidator } from './utils/dtoValidator';
