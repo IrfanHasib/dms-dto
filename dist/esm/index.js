@@ -4796,6 +4796,14 @@ var PurchaseItemBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
     ], PurchaseItemBaseDto.prototype, "quantity");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(ValidateIf(function (object, value) { return !!value; })),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], PurchaseItemBaseDto.prototype, "totalAmount");
     return PurchaseItemBaseDto;
 }());
 
