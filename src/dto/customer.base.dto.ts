@@ -10,8 +10,14 @@ export class CustomerBaseDto {
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
-  @IsString()
+  @decorate(IsString())
   address: string;
+
+
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsString())
+  contactPerson: string;
 
   @decorate(Expose())
   @decorate(IsOptional())

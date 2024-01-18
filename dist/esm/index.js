@@ -5214,9 +5214,15 @@ var CustomerBaseDto = /** @class */ (function () {
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
-        IsString(),
+        decorate(IsString()),
         __metadata("design:type", String)
     ], CustomerBaseDto.prototype, "address");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsString()),
+        __metadata("design:type", String)
+    ], CustomerBaseDto.prototype, "contactPerson");
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
