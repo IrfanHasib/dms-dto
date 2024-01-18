@@ -8,7 +8,8 @@
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
     "build:esm": "rollup -c",
     "build:cjs": "tsc --module CommonJS --target es5 --outDir dist/cjs",
-    "copy-to-dev": "cp -R dist ../dms-app/node_modules/dms-dto/ && cp -R dist ../dms-api/node_modules/dms-dto/",
+    "mac-copy-to-dev": "cp -R dist ../dms-app/node_modules/dms-dto/ && cp -R dist ../dms-api/node_modules/dms-dto/",
+    "win-copy-to-dev": "xcopy /E /I /Y dist\\ ..\\dms-app\\node_modules\\dms-dto\\dist && xcopy /E /I /Y dist ..\\dms-api\\node_modules\\dms-dto\\dist",
     "build": "npm run build:esm && npm run build:cjs"
   },
   "repository": {
