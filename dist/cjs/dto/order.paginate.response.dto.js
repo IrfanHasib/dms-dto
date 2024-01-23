@@ -24,33 +24,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderCreateDto = void 0;
-var order_base_dto_1 = require("./order.base.dto");
+exports.OrderPaginateResponseDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
-var ts_mixer_1 = require("ts-mixer");
-var orderItem_upsert_dto_1 = require("./orderItem.upsert.dto");
-var OrderCreateDto = /** @class */ (function (_super) {
-    __extends(OrderCreateDto, _super);
-    function OrderCreateDto() {
+var paginate_response_metadata_dto_1 = require("./paginate.response.metadata.dto");
+var order_item_dto_1 = require("./order.item.dto");
+var OrderPaginateResponseDto = /** @class */ (function (_super) {
+    __extends(OrderPaginateResponseDto, _super);
+    function OrderPaginateResponseDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderCreateDto.prototype, "customerId", void 0);
-    __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderItem_upsert_dto_1.OrderItemUpsertDto; })),
+        (0, class_transformer_1.Expose)(),
+        (0, class_validator_1.IsArray)(),
+        (0, class_transformer_1.Type)(function () { return order_item_dto_1.OrderItemDto; }),
+        (0, class_validator_1.ValidateNested)({ each: true }),
         __metadata("design:type", Array)
-    ], OrderCreateDto.prototype, "orderItems", void 0);
-    return OrderCreateDto;
-}(order_base_dto_1.OrderBaseDto));
-exports.OrderCreateDto = OrderCreateDto;
-//# sourceMappingURL=order.create.dto.js.map
+    ], OrderPaginateResponseDto.prototype, "items", void 0);
+    return OrderPaginateResponseDto;
+}(paginate_response_metadata_dto_1.PaginateResponseMetadataDto));
+exports.OrderPaginateResponseDto = OrderPaginateResponseDto;
+//# sourceMappingURL=order.paginate.response.dto.js.map

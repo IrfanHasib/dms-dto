@@ -24,33 +24,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderCreateDto = void 0;
-var order_base_dto_1 = require("./order.base.dto");
+exports.UserUpdateDto = void 0;
+var user_base_dto_1 = require("./user.base.dto");
 var class_validator_1 = require("class-validator");
-var class_transformer_1 = require("class-transformer");
 var ts_mixer_1 = require("ts-mixer");
-var orderItem_upsert_dto_1 = require("./orderItem.upsert.dto");
-var OrderCreateDto = /** @class */ (function (_super) {
-    __extends(OrderCreateDto, _super);
-    function OrderCreateDto() {
+var class_transformer_1 = require("class-transformer");
+var UserUpdateDto = /** @class */ (function (_super) {
+    __extends(UserUpdateDto, _super);
+    function UserUpdateDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderCreateDto.prototype, "customerId", void 0);
-    __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderItem_upsert_dto_1.OrderItemUpsertDto; })),
-        __metadata("design:type", Array)
-    ], OrderCreateDto.prototype, "orderItems", void 0);
-    return OrderCreateDto;
-}(order_base_dto_1.OrderBaseDto));
-exports.OrderCreateDto = OrderCreateDto;
-//# sourceMappingURL=order.create.dto.js.map
+        (0, class_validator_1.IsOptional)(),
+        (0, class_validator_1.ValidateIf)(function (object, value) { return !!value; }),
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.MinLength)(6),
+        __metadata("design:type", String)
+    ], UserUpdateDto.prototype, "password", void 0);
+    return UserUpdateDto;
+}(user_base_dto_1.UserBaseDto));
+exports.UserUpdateDto = UserUpdateDto;
+//# sourceMappingURL=user.update.dto.js.map

@@ -2242,7 +2242,35 @@ module.exports.default = exports.default;
 
 unwrapExports(assertString_1);
 
+var merge_1 = createCommonjsModule(function (module, exports) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = merge;
+
+function merge() {
+  var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var defaults = arguments.length > 1 ? arguments[1] : undefined;
+
+  for (var key in defaults) {
+    if (typeof obj[key] === 'undefined') {
+      obj[key] = defaults[key];
+    }
+  }
+
+  return obj;
+}
+
+module.exports = exports.default;
+module.exports.default = exports.default;
+});
+
+unwrapExports(merge_1);
+
 var require$$0 = assertString_1;
+
+var require$$3 = merge_1;
 
 var IS_NOT_EMPTY = 'isNotEmpty';
 /**
@@ -2281,6 +2309,446 @@ function Min(minValue, validationOptions) {
         validator: {
             validate: function (value, args) { return min(value, args.constraints[0]); },
             defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must not be less than $constraint1'; }, validationOptions),
+        },
+    }, validationOptions);
+}
+
+var isByteLength_1 = createCommonjsModule(function (module, exports) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = isByteLength;
+
+var _assertString = _interopRequireDefault(require$$0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+/* eslint-disable prefer-rest-params */
+function isByteLength(str, options) {
+  (0, _assertString.default)(str);
+  var min;
+  var max;
+
+  if (_typeof(options) === 'object') {
+    min = options.min || 0;
+    max = options.max;
+  } else {
+    // backwards compatibility: isByteLength(str, min [, max])
+    min = arguments[1];
+    max = arguments[2];
+  }
+
+  var len = encodeURI(str).split(/%..|./).length - 1;
+  return len >= min && (typeof max === 'undefined' || len <= max);
+}
+
+module.exports = exports.default;
+module.exports.default = exports.default;
+});
+
+unwrapExports(isByteLength_1);
+
+var isFQDN_1 = createCommonjsModule(function (module, exports) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = isFQDN;
+
+var _assertString = _interopRequireDefault(require$$0);
+
+var _merge = _interopRequireDefault(require$$3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var default_fqdn_options = {
+  require_tld: true,
+  allow_underscores: false,
+  allow_trailing_dot: false,
+  allow_numeric_tld: false,
+  allow_wildcard: false
+};
+
+function isFQDN(str, options) {
+  (0, _assertString.default)(str);
+  options = (0, _merge.default)(options, default_fqdn_options);
+  /* Remove the optional trailing dot before checking validity */
+
+  if (options.allow_trailing_dot && str[str.length - 1] === '.') {
+    str = str.substring(0, str.length - 1);
+  }
+  /* Remove the optional wildcard before checking validity */
+
+
+  if (options.allow_wildcard === true && str.indexOf('*.') === 0) {
+    str = str.substring(2);
+  }
+
+  var parts = str.split('.');
+  var tld = parts[parts.length - 1];
+
+  if (options.require_tld) {
+    // disallow fqdns without tld
+    if (parts.length < 2) {
+      return false;
+    }
+
+    if (!/^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i.test(tld)) {
+      return false;
+    } // disallow spaces
+
+
+    if (/\s/.test(tld)) {
+      return false;
+    }
+  } // reject numeric TLDs
+
+
+  if (!options.allow_numeric_tld && /^\d+$/.test(tld)) {
+    return false;
+  }
+
+  return parts.every(function (part) {
+    if (part.length > 63) {
+      return false;
+    }
+
+    if (!/^[a-z_\u00a1-\uffff0-9-]+$/i.test(part)) {
+      return false;
+    } // disallow full-width chars
+
+
+    if (/[\uff01-\uff5e]/.test(part)) {
+      return false;
+    } // disallow parts starting or ending with hyphen
+
+
+    if (/^-|-$/.test(part)) {
+      return false;
+    }
+
+    if (!options.allow_underscores && /_/.test(part)) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+module.exports = exports.default;
+module.exports.default = exports.default;
+});
+
+unwrapExports(isFQDN_1);
+
+var isIP_1 = createCommonjsModule(function (module, exports) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = isIP;
+
+var _assertString = _interopRequireDefault(require$$0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+11.3.  Examples
+
+   The following addresses
+
+             fe80::1234 (on the 1st link of the node)
+             ff02::5678 (on the 5th link of the node)
+             ff08::9abc (on the 10th organization of the node)
+
+   would be represented as follows:
+
+             fe80::1234%1
+             ff02::5678%5
+             ff08::9abc%10
+
+   (Here we assume a natural translation from a zone index to the
+   <zone_id> part, where the Nth zone of any scope is translated into
+   "N".)
+
+   If we use interface names as <zone_id>, those addresses could also be
+   represented as follows:
+
+            fe80::1234%ne0
+            ff02::5678%pvc1.3
+            ff08::9abc%interface10
+
+   where the interface "ne0" belongs to the 1st link, "pvc1.3" belongs
+   to the 5th link, and "interface10" belongs to the 10th organization.
+ * * */
+var IPv4SegmentFormat = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])';
+var IPv4AddressFormat = "(".concat(IPv4SegmentFormat, "[.]){3}").concat(IPv4SegmentFormat);
+var IPv4AddressRegExp = new RegExp("^".concat(IPv4AddressFormat, "$"));
+var IPv6SegmentFormat = '(?:[0-9a-fA-F]{1,4})';
+var IPv6AddressRegExp = new RegExp('^(' + "(?:".concat(IPv6SegmentFormat, ":){7}(?:").concat(IPv6SegmentFormat, "|:)|") + "(?:".concat(IPv6SegmentFormat, ":){6}(?:").concat(IPv4AddressFormat, "|:").concat(IPv6SegmentFormat, "|:)|") + "(?:".concat(IPv6SegmentFormat, ":){5}(?::").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,2}|:)|") + "(?:".concat(IPv6SegmentFormat, ":){4}(?:(:").concat(IPv6SegmentFormat, "){0,1}:").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,3}|:)|") + "(?:".concat(IPv6SegmentFormat, ":){3}(?:(:").concat(IPv6SegmentFormat, "){0,2}:").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,4}|:)|") + "(?:".concat(IPv6SegmentFormat, ":){2}(?:(:").concat(IPv6SegmentFormat, "){0,3}:").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,5}|:)|") + "(?:".concat(IPv6SegmentFormat, ":){1}(?:(:").concat(IPv6SegmentFormat, "){0,4}:").concat(IPv4AddressFormat, "|(:").concat(IPv6SegmentFormat, "){1,6}|:)|") + "(?::((?::".concat(IPv6SegmentFormat, "){0,5}:").concat(IPv4AddressFormat, "|(?::").concat(IPv6SegmentFormat, "){1,7}|:))") + ')(%[0-9a-zA-Z-.:]{1,})?$');
+
+function isIP(str) {
+  var version = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  (0, _assertString.default)(str);
+  version = String(version);
+
+  if (!version) {
+    return isIP(str, 4) || isIP(str, 6);
+  }
+
+  if (version === '4') {
+    if (!IPv4AddressRegExp.test(str)) {
+      return false;
+    }
+
+    var parts = str.split('.').sort(function (a, b) {
+      return a - b;
+    });
+    return parts[3] <= 255;
+  }
+
+  if (version === '6') {
+    return !!IPv6AddressRegExp.test(str);
+  }
+
+  return false;
+}
+
+module.exports = exports.default;
+module.exports.default = exports.default;
+});
+
+unwrapExports(isIP_1);
+
+var require$$2$1 = isByteLength_1;
+
+var require$$1 = isFQDN_1;
+
+var require$$2 = isIP_1;
+
+var isEmail_1 = createCommonjsModule(function (module, exports) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = isEmail;
+
+var _assertString = _interopRequireDefault(require$$0);
+
+var _merge = _interopRequireDefault(require$$3);
+
+var _isByteLength = _interopRequireDefault(require$$2$1);
+
+var _isFQDN = _interopRequireDefault(require$$1);
+
+var _isIP = _interopRequireDefault(require$$2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var default_email_options = {
+  allow_display_name: false,
+  require_display_name: false,
+  allow_utf8_local_part: true,
+  require_tld: true,
+  blacklisted_chars: '',
+  ignore_max_length: false,
+  host_blacklist: []
+};
+/* eslint-disable max-len */
+
+/* eslint-disable no-control-regex */
+
+var splitNameAddress = /^([^\x00-\x1F\x7F-\x9F\cX]+)</i;
+var emailUserPart = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~]+$/i;
+var gmailUserPart = /^[a-z\d]+$/;
+var quotedEmailUser = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f]))*$/i;
+var emailUserUtf8Part = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$/i;
+var quotedEmailUserUtf8 = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*$/i;
+var defaultMaxEmailLength = 254;
+/* eslint-enable max-len */
+
+/* eslint-enable no-control-regex */
+
+/**
+ * Validate display name according to the RFC2822: https://tools.ietf.org/html/rfc2822#appendix-A.1.2
+ * @param {String} display_name
+ */
+
+function validateDisplayName(display_name) {
+  var display_name_without_quotes = display_name.replace(/^"(.+)"$/, '$1'); // display name with only spaces is not valid
+
+  if (!display_name_without_quotes.trim()) {
+    return false;
+  } // check whether display name contains illegal character
+
+
+  var contains_illegal = /[\.";<>]/.test(display_name_without_quotes);
+
+  if (contains_illegal) {
+    // if contains illegal characters,
+    // must to be enclosed in double-quotes, otherwise it's not a valid display name
+    if (display_name_without_quotes === display_name) {
+      return false;
+    } // the quotes in display name must start with character symbol \
+
+
+    var all_start_with_back_slash = display_name_without_quotes.split('"').length === display_name_without_quotes.split('\\"').length;
+
+    if (!all_start_with_back_slash) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isEmail(str, options) {
+  (0, _assertString.default)(str);
+  options = (0, _merge.default)(options, default_email_options);
+
+  if (options.require_display_name || options.allow_display_name) {
+    var display_email = str.match(splitNameAddress);
+
+    if (display_email) {
+      var display_name = display_email[1]; // Remove display name and angle brackets to get email address
+      // Can be done in the regex but will introduce a ReDOS (See  #1597 for more info)
+
+      str = str.replace(display_name, '').replace(/(^<|>$)/g, ''); // sometimes need to trim the last space to get the display name
+      // because there may be a space between display name and email address
+      // eg. myname <address@gmail.com>
+      // the display name is `myname` instead of `myname `, so need to trim the last space
+
+      if (display_name.endsWith(' ')) {
+        display_name = display_name.substr(0, display_name.length - 1);
+      }
+
+      if (!validateDisplayName(display_name)) {
+        return false;
+      }
+    } else if (options.require_display_name) {
+      return false;
+    }
+  }
+
+  if (!options.ignore_max_length && str.length > defaultMaxEmailLength) {
+    return false;
+  }
+
+  var parts = str.split('@');
+  var domain = parts.pop();
+  var lower_domain = domain.toLowerCase();
+
+  if (options.host_blacklist.includes(lower_domain)) {
+    return false;
+  }
+
+  var user = parts.join('@');
+
+  if (options.domain_specific_validation && (lower_domain === 'gmail.com' || lower_domain === 'googlemail.com')) {
+    /*
+      Previously we removed dots for gmail addresses before validating.
+      This was removed because it allows `multiple..dots@gmail.com`
+      to be reported as valid, but it is not.
+      Gmail only normalizes single dots, removing them from here is pointless,
+      should be done in normalizeEmail
+    */
+    user = user.toLowerCase(); // Removing sub-address from username before gmail validation
+
+    var username = user.split('+')[0]; // Dots are not included in gmail length restriction
+
+    if (!(0, _isByteLength.default)(username.replace(/\./g, ''), {
+      min: 6,
+      max: 30
+    })) {
+      return false;
+    }
+
+    var _user_parts = username.split('.');
+
+    for (var i = 0; i < _user_parts.length; i++) {
+      if (!gmailUserPart.test(_user_parts[i])) {
+        return false;
+      }
+    }
+  }
+
+  if (options.ignore_max_length === false && (!(0, _isByteLength.default)(user, {
+    max: 64
+  }) || !(0, _isByteLength.default)(domain, {
+    max: 254
+  }))) {
+    return false;
+  }
+
+  if (!(0, _isFQDN.default)(domain, {
+    require_tld: options.require_tld
+  })) {
+    if (!options.allow_ip_domain) {
+      return false;
+    }
+
+    if (!(0, _isIP.default)(domain)) {
+      if (!domain.startsWith('[') || !domain.endsWith(']')) {
+        return false;
+      }
+
+      var noBracketdomain = domain.substr(1, domain.length - 2);
+
+      if (noBracketdomain.length === 0 || !(0, _isIP.default)(noBracketdomain)) {
+        return false;
+      }
+    }
+  }
+
+  if (user[0] === '"') {
+    user = user.slice(1, user.length - 1);
+    return options.allow_utf8_local_part ? quotedEmailUserUtf8.test(user) : quotedEmailUser.test(user);
+  }
+
+  var pattern = options.allow_utf8_local_part ? emailUserUtf8Part : emailUserPart;
+  var user_parts = user.split('.');
+
+  for (var _i = 0; _i < user_parts.length; _i++) {
+    if (!pattern.test(user_parts[_i])) {
+      return false;
+    }
+  }
+
+  if (options.blacklisted_chars) {
+    if (user.search(new RegExp("[".concat(options.blacklisted_chars, "]+"), 'g')) !== -1) return false;
+  }
+
+  return true;
+}
+
+module.exports = exports.default;
+module.exports.default = exports.default;
+});
+
+var isEmailValidator = unwrapExports(isEmail_1);
+
+var IS_EMAIL = 'isEmail';
+/**
+ * Checks if the string is an email.
+ * If given value is not a string, then it returns false.
+ */
+function isEmail(value, options) {
+    return typeof value === 'string' && isEmailValidator(value, options);
+}
+/**
+ * Checks if the string is an email.
+ * If given value is not a string, then it returns false.
+ */
+function IsEmail(options, validationOptions) {
+    return ValidateBy({
+        name: IS_EMAIL,
+        constraints: [options],
+        validator: {
+            validate: function (value, args) { return isEmail(value, args.constraints[0]); },
+            defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must be an email'; }, validationOptions),
         },
     }, validationOptions);
 }
@@ -2598,6 +3066,29 @@ function Length(min, max, validationOptions) {
                 return (eachPrefix +
                     '$property must be longer than or equal to $constraint1 and shorter than or equal to $constraint2 characters');
             }, validationOptions),
+        },
+    }, validationOptions);
+}
+
+var MIN_LENGTH = 'minLength';
+/**
+ * Checks if the string's length is not less than given number. Note: this function takes into account surrogate pairs.
+ * If given value is not a string, then it returns false.
+ */
+function minLength(value, min) {
+    return typeof value === 'string' && isLengthValidator(value, { min: min });
+}
+/**
+ * Checks if the string's length is not less than given number. Note: this function takes into account surrogate pairs.
+ * If given value is not a string, then it returns false.
+ */
+function MinLength(min, validationOptions) {
+    return ValidateBy({
+        name: MIN_LENGTH,
+        constraints: [min],
+        validator: {
+            validate: function (value, args) { return minLength(value, args.constraints[0]); },
+            defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must be longer than or equal to $constraint1 characters'; }, validationOptions),
         },
     }, validationOptions);
 }
@@ -5344,9 +5835,9 @@ var OrderItemBaseDto = /** @class */ (function () {
     return OrderItemBaseDto;
 }());
 
-var OrderItemCreateDto = /** @class */ (function (_super) {
-    __extends(OrderItemCreateDto, _super);
-    function OrderItemCreateDto() {
+var OrderItemUpsertDto = /** @class */ (function (_super) {
+    __extends(OrderItemUpsertDto, _super);
+    function OrderItemUpsertDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
@@ -5355,15 +5846,24 @@ var OrderItemCreateDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemCreateDto.prototype, "productId");
+    ], OrderItemUpsertDto.prototype, "productId");
     __decorate([
         decorate(Expose()),
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(OrderItemType)),
         __metadata("design:type", String)
-    ], OrderItemCreateDto.prototype, "itemType");
-    return OrderItemCreateDto;
+    ], OrderItemUpsertDto.prototype, "itemType");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(ValidateIf(function (object, value) { return !!value; })),
+        decorate(IsNumber()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemUpsertDto.prototype, "id");
+    return OrderItemUpsertDto;
 }(OrderItemBaseDto));
 
 var OrderCreateDto = /** @class */ (function (_super) {
@@ -5383,7 +5883,7 @@ var OrderCreateDto = /** @class */ (function (_super) {
         decorate(IsOptional()),
         decorate(IsArray()),
         decorate(ValidateNested({ each: true })),
-        decorate(Type(function () { return OrderItemCreateDto; })),
+        decorate(Type(function () { return OrderItemUpsertDto; })),
         __metadata("design:type", Array)
     ], OrderCreateDto.prototype, "orderItems");
     return OrderCreateDto;
@@ -5432,6 +5932,338 @@ var OrderItemUpdateDto = /** @class */ (function (_super) {
     return OrderItemUpdateDto;
 }(OrderItemBaseDto));
 
+var OrderItemItemDto = /** @class */ (function (_super) {
+    __extends(OrderItemItemDto, _super);
+    function OrderItemItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        Type(function () { return ProductItemDto; }),
+        __metadata("design:type", ProductItemDto)
+    ], OrderItemItemDto.prototype, "product");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsEnum(OrderItemType)),
+        __metadata("design:type", String)
+    ], OrderItemItemDto.prototype, "itemType");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "cost");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "regular_price");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "sale_price");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "mrp");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "quantity");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "totalRegularAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "totalSaleAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "totalDiscount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "oldQuantity");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "oldTotalRegularAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "oldTotalSaleAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemItemDto.prototype, "oldTotalDiscount");
+    return OrderItemItemDto;
+}(Mixin(BaseDBFieldsDto, OrderItemBaseDto)));
+
+var OrderPaginateRequestDto = /** @class */ (function (_super) {
+    __extends(OrderPaginateRequestDto, _super);
+    function OrderPaginateRequestDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return OrderPaginateRequestDto;
+}(PaginateRequestDto));
+
+function TransformBoolean() {
+    return Transform(function (_a) {
+        var value = _a.value;
+        if (typeof value === 'undefined' || value === null) {
+            return false;
+        }
+        // Normalize the value to a lower-case string for case-insensitive comparison
+        var stringValue = String(value).toLowerCase();
+        return ['true', 'enabled', '1', 'yes'].includes(stringValue) || value === true;
+    });
+}
+
+var UserType;
+(function (UserType) {
+    UserType["ORGANIZATION_USER"] = "ORGANIZATION_USER";
+    UserType["DMS_USER"] = "DMS_USER";
+})(UserType || (UserType = {}));
+
+var DMSRole;
+(function (DMSRole) {
+    DMSRole["SUPER_ADMIN"] = "SUPER_ADMIN";
+    DMSRole["ADMIN"] = "ADMIN";
+    DMSRole["MANAGER"] = "MANAGER";
+})(DMSRole || (DMSRole = {}));
+
+var OrganizationRole;
+(function (OrganizationRole) {
+    OrganizationRole["ADMIN"] = "ADMIN";
+    OrganizationRole["MANAGER"] = "MANAGER";
+    OrganizationRole["WAREHOUSE_KEEPER"] = "WAREHOUSE_KEEPER";
+    OrganizationRole["DELIVERY_MAN"] = "DELIVERY_MAN";
+    OrganizationRole["SALES_REPRESENTATIVE"] = "SALES_REPRESENTATIVE";
+    OrganizationRole["SALES_MANAGER"] = "SALES_MANAGER";
+})(OrganizationRole || (OrganizationRole = {}));
+
+var UserBaseDto = /** @class */ (function () {
+    function UserBaseDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        IsNotEmpty(),
+        IsString(),
+        __metadata("design:type", String)
+    ], UserBaseDto.prototype, "name");
+    __decorate([
+        decorate(Expose()),
+        IsNotEmpty(),
+        Length(11, 11),
+        IsMobilePhone('bn-BD'),
+        __metadata("design:type", String)
+    ], UserBaseDto.prototype, "mobile");
+    __decorate([
+        decorate(Expose()),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsEmail(),
+        __metadata("design:type", String)
+    ], UserBaseDto.prototype, "email");
+    __decorate([
+        decorate(Expose()),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsString(),
+        __metadata("design:type", String)
+    ], UserBaseDto.prototype, "address");
+    __decorate([
+        decorate(Expose()),
+        IsNotEmpty(),
+        IsEnum(UserType),
+        __metadata("design:type", String)
+    ], UserBaseDto.prototype, "userType");
+    __decorate([
+        decorate(Expose()),
+        ValidateIf(function (o) { return o.userType === UserType.DMS_USER; }),
+        IsNotEmpty(),
+        IsEnum(DMSRole),
+        __metadata("design:type", String)
+    ], UserBaseDto.prototype, "dmsRole");
+    __decorate([
+        decorate(Expose()),
+        ValidateIf(function (o) { return o.userType === UserType.ORGANIZATION_USER; }),
+        IsNotEmpty(),
+        IsEnum(OrganizationRole),
+        __metadata("design:type", String)
+    ], UserBaseDto.prototype, "organizationRole");
+    return UserBaseDto;
+}());
+
+var UserItemDto = /** @class */ (function (_super) {
+    __extends(UserItemDto, _super);
+    function UserItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], UserItemDto.prototype, "organizationId");
+    return UserItemDto;
+}(Mixin(BaseDBFieldsDto, UserBaseDto)));
+
+var OrderItemDto = /** @class */ (function (_super) {
+    __extends(OrderItemDto, _super);
+    function OrderItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsArray()),
+        decorate(ValidateNested({ each: true })),
+        decorate(Type(function () { return OrderItemItemDto; })),
+        __metadata("design:type", Array)
+    ], OrderItemDto.prototype, "orderItems");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(Type(function () { return CustomerItemDto; })),
+        __metadata("design:type", CustomerItemDto)
+    ], OrderItemDto.prototype, "customer");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(ValidateIf(function (object, value) { return !!value; })),
+        decorate(Type(function () { return UserItemDto; })),
+        __metadata("design:type", UserItemDto)
+    ], OrderItemDto.prototype, "deliveryUser");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(Type(function () { return UserItemDto; })),
+        __metadata("design:type", UserItemDto)
+    ], OrderItemDto.prototype, "orderUser");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "oldTotalDiscount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "oldTotalSaleAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "oldTotalRegularAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "totalDiscount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "totalSaleAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "totalRegularAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], OrderItemDto.prototype, "isCompleted");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], OrderItemDto.prototype, "isDelivered");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(ValidateIf(function (object, value) { return !!value; })),
+        decorate(Type(function () { return Date; })),
+        decorate(IsDate()),
+        __metadata("design:type", Object)
+    ], OrderItemDto.prototype, "deliveryDate");
+    return OrderItemDto;
+}(Mixin(BaseDBFieldsDto, OrderBaseDto)));
+
+var OrderPaginateResponseDto = /** @class */ (function (_super) {
+    __extends(OrderPaginateResponseDto, _super);
+    function OrderPaginateResponseDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsArray(),
+        Type(function () { return OrderItemDto; }),
+        ValidateNested({ each: true }),
+        __metadata("design:type", Array)
+    ], OrderPaginateResponseDto.prototype, "items");
+    return OrderPaginateResponseDto;
+}(PaginateResponseMetadataDto));
+
 var CreatedResponseDto = /** @class */ (function () {
     function CreatedResponseDto() {
     }
@@ -5450,6 +6282,46 @@ var CreatedResponseDto = /** @class */ (function () {
     ], CreatedResponseDto.prototype, "id");
     return CreatedResponseDto;
 }());
+
+var UserCreateDto = /** @class */ (function (_super) {
+    __extends(UserCreateDto, _super);
+    function UserCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsInt(),
+        Type(function () { return Number; }),
+        __metadata("design:type", Number)
+    ], UserCreateDto.prototype, "organizationId");
+    __decorate([
+        decorate(Expose()),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsString(),
+        MinLength(6),
+        __metadata("design:type", String)
+    ], UserCreateDto.prototype, "password");
+    return UserCreateDto;
+}(UserBaseDto));
+
+var UserUpdateDto = /** @class */ (function (_super) {
+    __extends(UserUpdateDto, _super);
+    function UserUpdateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        IsOptional(),
+        ValidateIf(function (object, value) { return !!value; }),
+        IsString(),
+        MinLength(6),
+        __metadata("design:type", String)
+    ], UserUpdateDto.prototype, "password");
+    return UserUpdateDto;
+}(UserBaseDto));
 
 /**
 Obj should not be empty, if there are no field then pass {}
@@ -5518,5 +6390,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CreatedResponseDto, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, OrderBaseDto, OrderCreateDto, OrderItemBaseDto, OrderItemCartOperationDto, OrderItemCreateDto, OrderItemType, OrderItemUpdateDto, OrderUpdateDto, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CreatedResponseDto, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DMSRole, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, OrderBaseDto, OrderCreateDto, OrderItemBaseDto, OrderItemCartOperationDto, OrderItemDto, OrderItemItemDto, OrderItemType, OrderItemUpdateDto, OrderItemUpsertDto, OrderPaginateRequestDto, OrderPaginateResponseDto, OrderUpdateDto, OrganizationRole, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, TransformBoolean, UserBaseDto, UserCreateDto, UserItemDto, UserType, UserUpdateDto, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map

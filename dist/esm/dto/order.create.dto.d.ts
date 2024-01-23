@@ -1,6 +1,6 @@
 import { OrderBaseDto } from './order.base.dto';
-import { OrderItemCreateDto } from './orderItem.create.dto';
+import { OrderItemUpsertDto } from './orderItem.upsert.dto';
 export declare class OrderCreateDto extends OrderBaseDto {
     customerId: number;
-    orderItems?: OrderItemCreateDto[];
+    orderItems?: OrderItemUpsertDto[];
 }

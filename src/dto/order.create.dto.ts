@@ -2,7 +2,7 @@ import { OrderBaseDto } from './order.base.dto';
 import { IsArray, IsInt, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 import { decorate } from 'ts-mixer';
-import { OrderItemCreateDto } from './orderItem.create.dto';
+import { OrderItemUpsertDto } from './orderItem.upsert.dto';
 
 export class OrderCreateDto extends OrderBaseDto {
   @decorate(Expose())
@@ -15,6 +15,6 @@ export class OrderCreateDto extends OrderBaseDto {
   @decorate(IsOptional())
   @decorate(IsArray())
   @decorate(ValidateNested({ each: true }))
-  @decorate(Type(() => OrderItemCreateDto))
-  orderItems?: OrderItemCreateDto[];
+  @decorate(Type(() => OrderItemUpsertDto))
+  orderItems?: OrderItemUpsertDto[];
 }
