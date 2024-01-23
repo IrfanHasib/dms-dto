@@ -9,26 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginDTO = void 0;
+exports.CreatedResponseDto = void 0;
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
-var ts_mixer_1 = require("ts-mixer");
-var LoginDTO = /** @class */ (function () {
-    function LoginDTO() {
+var CreatedResponseDto = /** @class */ (function () {
+    function CreatedResponseDto() {
     }
     __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.Length)(11, 11)),
+        (0, class_transformer_1.Expose)(),
+        (0, class_validator_1.IsOptional)(),
+        (0, class_validator_1.IsString)(),
         __metadata("design:type", String)
-    ], LoginDTO.prototype, "mobile", void 0);
+    ], CreatedResponseDto.prototype, "message", void 0);
     __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.Length)(6)),
-        __metadata("design:type", String)
-    ], LoginDTO.prototype, "password", void 0);
-    return LoginDTO;
+        (0, class_transformer_1.Expose)(),
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsNumber)(),
+        (0, class_validator_1.IsInt)(),
+        __metadata("design:type", Number)
+    ], CreatedResponseDto.prototype, "id", void 0);
+    return CreatedResponseDto;
 }());
-exports.LoginDTO = LoginDTO;
-//# sourceMappingURL=login.dto.js.map
+exports.CreatedResponseDto = CreatedResponseDto;
+//# sourceMappingURL=created.response.dto.js.map

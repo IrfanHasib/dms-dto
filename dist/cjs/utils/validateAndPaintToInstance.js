@@ -56,7 +56,7 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter(void 0, 
             case 1:
                 returnError = _a.sent();
                 if (returnError.length > 0) {
-                    returnError = __spreadArray(['Response is not valid'], returnError, true);
+                    returnError = __spreadArray(['Object is not valid'], returnError, true);
                     throw new Error(returnError === null || returnError === void 0 ? void 0 : returnError.join('. \n'));
                 }
                 return [2 /*return*/, (0, class_transformer_1.plainToInstance)(dto, obj, {

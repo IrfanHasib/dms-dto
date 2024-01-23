@@ -9,26 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginDTO = void 0;
+exports.OrderItemBaseDto = void 0;
+var ts_mixer_1 = require("ts-mixer");
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
-var ts_mixer_1 = require("ts-mixer");
-var LoginDTO = /** @class */ (function () {
-    function LoginDTO() {
+var OrderItemBaseDto = /** @class */ (function () {
+    function OrderItemBaseDto() {
     }
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.Length)(11, 11)),
-        __metadata("design:type", String)
-    ], LoginDTO.prototype, "mobile", void 0);
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.Min)(0)),
+        __metadata("design:type", Number)
+    ], OrderItemBaseDto.prototype, "sale_price", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.Length)(6)),
-        __metadata("design:type", String)
-    ], LoginDTO.prototype, "password", void 0);
-    return LoginDTO;
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.Min)(0)),
+        __metadata("design:type", Number)
+    ], OrderItemBaseDto.prototype, "quantity", void 0);
+    return OrderItemBaseDto;
 }());
-exports.LoginDTO = LoginDTO;
-//# sourceMappingURL=login.dto.js.map
+exports.OrderItemBaseDto = OrderItemBaseDto;
+//# sourceMappingURL=orderItem.base.dto.js.map

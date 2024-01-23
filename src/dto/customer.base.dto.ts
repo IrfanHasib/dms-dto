@@ -13,7 +13,6 @@ export class CustomerBaseDto {
   @decorate(IsString())
   address: string;
 
-
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(IsString())

@@ -1,14 +1,15 @@
 import { IsNotEmpty, Length } from 'class-validator';
 import { Expose } from 'class-transformer';
+import { decorate } from 'ts-mixer';
 
 export class LoginDTO {
-  @Expose()
-  @IsNotEmpty()
-  @Length(11, 11)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(Length(11, 11))
   mobile: string;
 
-  @Expose()
-  @IsNotEmpty()
-  @Length(6)
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(Length(6))
   password: string;
 }

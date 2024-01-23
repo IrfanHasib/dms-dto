@@ -4671,19 +4671,26 @@ var DiscountUpdateDto = /** @class */ (function (_super) {
     return DiscountUpdateDto;
 }(DiscountBaseDto));
 
+var OrderItemType;
+(function (OrderItemType) {
+    OrderItemType["RETURN"] = "RETURN";
+    OrderItemType["DAMAGE_RETURN"] = "DAMAGE_RETURN";
+    OrderItemType["SALE"] = "SALE";
+})(OrderItemType || (OrderItemType = {}));
+
 var LoginDTO = /** @class */ (function () {
     function LoginDTO() {
     }
     __decorate([
-        Expose(),
-        IsNotEmpty(),
-        Length(11, 11),
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(Length(11, 11)),
         __metadata("design:type", String)
     ], LoginDTO.prototype, "mobile");
     __decorate([
-        Expose(),
-        IsNotEmpty(),
-        Length(6),
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(Length(6)),
         __metadata("design:type", String)
     ], LoginDTO.prototype, "password");
     return LoginDTO;
@@ -5303,6 +5310,147 @@ var CustomerPaginateResponseDto = /** @class */ (function (_super) {
     return CustomerPaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
+var OrderBaseDto = /** @class */ (function () {
+    function OrderBaseDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsString()),
+        __metadata("design:type", String)
+    ], OrderBaseDto.prototype, "comment");
+    return OrderBaseDto;
+}());
+
+var OrderItemBaseDto = /** @class */ (function () {
+    function OrderItemBaseDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        decorate(Min(0)),
+        __metadata("design:type", Number)
+    ], OrderItemBaseDto.prototype, "sale_price");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        decorate(Min(0)),
+        __metadata("design:type", Number)
+    ], OrderItemBaseDto.prototype, "quantity");
+    return OrderItemBaseDto;
+}());
+
+var OrderItemCreateDto = /** @class */ (function (_super) {
+    __extends(OrderItemCreateDto, _super);
+    function OrderItemCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemCreateDto.prototype, "productId");
+    __decorate([
+        decorate(Expose()),
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsEnum(OrderItemType)),
+        __metadata("design:type", String)
+    ], OrderItemCreateDto.prototype, "itemType");
+    return OrderItemCreateDto;
+}(OrderItemBaseDto));
+
+var OrderCreateDto = /** @class */ (function (_super) {
+    __extends(OrderCreateDto, _super);
+    function OrderCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderCreateDto.prototype, "customerId");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsArray()),
+        decorate(ValidateNested({ each: true })),
+        decorate(Type(function () { return OrderItemCreateDto; })),
+        __metadata("design:type", Array)
+    ], OrderCreateDto.prototype, "orderItems");
+    return OrderCreateDto;
+}(OrderBaseDto));
+
+var OrderUpdateDto = /** @class */ (function (_super) {
+    __extends(OrderUpdateDto, _super);
+    function OrderUpdateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return OrderUpdateDto;
+}(OrderBaseDto));
+
+var OrderItemCartOperationDto = /** @class */ (function () {
+    function OrderItemCartOperationDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemCartOperationDto.prototype, "quantity");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemCartOperationDto.prototype, "productId");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemCartOperationDto.prototype, "orderId");
+    return OrderItemCartOperationDto;
+}());
+
+var OrderItemUpdateDto = /** @class */ (function (_super) {
+    __extends(OrderItemUpdateDto, _super);
+    function OrderItemUpdateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return OrderItemUpdateDto;
+}(OrderItemBaseDto));
+
+var CreatedResponseDto = /** @class */ (function () {
+    function CreatedResponseDto() {
+    }
+    __decorate([
+        Expose(),
+        IsOptional(),
+        IsString(),
+        __metadata("design:type", String)
+    ], CreatedResponseDto.prototype, "message");
+    __decorate([
+        Expose(),
+        IsNotEmpty(),
+        IsNumber(),
+        IsInt(),
+        __metadata("design:type", Number)
+    ], CreatedResponseDto.prototype, "id");
+    return CreatedResponseDto;
+}());
+
 /**
 Obj should not be empty, if there are no field then pass {}
  */
@@ -5358,7 +5506,7 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
             case 1:
                 returnError = _a.sent();
                 if (returnError.length > 0) {
-                    returnError = __spreadArray$1(['Response is not valid'], returnError, true);
+                    returnError = __spreadArray$1(['Object is not valid'], returnError, true);
                     throw new Error(returnError === null || returnError === void 0 ? void 0 : returnError.join('. \n'));
                 }
                 return [2 /*return*/, plainToInstance(dto, obj, {
@@ -5370,5 +5518,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CreatedResponseDto, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, OrderBaseDto, OrderCreateDto, OrderItemBaseDto, OrderItemCartOperationDto, OrderItemCreateDto, OrderItemType, OrderItemUpdateDto, OrderUpdateDto, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map
