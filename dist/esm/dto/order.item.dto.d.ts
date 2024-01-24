@@ -7,7 +7,6 @@ declare const OrderItemDto_base: import("ts-mixer/dist/types/types").Class<any[]
 export declare class OrderItemDto extends OrderItemDto_base {
     orderItems?: OrderItemItemDto[];
     customer: CustomerItemDto;
-    deliveryUser: UserItemDto;
     orderUser: UserItemDto;
     oldTotalDiscount: number;
     oldTotalSaleAmount: number;
@@ -16,6 +15,5 @@ export declare class OrderItemDto extends OrderItemDto_base {
     totalSaleAmount: number;
     totalRegularAmount: number;
     isCanceled?: boolean;
-    deliveryDate?: string | Date;
 }
 export {};

@@ -6186,13 +6186,6 @@ var OrderItemDto = /** @class */ (function (_super) {
     ], OrderItemDto.prototype, "customer");
     __decorate([
         decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(ValidateIf(function (object, value) { return !!value; })),
-        decorate(Type(function () { return UserItemDto; })),
-        __metadata("design:type", UserItemDto)
-    ], OrderItemDto.prototype, "deliveryUser");
-    __decorate([
-        decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(Type(function () { return UserItemDto; })),
         __metadata("design:type", UserItemDto)
@@ -6246,14 +6239,6 @@ var OrderItemDto = /** @class */ (function (_super) {
         decorate(IsBoolean()),
         __metadata("design:type", Boolean)
     ], OrderItemDto.prototype, "isCanceled");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(ValidateIf(function (object, value) { return !!value; })),
-        decorate(Type(function () { return Date; })),
-        decorate(IsDate()),
-        __metadata("design:type", Object)
-    ], OrderItemDto.prototype, "deliveryDate");
     return OrderItemDto;
 }(Mixin(BaseDBFieldsDto, OrderBaseDto)));
 

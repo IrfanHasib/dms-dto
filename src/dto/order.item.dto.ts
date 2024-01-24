@@ -31,12 +31,6 @@ export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
   customer: CustomerItemDto;
 
   @decorate(Expose())
-  @decorate(IsOptional())
-  @decorate(ValidateIf((object, value) => !!value))
-  @decorate(Type(() => UserItemDto))
-  deliveryUser: UserItemDto;
-
-  @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(Type(() => UserItemDto))
   orderUser: UserItemDto;
@@ -82,11 +76,4 @@ export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
   @decorate(TransformBoolean())
   @decorate(IsBoolean())
   isCanceled?: boolean;
-
-  @decorate(Expose())
-  @decorate(IsOptional())
-  @decorate(ValidateIf((object, value) => !!value))
-  @decorate(Type(() => Date))
-  @decorate(IsDate())
-  deliveryDate?: string | Date;
 }

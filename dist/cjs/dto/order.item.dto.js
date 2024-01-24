@@ -55,13 +55,6 @@ var OrderItemDto = /** @class */ (function (_super) {
     ], OrderItemDto.prototype, "customer", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (object, value) { return !!value; })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return user_item_dto_1.UserItemDto; })),
-        __metadata("design:type", user_item_dto_1.UserItemDto)
-    ], OrderItemDto.prototype, "deliveryUser", void 0);
-    __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return user_item_dto_1.UserItemDto; })),
         __metadata("design:type", user_item_dto_1.UserItemDto)
@@ -115,14 +108,6 @@ var OrderItemDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
         __metadata("design:type", Boolean)
     ], OrderItemDto.prototype, "isCanceled", void 0);
-    __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (object, value) { return !!value; })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Date; })),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsDate)()),
-        __metadata("design:type", Object)
-    ], OrderItemDto.prototype, "deliveryDate", void 0);
     return OrderItemDto;
 }((0, ts_mixer_1.Mixin)(baseDBFields_dto_1.BaseDBFieldsDto, order_base_dto_1.OrderBaseDto)));
 exports.OrderItemDto = OrderItemDto;
