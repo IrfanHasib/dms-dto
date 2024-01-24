@@ -13,6 +13,7 @@ exports.OrderBaseDto = void 0;
 var class_validator_1 = require("class-validator");
 var ts_mixer_1 = require("ts-mixer");
 var class_transformer_1 = require("class-transformer");
+var transformBoolean_1 = require("../utils/transformBoolean");
 var OrderBaseDto = /** @class */ (function () {
     function OrderBaseDto() {
     }
@@ -29,6 +30,13 @@ var OrderBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
     ], OrderBaseDto.prototype, "customerId", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], OrderBaseDto.prototype, "isDelivered", void 0);
     return OrderBaseDto;
 }());
 exports.OrderBaseDto = OrderBaseDto;

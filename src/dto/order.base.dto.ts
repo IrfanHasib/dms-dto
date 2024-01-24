@@ -1,6 +1,7 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { decorate } from 'ts-mixer';
 import { Expose, Type } from 'class-transformer';
+import { TransformBoolean } from '../utils/transformBoolean';
 
 export class OrderBaseDto {
   @decorate(Expose())
@@ -13,4 +14,10 @@ export class OrderBaseDto {
   @decorate(IsInt())
   @decorate(Type(() => Number))
   customerId: number;
+
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(TransformBoolean())
+  @decorate(IsBoolean())
+  isDelivered: boolean;
 }

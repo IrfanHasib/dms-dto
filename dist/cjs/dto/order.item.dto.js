@@ -114,14 +114,7 @@ var OrderItemDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
         __metadata("design:type", Boolean)
-    ], OrderItemDto.prototype, "isCompleted", void 0);
-    __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
-        __metadata("design:type", Boolean)
-    ], OrderItemDto.prototype, "isDelivered", void 0);
+    ], OrderItemDto.prototype, "isCanceled", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
