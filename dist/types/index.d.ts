@@ -67,11 +67,10 @@ export { CustomerPaginateResponseDto } from './dto/customer.paginate.response.dt
 export { OrderBaseDto } from './dto/order.base.dto';
 export { OrderCreateDto } from './dto/order.create.dto';
 export { OrderUpdateDto } from './dto/order.update.dto';
-export { OrderItemBaseDto } from './dto/orderItem.base.dto';
-export { OrderItemCartOperationDto } from './dto/orderItem.cartOperation.dto';
-export { OrderItemCreateDto } from './dto/orderItem.create.dto';
-export { OrderItemUpdateDto } from './dto/orderItem.update.dto';
-export { OrderItemItemDto } from './dto/orderItem.item.dto';
+export { OrderProductBaseDto } from './dto/orderProduct.base.dto';
+export { OrderProductCreateDto } from './dto/orderProduct.create.dto';
+export { OrderProductUpdateDto } from './dto/orderProduct.update.dto';
+export { OrderProductItemDto } from './dto/orderProduct.item.dto';
 export { OrderPaginateRequestDto } from './dto/order.paginate.request.dto';
 export { OrderPaginateResponseDto } from './dto/order.paginate.response.dto';
 export { CreatedResponseDto } from './dto/created.response.dto';

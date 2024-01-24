@@ -1,4 +1,4 @@
-import { OrderItemBaseDto } from './orderItem.base.dto';
+import { OrderProductBaseDto } from './orderProduct.base.dto';
 import { decorate, Mixin } from 'ts-mixer';
 import { Expose, Type } from 'class-transformer';
 import { IsEnum, IsInt, IsNotEmpty, IsNumber } from 'class-validator';
@@ -6,7 +6,7 @@ import { OrderItemType } from '../enum/orderItemType';
 import { BaseDBFieldsDto } from './baseDBFields.dto';
 import { ProductItemDto } from './product.item.dto';
 
-export class OrderItemItemDto extends Mixin(BaseDBFieldsDto, OrderItemBaseDto) {
+export class OrderProductItemDto extends Mixin(BaseDBFieldsDto, OrderProductBaseDto) {
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @Type(() => ProductItemDto)

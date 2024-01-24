@@ -24,26 +24,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderUpdateDto = void 0;
-var order_base_dto_1 = require("./order.base.dto");
+exports.OrderProductCreateDto = void 0;
+var orderProduct_base_dto_1 = require("./orderProduct.base.dto");
+var class_validator_1 = require("class-validator");
 var ts_mixer_1 = require("ts-mixer");
 var class_transformer_1 = require("class-transformer");
-var class_validator_1 = require("class-validator");
-var orderProduct_update_dto_1 = require("./orderProduct.update.dto");
-var OrderUpdateDto = /** @class */ (function (_super) {
-    __extends(OrderUpdateDto, _super);
-    function OrderUpdateDto() {
+var orderItemType_1 = require("../enum/orderItemType");
+var OrderProductCreateDto = /** @class */ (function (_super) {
+    __extends(OrderProductCreateDto, _super);
+    function OrderProductCreateDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderProduct_update_dto_1.OrderProductUpdateDto; })),
-        __metadata("design:type", Array)
-    ], OrderUpdateDto.prototype, "orderProducts", void 0);
-    return OrderUpdateDto;
-}(order_base_dto_1.OrderBaseDto));
-exports.OrderUpdateDto = OrderUpdateDto;
-//# sourceMappingURL=order.update.dto.js.map
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsEnum)(orderItemType_1.OrderItemType)),
+        __metadata("design:type", String)
+    ], OrderProductCreateDto.prototype, "itemType", void 0);
+    return OrderProductCreateDto;
+}(orderProduct_base_dto_1.OrderProductBaseDto));
+exports.OrderProductCreateDto = OrderProductCreateDto;
+//# sourceMappingURL=orderProduct.create.dto.js.map

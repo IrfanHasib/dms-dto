@@ -5820,8 +5820,8 @@ var OrderBaseDto = /** @class */ (function () {
     return OrderBaseDto;
 }());
 
-var OrderItemBaseDto = /** @class */ (function () {
-    function OrderItemBaseDto() {
+var OrderProductBaseDto = /** @class */ (function () {
+    function OrderProductBaseDto() {
     }
     __decorate([
         decorate(Expose()),
@@ -5830,7 +5830,7 @@ var OrderItemBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], OrderItemBaseDto.prototype, "sale_price");
+    ], OrderProductBaseDto.prototype, "sale_price");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -5838,20 +5838,20 @@ var OrderItemBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], OrderItemBaseDto.prototype, "quantity");
+    ], OrderProductBaseDto.prototype, "quantity");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemBaseDto.prototype, "productId");
-    return OrderItemBaseDto;
+    ], OrderProductBaseDto.prototype, "productId");
+    return OrderProductBaseDto;
 }());
 
-var OrderItemCreateDto = /** @class */ (function (_super) {
-    __extends(OrderItemCreateDto, _super);
-    function OrderItemCreateDto() {
+var OrderProductCreateDto = /** @class */ (function (_super) {
+    __extends(OrderProductCreateDto, _super);
+    function OrderProductCreateDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
@@ -5860,13 +5860,13 @@ var OrderItemCreateDto = /** @class */ (function (_super) {
         decorate(IsNotEmpty()),
         decorate(IsEnum(OrderItemType)),
         __metadata("design:type", String)
-    ], OrderItemCreateDto.prototype, "itemType");
-    return OrderItemCreateDto;
-}(OrderItemBaseDto));
+    ], OrderProductCreateDto.prototype, "itemType");
+    return OrderProductCreateDto;
+}(OrderProductBaseDto));
 
-var OrderItemUpdateDto = /** @class */ (function (_super) {
-    __extends(OrderItemUpdateDto, _super);
-    function OrderItemUpdateDto() {
+var OrderProductUpdateDto = /** @class */ (function (_super) {
+    __extends(OrderProductUpdateDto, _super);
+    function OrderProductUpdateDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
@@ -5877,9 +5877,9 @@ var OrderItemUpdateDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemUpdateDto.prototype, "id");
-    return OrderItemUpdateDto;
-}(OrderItemCreateDto));
+    ], OrderProductUpdateDto.prototype, "id");
+    return OrderProductUpdateDto;
+}(OrderProductCreateDto));
 
 var OrderCreateDto = /** @class */ (function (_super) {
     __extends(OrderCreateDto, _super);
@@ -5891,9 +5891,9 @@ var OrderCreateDto = /** @class */ (function (_super) {
         decorate(IsOptional()),
         decorate(IsArray()),
         decorate(ValidateNested({ each: true })),
-        decorate(Type(function () { return OrderItemUpdateDto; })),
+        decorate(Type(function () { return OrderProductUpdateDto; })),
         __metadata("design:type", Array)
-    ], OrderCreateDto.prototype, "orderItems");
+    ], OrderCreateDto.prototype, "orderProducts");
     return OrderCreateDto;
 }(OrderBaseDto));
 
@@ -5907,42 +5907,15 @@ var OrderUpdateDto = /** @class */ (function (_super) {
         decorate(IsOptional()),
         decorate(IsArray()),
         decorate(ValidateNested({ each: true })),
-        decorate(Type(function () { return OrderItemUpdateDto; })),
+        decorate(Type(function () { return OrderProductUpdateDto; })),
         __metadata("design:type", Array)
-    ], OrderUpdateDto.prototype, "orderItems");
+    ], OrderUpdateDto.prototype, "orderProducts");
     return OrderUpdateDto;
 }(OrderBaseDto));
 
-var OrderItemCartOperationDto = /** @class */ (function () {
-    function OrderItemCartOperationDto() {
-    }
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderItemCartOperationDto.prototype, "quantity");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderItemCartOperationDto.prototype, "productId");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderItemCartOperationDto.prototype, "orderId");
-    return OrderItemCartOperationDto;
-}());
-
-var OrderItemItemDto = /** @class */ (function (_super) {
-    __extends(OrderItemItemDto, _super);
-    function OrderItemItemDto() {
+var OrderProductItemDto = /** @class */ (function (_super) {
+    __extends(OrderProductItemDto, _super);
+    function OrderProductItemDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
@@ -5950,70 +5923,41 @@ var OrderItemItemDto = /** @class */ (function (_super) {
         decorate(IsNotEmpty()),
         Type(function () { return ProductItemDto; }),
         __metadata("design:type", ProductItemDto)
-    ], OrderItemItemDto.prototype, "product");
+    ], OrderProductItemDto.prototype, "product");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(OrderItemType)),
         __metadata("design:type", String)
-    ], OrderItemItemDto.prototype, "itemType");
+    ], OrderProductItemDto.prototype, "itemType");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "cost");
+    ], OrderProductItemDto.prototype, "cost");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "regular_price");
+    ], OrderProductItemDto.prototype, "regular_price");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "sale_price");
+    ], OrderProductItemDto.prototype, "sale_price");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "mrp");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "quantity");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "totalRegularAmount");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "totalSaleAmount");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "totalDiscount");
+    ], OrderProductItemDto.prototype, "mrp");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -6021,30 +5965,59 @@ var OrderItemItemDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "oldQuantity");
+    ], OrderProductItemDto.prototype, "quantity");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "oldTotalRegularAmount");
+    ], OrderProductItemDto.prototype, "totalRegularAmount");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "oldTotalSaleAmount");
+    ], OrderProductItemDto.prototype, "totalSaleAmount");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemItemDto.prototype, "oldTotalDiscount");
-    return OrderItemItemDto;
-}(Mixin(BaseDBFieldsDto, OrderItemBaseDto)));
+    ], OrderProductItemDto.prototype, "totalDiscount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldQuantity");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldTotalRegularAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldTotalSaleAmount");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldTotalDiscount");
+    return OrderProductItemDto;
+}(Mixin(BaseDBFieldsDto, OrderProductBaseDto)));
 
 var OrderPaginateRequestDto = /** @class */ (function (_super) {
     __extends(OrderPaginateRequestDto, _super);
@@ -6168,7 +6141,7 @@ var OrderItemDto = /** @class */ (function (_super) {
         decorate(IsOptional()),
         decorate(IsArray()),
         decorate(ValidateNested({ each: true })),
-        decorate(Type(function () { return OrderItemItemDto; })),
+        decorate(Type(function () { return OrderProductItemDto; })),
         __metadata("design:type", Array)
     ], OrderItemDto.prototype, "orderItems");
     __decorate([
@@ -6383,5 +6356,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CreatedResponseDto, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DMSRole, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, OrderBaseDto, OrderCreateDto, OrderItemBaseDto, OrderItemCartOperationDto, OrderItemCreateDto, OrderItemDto, OrderItemItemDto, OrderItemType, OrderItemUpdateDto, OrderPaginateRequestDto, OrderPaginateResponseDto, OrderUpdateDto, OrganizationRole, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, TransformBoolean, UserBaseDto, UserCreateDto, UserItemDto, UserType, UserUpdateDto, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CreatedResponseDto, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DMSRole, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, OrderBaseDto, OrderCreateDto, OrderItemDto, OrderItemType, OrderPaginateRequestDto, OrderPaginateResponseDto, OrderProductBaseDto, OrderProductCreateDto, OrderProductItemDto, OrderProductUpdateDto, OrderUpdateDto, OrganizationRole, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, TransformBoolean, UserBaseDto, UserCreateDto, UserItemDto, UserType, UserUpdateDto, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map

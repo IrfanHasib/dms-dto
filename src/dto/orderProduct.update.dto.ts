@@ -1,9 +1,9 @@
 import { IsInt, IsNumber, IsOptional, ValidateIf } from 'class-validator';
 import { decorate } from 'ts-mixer';
 import { Expose, Type } from 'class-transformer';
-import { OrderItemCreateDto } from './orderItem.create.dto';
+import { OrderProductCreateDto } from './orderProduct.create.dto';
 
-export class OrderItemUpdateDto extends OrderItemCreateDto {
+export class OrderProductUpdateDto extends OrderProductCreateDto {
   @decorate(Expose())
   @decorate(IsOptional())
   @decorate(ValidateIf((object, value) => !!value))

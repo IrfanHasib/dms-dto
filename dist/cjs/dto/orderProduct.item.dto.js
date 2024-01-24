@@ -24,98 +24,118 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderItemDto = void 0;
-var baseDBFields_dto_1 = require("./baseDBFields.dto");
+exports.OrderProductItemDto = void 0;
+var orderProduct_base_dto_1 = require("./orderProduct.base.dto");
 var ts_mixer_1 = require("ts-mixer");
-var order_base_dto_1 = require("./order.base.dto");
 var class_transformer_1 = require("class-transformer");
 var class_validator_1 = require("class-validator");
-var customer_item_dto_1 = require("./customer.item.dto");
-var transformBoolean_1 = require("../utils/transformBoolean");
-var user_item_dto_1 = require("./user.item.dto");
-var orderProduct_item_dto_1 = require("./orderProduct.item.dto");
-var OrderItemDto = /** @class */ (function (_super) {
-    __extends(OrderItemDto, _super);
-    function OrderItemDto() {
+var orderItemType_1 = require("../enum/orderItemType");
+var baseDBFields_dto_1 = require("./baseDBFields.dto");
+var product_item_dto_1 = require("./product.item.dto");
+var OrderProductItemDto = /** @class */ (function (_super) {
+    __extends(OrderProductItemDto, _super);
+    function OrderProductItemDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderProduct_item_dto_1.OrderProductItemDto; })),
-        __metadata("design:type", Array)
-    ], OrderItemDto.prototype, "orderItems", void 0);
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, class_transformer_1.Type)(function () { return product_item_dto_1.ProductItemDto; }),
+        __metadata("design:type", product_item_dto_1.ProductItemDto)
+    ], OrderProductItemDto.prototype, "product", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return customer_item_dto_1.CustomerItemDto; })),
-        __metadata("design:type", customer_item_dto_1.CustomerItemDto)
-    ], OrderItemDto.prototype, "customer", void 0);
-    __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return user_item_dto_1.UserItemDto; })),
-        __metadata("design:type", user_item_dto_1.UserItemDto)
-    ], OrderItemDto.prototype, "orderUser", void 0);
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsEnum)(orderItemType_1.OrderItemType)),
+        __metadata("design:type", String)
+    ], OrderProductItemDto.prototype, "itemType", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "oldTotalDiscount", void 0);
+    ], OrderProductItemDto.prototype, "cost", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "oldTotalSaleAmount", void 0);
+    ], OrderProductItemDto.prototype, "regular_price", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "oldTotalRegularAmount", void 0);
+    ], OrderProductItemDto.prototype, "sale_price", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "totalDiscount", void 0);
+    ], OrderProductItemDto.prototype, "mrp", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "quantity", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "totalSaleAmount", void 0);
+    ], OrderProductItemDto.prototype, "totalRegularAmount", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "totalRegularAmount", void 0);
+    ], OrderProductItemDto.prototype, "totalSaleAmount", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
-        __metadata("design:type", Boolean)
-    ], OrderItemDto.prototype, "isCanceled", void 0);
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "totalDiscount", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
-        __metadata("design:type", Boolean)
-    ], OrderItemDto.prototype, "isDelivered", void 0);
-    return OrderItemDto;
-}((0, ts_mixer_1.Mixin)(baseDBFields_dto_1.BaseDBFieldsDto, order_base_dto_1.OrderBaseDto)));
-exports.OrderItemDto = OrderItemDto;
-//# sourceMappingURL=order.item.dto.js.map
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldQuantity", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldTotalRegularAmount", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldTotalSaleAmount", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldTotalDiscount", void 0);
+    return OrderProductItemDto;
+}((0, ts_mixer_1.Mixin)(baseDBFields_dto_1.BaseDBFieldsDto, orderProduct_base_dto_1.OrderProductBaseDto)));
+exports.OrderProductItemDto = OrderProductItemDto;
+//# sourceMappingURL=orderProduct.item.dto.js.map

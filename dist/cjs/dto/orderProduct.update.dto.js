@@ -24,26 +24,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderUpdateDto = void 0;
-var order_base_dto_1 = require("./order.base.dto");
+exports.OrderProductUpdateDto = void 0;
+var class_validator_1 = require("class-validator");
 var ts_mixer_1 = require("ts-mixer");
 var class_transformer_1 = require("class-transformer");
-var class_validator_1 = require("class-validator");
-var orderProduct_update_dto_1 = require("./orderProduct.update.dto");
-var OrderUpdateDto = /** @class */ (function (_super) {
-    __extends(OrderUpdateDto, _super);
-    function OrderUpdateDto() {
+var orderProduct_create_dto_1 = require("./orderProduct.create.dto");
+var OrderProductUpdateDto = /** @class */ (function (_super) {
+    __extends(OrderProductUpdateDto, _super);
+    function OrderProductUpdateDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderProduct_update_dto_1.OrderProductUpdateDto; })),
-        __metadata("design:type", Array)
-    ], OrderUpdateDto.prototype, "orderProducts", void 0);
-    return OrderUpdateDto;
-}(order_base_dto_1.OrderBaseDto));
-exports.OrderUpdateDto = OrderUpdateDto;
-//# sourceMappingURL=order.update.dto.js.map
+        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateIf)(function (object, value) { return !!value; })),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductUpdateDto.prototype, "id", void 0);
+    return OrderProductUpdateDto;
+}(orderProduct_create_dto_1.OrderProductCreateDto));
+exports.OrderProductUpdateDto = OrderProductUpdateDto;
+//# sourceMappingURL=orderProduct.update.dto.js.map
