@@ -108,6 +108,13 @@ var OrderItemDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
         __metadata("design:type", Boolean)
     ], OrderItemDto.prototype, "isCanceled", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], OrderItemDto.prototype, "isDelivered", void 0);
     return OrderItemDto;
 }((0, ts_mixer_1.Mixin)(baseDBFields_dto_1.BaseDBFieldsDto, order_base_dto_1.OrderBaseDto)));
 exports.OrderItemDto = OrderItemDto;

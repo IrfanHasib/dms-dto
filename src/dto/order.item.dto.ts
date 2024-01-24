@@ -75,5 +75,11 @@ export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
   @decorate(IsNotEmpty())
   @decorate(TransformBoolean())
   @decorate(IsBoolean())
-  isCanceled?: boolean;
+  isCanceled: boolean;
+
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(TransformBoolean())
+  @decorate(IsBoolean())
+  isDelivered: boolean;
 }

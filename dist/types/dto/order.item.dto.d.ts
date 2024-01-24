@@ -14,6 +14,7 @@ export declare class OrderItemDto extends OrderItemDto_base {
     totalDiscount: number;
     totalSaleAmount: number;
     totalRegularAmount: number;
-    isCanceled?: boolean;
+    isCanceled: boolean;
+    isDelivered: boolean;
 }
 export {};

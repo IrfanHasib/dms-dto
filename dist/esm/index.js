@@ -5801,18 +5801,6 @@ var CustomerPaginateResponseDto = /** @class */ (function (_super) {
     return CustomerPaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
-function TransformBoolean() {
-    return Transform(function (_a) {
-        var value = _a.value;
-        if (typeof value === 'undefined' || value === null) {
-            return false;
-        }
-        // Normalize the value to a lower-case string for case-insensitive comparison
-        var stringValue = String(value).toLowerCase();
-        return ['true', 'enabled', '1', 'yes'].includes(stringValue) || value === true;
-    });
-}
-
 var OrderBaseDto = /** @class */ (function () {
     function OrderBaseDto() {
     }
@@ -5829,13 +5817,6 @@ var OrderBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
     ], OrderBaseDto.prototype, "customerId");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(TransformBoolean()),
-        decorate(IsBoolean()),
-        __metadata("design:type", Boolean)
-    ], OrderBaseDto.prototype, "isDelivered");
     return OrderBaseDto;
 }());
 
@@ -6073,6 +6054,18 @@ var OrderPaginateRequestDto = /** @class */ (function (_super) {
     return OrderPaginateRequestDto;
 }(PaginateRequestDto));
 
+function TransformBoolean() {
+    return Transform(function (_a) {
+        var value = _a.value;
+        if (typeof value === 'undefined' || value === null) {
+            return false;
+        }
+        // Normalize the value to a lower-case string for case-insensitive comparison
+        var stringValue = String(value).toLowerCase();
+        return ['true', 'enabled', '1', 'yes'].includes(stringValue) || value === true;
+    });
+}
+
 var UserType;
 (function (UserType) {
     UserType["ORGANIZATION_USER"] = "ORGANIZATION_USER";
@@ -6239,6 +6232,13 @@ var OrderItemDto = /** @class */ (function (_super) {
         decorate(IsBoolean()),
         __metadata("design:type", Boolean)
     ], OrderItemDto.prototype, "isCanceled");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], OrderItemDto.prototype, "isDelivered");
     return OrderItemDto;
 }(Mixin(BaseDBFieldsDto, OrderBaseDto)));
 

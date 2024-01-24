@@ -14,10 +14,4 @@ export class OrderBaseDto {
   @decorate(IsInt())
   @decorate(Type(() => Number))
   customerId: number;
-
-  @decorate(Expose())
-  @decorate(IsNotEmpty())
-  @decorate(TransformBoolean())
-  @decorate(IsBoolean())
-  isDelivered: boolean;
 }
