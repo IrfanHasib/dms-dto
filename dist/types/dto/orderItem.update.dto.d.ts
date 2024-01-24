@@ -1,3 +1,4 @@
-import { OrderItemBaseDto } from './orderItem.base.dto';
-export declare class OrderItemUpdateDto extends OrderItemBaseDto {
+import { OrderItemCreateDto } from './orderItem.create.dto';
+export declare class OrderItemUpdateDto extends OrderItemCreateDto {
+    id?: number;
 }

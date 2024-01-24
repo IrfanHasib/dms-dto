@@ -69,7 +69,7 @@ export { OrderCreateDto } from './dto/order.create.dto';
 export { OrderUpdateDto } from './dto/order.update.dto';
 export { OrderItemBaseDto } from './dto/orderItem.base.dto';
 export { OrderItemCartOperationDto } from './dto/orderItem.cartOperation.dto';
-export { OrderItemUpsertDto } from './dto/orderItem.upsert.dto';
+export { OrderItemCreateDto } from './dto/orderItem.create.dto';
 export { OrderItemUpdateDto } from './dto/orderItem.update.dto';
 export { OrderItemItemDto } from './dto/orderItem.item.dto';
 export { OrderPaginateRequestDto } from './dto/order.paginate.request.dto';

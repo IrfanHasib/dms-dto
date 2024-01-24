@@ -5810,6 +5810,13 @@ var OrderBaseDto = /** @class */ (function () {
         decorate(IsString()),
         __metadata("design:type", String)
     ], OrderBaseDto.prototype, "comment");
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderBaseDto.prototype, "customerId");
     return OrderBaseDto;
 }());
 
@@ -5832,28 +5839,36 @@ var OrderItemBaseDto = /** @class */ (function () {
         decorate(Min(0)),
         __metadata("design:type", Number)
     ], OrderItemBaseDto.prototype, "quantity");
-    return OrderItemBaseDto;
-}());
-
-var OrderItemUpsertDto = /** @class */ (function (_super) {
-    __extends(OrderItemUpsertDto, _super);
-    function OrderItemUpsertDto() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemUpsertDto.prototype, "productId");
+    ], OrderItemBaseDto.prototype, "productId");
+    return OrderItemBaseDto;
+}());
+
+var OrderItemCreateDto = /** @class */ (function (_super) {
+    __extends(OrderItemCreateDto, _super);
+    function OrderItemCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     __decorate([
         decorate(Expose()),
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(OrderItemType)),
         __metadata("design:type", String)
-    ], OrderItemUpsertDto.prototype, "itemType");
+    ], OrderItemCreateDto.prototype, "itemType");
+    return OrderItemCreateDto;
+}(OrderItemBaseDto));
+
+var OrderItemUpdateDto = /** @class */ (function (_super) {
+    __extends(OrderItemUpdateDto, _super);
+    function OrderItemUpdateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5862,9 +5877,9 @@ var OrderItemUpsertDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemUpsertDto.prototype, "id");
-    return OrderItemUpsertDto;
-}(OrderItemBaseDto));
+    ], OrderItemUpdateDto.prototype, "id");
+    return OrderItemUpdateDto;
+}(OrderItemCreateDto));
 
 var OrderCreateDto = /** @class */ (function (_super) {
     __extends(OrderCreateDto, _super);
@@ -5873,17 +5888,10 @@ var OrderCreateDto = /** @class */ (function (_super) {
     }
     __decorate([
         decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderCreateDto.prototype, "customerId");
-    __decorate([
-        decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsArray()),
         decorate(ValidateNested({ each: true })),
-        decorate(Type(function () { return OrderItemUpsertDto; })),
+        decorate(Type(function () { return OrderItemUpdateDto; })),
         __metadata("design:type", Array)
     ], OrderCreateDto.prototype, "orderItems");
     return OrderCreateDto;
@@ -5894,6 +5902,14 @@ var OrderUpdateDto = /** @class */ (function (_super) {
     function OrderUpdateDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsArray()),
+        decorate(ValidateNested({ each: true })),
+        decorate(Type(function () { return OrderItemUpdateDto; })),
+        __metadata("design:type", Array)
+    ], OrderUpdateDto.prototype, "orderItems");
     return OrderUpdateDto;
 }(OrderBaseDto));
 
@@ -5923,14 +5939,6 @@ var OrderItemCartOperationDto = /** @class */ (function () {
     ], OrderItemCartOperationDto.prototype, "orderId");
     return OrderItemCartOperationDto;
 }());
-
-var OrderItemUpdateDto = /** @class */ (function (_super) {
-    __extends(OrderItemUpdateDto, _super);
-    function OrderItemUpdateDto() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return OrderItemUpdateDto;
-}(OrderItemBaseDto));
 
 var OrderItemItemDto = /** @class */ (function (_super) {
     __extends(OrderItemItemDto, _super);
@@ -6390,5 +6398,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CreatedResponseDto, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DMSRole, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, OrderBaseDto, OrderCreateDto, OrderItemBaseDto, OrderItemCartOperationDto, OrderItemDto, OrderItemItemDto, OrderItemType, OrderItemUpdateDto, OrderItemUpsertDto, OrderPaginateRequestDto, OrderPaginateResponseDto, OrderUpdateDto, OrganizationRole, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, TransformBoolean, UserBaseDto, UserCreateDto, UserItemDto, UserType, UserUpdateDto, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CreatedResponseDto, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DMSRole, DeleteResponseDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, OrderBaseDto, OrderCreateDto, OrderItemBaseDto, OrderItemCartOperationDto, OrderItemCreateDto, OrderItemDto, OrderItemItemDto, OrderItemType, OrderItemUpdateDto, OrderPaginateRequestDto, OrderPaginateResponseDto, OrderUpdateDto, OrganizationRole, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, TransformBoolean, UserBaseDto, UserCreateDto, UserItemDto, UserType, UserUpdateDto, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map

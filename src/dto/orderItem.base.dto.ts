@@ -16,4 +16,10 @@ export class OrderItemBaseDto {
   @decorate(Type(() => Number))
   @decorate(Min(0))
   quantity: number;
+
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsInt())
+  @decorate(Type(() => Number))
+  productId: number;
 }

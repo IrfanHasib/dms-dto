@@ -29,7 +29,7 @@ var order_base_dto_1 = require("./order.base.dto");
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
 var ts_mixer_1 = require("ts-mixer");
-var orderItem_upsert_dto_1 = require("./orderItem.upsert.dto");
+var orderItem_update_dto_1 = require("./orderItem.update.dto");
 var OrderCreateDto = /** @class */ (function (_super) {
     __extends(OrderCreateDto, _super);
     function OrderCreateDto() {
@@ -37,17 +37,10 @@ var OrderCreateDto = /** @class */ (function (_super) {
     }
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderCreateDto.prototype, "customerId", void 0);
-    __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderItem_upsert_dto_1.OrderItemUpsertDto; })),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderItem_update_dto_1.OrderItemUpdateDto; })),
         __metadata("design:type", Array)
     ], OrderCreateDto.prototype, "orderItems", void 0);
     return OrderCreateDto;

@@ -32,6 +32,13 @@ var OrderItemBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.Min)(0)),
         __metadata("design:type", Number)
     ], OrderItemBaseDto.prototype, "quantity", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemBaseDto.prototype, "productId", void 0);
     return OrderItemBaseDto;
 }());
 exports.OrderItemBaseDto = OrderItemBaseDto;
