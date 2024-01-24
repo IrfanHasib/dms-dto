@@ -46,7 +46,7 @@ var OrderItemDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderProduct_item_dto_1.OrderProductItemDto; })),
         __metadata("design:type", Array)
-    ], OrderItemDto.prototype, "orderItems", void 0);
+    ], OrderItemDto.prototype, "orderProducts", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),

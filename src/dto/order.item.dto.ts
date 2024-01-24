@@ -14,7 +14,7 @@ export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
   @decorate(IsArray())
   @decorate(ValidateNested({ each: true }))
   @decorate(Type(() => OrderProductItemDto))
-  orderItems?: OrderProductItemDto[];
+  orderProducts?: OrderProductItemDto[];
 
   @decorate(Expose())
   @decorate(IsNotEmpty())

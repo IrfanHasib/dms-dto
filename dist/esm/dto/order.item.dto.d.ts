@@ -5,7 +5,7 @@ import { UserItemDto } from './user.item.dto';
 import { OrderProductItemDto } from './orderProduct.item.dto';
 declare const OrderItemDto_base: import("ts-mixer/dist/types/types").Class<any[], BaseDBFieldsDto & OrderBaseDto, typeof BaseDBFieldsDto & typeof OrderBaseDto, false>;
 export declare class OrderItemDto extends OrderItemDto_base {
-    orderItems?: OrderProductItemDto[];
+    orderProducts?: OrderProductItemDto[];
     customer: CustomerItemDto;
     orderUser: UserItemDto;
     oldTotalDiscount: number;

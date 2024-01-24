@@ -6143,7 +6143,7 @@ var OrderItemDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return OrderProductItemDto; })),
         __metadata("design:type", Array)
-    ], OrderItemDto.prototype, "orderItems");
+    ], OrderItemDto.prototype, "orderProducts");
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
