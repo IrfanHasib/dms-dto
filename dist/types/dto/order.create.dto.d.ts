@@ -1,5 +1,7 @@
 import { OrderBaseDto } from './order.base.dto';
-import { OrderProductUpdateDto } from './orderProduct.update.dto';
+import { OrderProductCreateDto } from './orderProduct.create.dto';
+import { OrderPaymentCreateDto } from './orderPayment.create.dto';
 export declare class OrderCreateDto extends OrderBaseDto {
-    orderProducts?: OrderProductUpdateDto[];
+    orderProducts?: OrderProductCreateDto[];
+    orderPayments?: OrderPaymentCreateDto[];
 }

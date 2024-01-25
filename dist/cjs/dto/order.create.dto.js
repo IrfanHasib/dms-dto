@@ -29,7 +29,8 @@ var order_base_dto_1 = require("./order.base.dto");
 var class_validator_1 = require("class-validator");
 var class_transformer_1 = require("class-transformer");
 var ts_mixer_1 = require("ts-mixer");
-var orderProduct_update_dto_1 = require("./orderProduct.update.dto");
+var orderProduct_create_dto_1 = require("./orderProduct.create.dto");
+var orderPayment_create_dto_1 = require("./orderPayment.create.dto");
 var OrderCreateDto = /** @class */ (function (_super) {
     __extends(OrderCreateDto, _super);
     function OrderCreateDto() {
@@ -40,9 +41,17 @@ var OrderCreateDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderProduct_update_dto_1.OrderProductUpdateDto; })),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderProduct_create_dto_1.OrderProductCreateDto; })),
         __metadata("design:type", Array)
     ], OrderCreateDto.prototype, "orderProducts", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderPayment_create_dto_1.OrderPaymentCreateDto; })),
+        __metadata("design:type", Array)
+    ], OrderCreateDto.prototype, "orderPayments", void 0);
     return OrderCreateDto;
 }(order_base_dto_1.OrderBaseDto));
 exports.OrderCreateDto = OrderCreateDto;

@@ -7,6 +7,8 @@ import { CustomerItemDto } from './customer.item.dto';
 import { TransformBoolean } from '../utils/transformBoolean';
 import { UserItemDto } from './user.item.dto';
 import { OrderProductItemDto } from './orderProduct.item.dto';
+import { OrderPaymentCreateDto } from './orderPayment.create.dto';
+import { OrderPaymentItemDto } from './orderPayment.item.dto';
 
 export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
   @decorate(Expose())
@@ -14,7 +16,14 @@ export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
   @decorate(IsArray())
   @decorate(ValidateNested({ each: true }))
   @decorate(Type(() => OrderProductItemDto))
-  orderProducts?: OrderProductItemDto[];
+  orderProducts: OrderProductItemDto[];
+
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsArray())
+  @decorate(ValidateNested({ each: true }))
+  @decorate(Type(() => OrderPaymentItemDto))
+  orderPayments: OrderPaymentItemDto[];
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
@@ -64,13 +73,19 @@ export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
-  @decorate(TransformBoolean())
-  @decorate(IsBoolean())
-  isCanceled: boolean;
+  @decorate(IsNumber())
+  @decorate(Type(() => Number))
+  totalPaymentAmount: number;
+
+  @decorate(Expose())
+  @decorate(IsNotEmpty())
+  @decorate(IsNumber())
+  @decorate(Type(() => Number))
+  totalDueAmount: number;
 
   @decorate(Expose())
   @decorate(IsNotEmpty())
   @decorate(TransformBoolean())
   @decorate(IsBoolean())
-  isDelivered: boolean;
+  isPaid: boolean;
 }

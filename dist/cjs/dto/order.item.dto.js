@@ -34,6 +34,7 @@ var customer_item_dto_1 = require("./customer.item.dto");
 var transformBoolean_1 = require("../utils/transformBoolean");
 var user_item_dto_1 = require("./user.item.dto");
 var orderProduct_item_dto_1 = require("./orderProduct.item.dto");
+var orderPayment_item_dto_1 = require("./orderPayment.item.dto");
 var OrderItemDto = /** @class */ (function (_super) {
     __extends(OrderItemDto, _super);
     function OrderItemDto() {
@@ -47,6 +48,14 @@ var OrderItemDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderProduct_item_dto_1.OrderProductItemDto; })),
         __metadata("design:type", Array)
     ], OrderItemDto.prototype, "orderProducts", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderPayment_item_dto_1.OrderPaymentItemDto; })),
+        __metadata("design:type", Array)
+    ], OrderItemDto.prototype, "orderPayments", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
@@ -104,17 +113,24 @@ var OrderItemDto = /** @class */ (function (_super) {
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
-        __metadata("design:type", Boolean)
-    ], OrderItemDto.prototype, "isCanceled", void 0);
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "totalPaymentAmount", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "totalDueAmount", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
         (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
         __metadata("design:type", Boolean)
-    ], OrderItemDto.prototype, "isDelivered", void 0);
+    ], OrderItemDto.prototype, "isPaid", void 0);
     return OrderItemDto;
 }((0, ts_mixer_1.Mixin)(baseDBFields_dto_1.BaseDBFieldsDto, order_base_dto_1.OrderBaseDto)));
 exports.OrderItemDto = OrderItemDto;

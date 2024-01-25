@@ -30,6 +30,7 @@ var ts_mixer_1 = require("ts-mixer");
 var class_transformer_1 = require("class-transformer");
 var class_validator_1 = require("class-validator");
 var orderProduct_update_dto_1 = require("./orderProduct.update.dto");
+var orderPayment_update_dto_1 = require("./orderPayment.update.dto");
 var OrderUpdateDto = /** @class */ (function (_super) {
     __extends(OrderUpdateDto, _super);
     function OrderUpdateDto() {
@@ -43,6 +44,14 @@ var OrderUpdateDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderProduct_update_dto_1.OrderProductUpdateDto; })),
         __metadata("design:type", Array)
     ], OrderUpdateDto.prototype, "orderProducts", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return orderPayment_update_dto_1.OrderPaymentUpdateDto; })),
+        __metadata("design:type", Array)
+    ], OrderUpdateDto.prototype, "orderPayments", void 0);
     return OrderUpdateDto;
 }(order_base_dto_1.OrderBaseDto));
 exports.OrderUpdateDto = OrderUpdateDto;
