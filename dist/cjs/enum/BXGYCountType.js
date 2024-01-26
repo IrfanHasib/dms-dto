@@ -5,5 +5,5 @@ var BXGYCountType;
 (function (BXGYCountType) {
     BXGYCountType["ALL"] = "ALL";
     BXGYCountType["INDIVIDUAL"] = "INDIVIDUAL";
-})(BXGYCountType = exports.BXGYCountType || (exports.BXGYCountType = {}));
+})(BXGYCountType || (exports.BXGYCountType = BXGYCountType = {}));
 //# sourceMappingURL=BXGYCountType.js.map

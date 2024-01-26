@@ -6,5 +6,5 @@ var DMSRole;
     DMSRole["SUPER_ADMIN"] = "SUPER_ADMIN";
     DMSRole["ADMIN"] = "ADMIN";
     DMSRole["MANAGER"] = "MANAGER";
-})(DMSRole = exports.DMSRole || (exports.DMSRole = {}));
+})(DMSRole || (exports.DMSRole = DMSRole = {}));
 //# sourceMappingURL=DMSRole.js.map

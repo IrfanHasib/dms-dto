@@ -7,5 +7,5 @@ var BXGYType;
     BXGYType["CATEGORIES"] = "CATEGORIES";
     BXGYType["COMPANIES"] = "COMPANIES";
     BXGYType["PRODUCTS"] = "PRODUCTS";
-})(BXGYType = exports.BXGYType || (exports.BXGYType = {}));
+})(BXGYType || (exports.BXGYType = BXGYType = {}));
 //# sourceMappingURL=BXGYType.js.map

@@ -7,5 +7,5 @@ var DiscountFilterType;
     DiscountFilterType["PRODUCTS"] = "PRODUCTS";
     DiscountFilterType["COMPANIES"] = "COMPANIES";
     DiscountFilterType["CATEGORIES"] = "CATEGORIES";
-})(DiscountFilterType = exports.DiscountFilterType || (exports.DiscountFilterType = {}));
+})(DiscountFilterType || (exports.DiscountFilterType = DiscountFilterType = {}));
 //# sourceMappingURL=discountFilterType.js.map

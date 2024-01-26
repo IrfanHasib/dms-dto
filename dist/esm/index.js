@@ -27,28 +27,42 @@ var Reflect$1;
     // Metadata Proposal
     // https://rbuckton.github.io/reflect-metadata/
     (function (factory) {
-        var root = typeof commonjsGlobal === "object" ? commonjsGlobal :
-            typeof self === "object" ? self :
-                typeof this === "object" ? this :
-                    Function("return this;")();
+        var root = typeof globalThis === "object" ? globalThis :
+            typeof commonjsGlobal === "object" ? commonjsGlobal :
+                typeof self === "object" ? self :
+                    typeof this === "object" ? this :
+                        sloppyModeThis();
         var exporter = makeExporter(Reflect);
+        if (typeof root.Reflect !== "undefined") {
+            exporter = makeExporter(root.Reflect, exporter);
+        }
+        factory(exporter, root);
         if (typeof root.Reflect === "undefined") {
             root.Reflect = Reflect;
         }
-        else {
-            exporter = makeExporter(root.Reflect, exporter);
-        }
-        factory(exporter);
         function makeExporter(target, previous) {
             return function (key, value) {
-                if (typeof target[key] !== "function") {
-                    Object.defineProperty(target, key, { configurable: true, writable: true, value: value });
-                }
+                Object.defineProperty(target, key, { configurable: true, writable: true, value: value });
                 if (previous)
                     previous(key, value);
             };
         }
-    })(function (exporter) {
+        function functionThis() {
+            try {
+                return Function("return this;")();
+            }
+            catch (_) { }
+        }
+        function indirectEvalThis() {
+            try {
+                return (void 0, eval)("(function() { return this; })()");
+            }
+            catch (_) { }
+        }
+        function sloppyModeThis() {
+            return functionThis() || indirectEvalThis();
+        }
+    })(function (exporter, root) {
         var hasOwn = Object.prototype.hasOwnProperty;
         // feature test for Symbol support
         var supportsSymbol = typeof Symbol === "function";
@@ -73,13 +87,12 @@ var Reflect$1;
         };
         // Load global or shim versions of Map, Set, and WeakMap
         var functionPrototype = Object.getPrototypeOf(Function);
-        var usePolyfill = typeof process === "object" && process.env && process.env["REFLECT_METADATA_USE_MAP_POLYFILL"] === "true";
-        var _Map = !usePolyfill && typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
-        var _Set = !usePolyfill && typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
-        var _WeakMap = !usePolyfill && typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
-        // [[Metadata]] internal slot
-        // https://rbuckton.github.io/reflect-metadata/#ordinary-object-internal-methods-and-internal-slots
-        var Metadata = new _WeakMap();
+        var _Map = typeof Map === "function" && typeof Map.prototype.entries === "function" ? Map : CreateMapPolyfill();
+        var _Set = typeof Set === "function" && typeof Set.prototype.entries === "function" ? Set : CreateSetPolyfill();
+        var _WeakMap = typeof WeakMap === "function" ? WeakMap : CreateWeakMapPolyfill();
+        var registrySymbol = supportsSymbol ? Symbol.for("@reflect-metadata:registry") : undefined;
+        var metadataRegistry = GetOrCreateMetadataRegistry();
+        var metadataProvider = CreateMetadataProvider(metadataRegistry);
         /**
          * Applies a set of decorators to a property of a target object.
          * @param decorators An array of decorators.
@@ -530,19 +543,14 @@ var Reflect$1;
                 throw new TypeError();
             if (!IsUndefined(propertyKey))
                 propertyKey = ToPropertyKey(propertyKey);
-            var metadataMap = GetOrCreateMetadataMap(target, propertyKey, /*Create*/ false);
-            if (IsUndefined(metadataMap))
+            if (!IsObject(target))
+                throw new TypeError();
+            if (!IsUndefined(propertyKey))
+                propertyKey = ToPropertyKey(propertyKey);
+            var provider = GetMetadataProvider(target, propertyKey, /*Create*/ false);
+            if (IsUndefined(provider))
                 return false;
-            if (!metadataMap.delete(metadataKey))
-                return false;
-            if (metadataMap.size > 0)
-                return true;
-            var targetMetadata = Metadata.get(target);
-            targetMetadata.delete(propertyKey);
-            if (targetMetadata.size > 0)
-                return true;
-            Metadata.delete(target);
-            return true;
+            return provider.OrdinaryDeleteMetadata(metadataKey, target, propertyKey);
         }
         exporter("deleteMetadata", deleteMetadata);
         function DecorateConstructor(decorators, target) {
@@ -569,23 +577,6 @@ var Reflect$1;
             }
             return descriptor;
         }
-        function GetOrCreateMetadataMap(O, P, Create) {
-            var targetMetadata = Metadata.get(O);
-            if (IsUndefined(targetMetadata)) {
-                if (!Create)
-                    return undefined;
-                targetMetadata = new _Map();
-                Metadata.set(O, targetMetadata);
-            }
-            var metadataMap = targetMetadata.get(P);
-            if (IsUndefined(metadataMap)) {
-                if (!Create)
-                    return undefined;
-                metadataMap = new _Map();
-                targetMetadata.set(P, metadataMap);
-            }
-            return metadataMap;
-        }
         // 3.1.1.1 OrdinaryHasMetadata(MetadataKey, O, P)
         // https://rbuckton.github.io/reflect-metadata/#ordinaryhasmetadata
         function OrdinaryHasMetadata(MetadataKey, O, P) {
@@ -600,10 +591,10 @@ var Reflect$1;
         // 3.1.2.1 OrdinaryHasOwnMetadata(MetadataKey, O, P)
         // https://rbuckton.github.io/reflect-metadata/#ordinaryhasownmetadata
         function OrdinaryHasOwnMetadata(MetadataKey, O, P) {
-            var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
-            if (IsUndefined(metadataMap))
+            var provider = GetMetadataProvider(O, P, /*Create*/ false);
+            if (IsUndefined(provider))
                 return false;
-            return ToBoolean(metadataMap.has(MetadataKey));
+            return ToBoolean(provider.OrdinaryHasOwnMetadata(MetadataKey, O, P));
         }
         // 3.1.3.1 OrdinaryGetMetadata(MetadataKey, O, P)
         // https://rbuckton.github.io/reflect-metadata/#ordinarygetmetadata
@@ -619,16 +610,16 @@ var Reflect$1;
         // 3.1.4.1 OrdinaryGetOwnMetadata(MetadataKey, O, P)
         // https://rbuckton.github.io/reflect-metadata/#ordinarygetownmetadata
         function OrdinaryGetOwnMetadata(MetadataKey, O, P) {
-            var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
-            if (IsUndefined(metadataMap))
-                return undefined;
-            return metadataMap.get(MetadataKey);
+            var provider = GetMetadataProvider(O, P, /*Create*/ false);
+            if (IsUndefined(provider))
+                return;
+            return provider.OrdinaryGetOwnMetadata(MetadataKey, O, P);
         }
         // 3.1.5.1 OrdinaryDefineOwnMetadata(MetadataKey, MetadataValue, O, P)
         // https://rbuckton.github.io/reflect-metadata/#ordinarydefineownmetadata
         function OrdinaryDefineOwnMetadata(MetadataKey, MetadataValue, O, P) {
-            var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ true);
-            metadataMap.set(MetadataKey, MetadataValue);
+            var provider = GetMetadataProvider(O, P, /*Create*/ true);
+            provider.OrdinaryDefineOwnMetadata(MetadataKey, MetadataValue, O, P);
         }
         // 3.1.6.1 OrdinaryMetadataKeys(O, P)
         // https://rbuckton.github.io/reflect-metadata/#ordinarymetadatakeys
@@ -665,33 +656,11 @@ var Reflect$1;
         // 3.1.7.1 OrdinaryOwnMetadataKeys(O, P)
         // https://rbuckton.github.io/reflect-metadata/#ordinaryownmetadatakeys
         function OrdinaryOwnMetadataKeys(O, P) {
-            var keys = [];
-            var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
-            if (IsUndefined(metadataMap))
-                return keys;
-            var keysObj = metadataMap.keys();
-            var iterator = GetIterator(keysObj);
-            var k = 0;
-            while (true) {
-                var next = IteratorStep(iterator);
-                if (!next) {
-                    keys.length = k;
-                    return keys;
-                }
-                var nextValue = IteratorValue(next);
-                try {
-                    keys[k] = nextValue;
-                }
-                catch (e) {
-                    try {
-                        IteratorClose(iterator);
-                    }
-                    finally {
-                        throw e;
-                    }
-                }
-                k++;
+            var provider = GetMetadataProvider(O, P, /*create*/ false);
+            if (!provider) {
+                return [];
             }
+            return provider.OrdinaryOwnMetadataKeys(O, P);
         }
         // 6 ECMAScript Data Typ0es and Values
         // https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values
@@ -834,6 +803,9 @@ var Reflect$1;
                 default: return false;
             }
         }
+        function SameValueZero(x, y) {
+            return x === y || x !== x && y !== y;
+        }
         // 7.3 Operations on Objects
         // https://tc39.github.io/ecma262/#sec-operations-on-objects
         // 7.3.9 GetMethod(V, P)
@@ -907,6 +879,304 @@ var Reflect$1;
             // we have a pretty good guess at the heritage.
             return constructor;
         }
+        // Global metadata registry
+        // - Allows `import "reflect-metadata"` and `import "reflect-metadata/no-conflict"` to interoperate.
+        // - Uses isolated metadata if `Reflect` is frozen before the registry can be installed.
+        /**
+         * Creates a registry used to allow multiple `reflect-metadata` providers.
+         */
+        function CreateMetadataRegistry() {
+            var fallback;
+            if (!IsUndefined(registrySymbol) &&
+                typeof root.Reflect !== "undefined" &&
+                !(registrySymbol in root.Reflect) &&
+                typeof root.Reflect.defineMetadata === "function") {
+                // interoperate with older version of `reflect-metadata` that did not support a registry.
+                fallback = CreateFallbackProvider(root.Reflect);
+            }
+            var first;
+            var second;
+            var rest;
+            var targetProviderMap = new _WeakMap();
+            var registry = {
+                registerProvider: registerProvider,
+                getProvider: getProvider,
+                setProvider: setProvider,
+            };
+            return registry;
+            function registerProvider(provider) {
+                if (!Object.isExtensible(registry)) {
+                    throw new Error("Cannot add provider to a frozen registry.");
+                }
+                switch (true) {
+                    case fallback === provider: break;
+                    case IsUndefined(first):
+                        first = provider;
+                        break;
+                    case first === provider: break;
+                    case IsUndefined(second):
+                        second = provider;
+                        break;
+                    case second === provider: break;
+                    default:
+                        if (rest === undefined)
+                            rest = new _Set();
+                        rest.add(provider);
+                        break;
+                }
+            }
+            function getProviderNoCache(O, P) {
+                if (!IsUndefined(first)) {
+                    if (first.isProviderFor(O, P))
+                        return first;
+                    if (!IsUndefined(second)) {
+                        if (second.isProviderFor(O, P))
+                            return first;
+                        if (!IsUndefined(rest)) {
+                            var iterator = GetIterator(rest);
+                            while (true) {
+                                var next = IteratorStep(iterator);
+                                if (!next) {
+                                    return undefined;
+                                }
+                                var provider = IteratorValue(next);
+                                if (provider.isProviderFor(O, P)) {
+                                    IteratorClose(iterator);
+                                    return provider;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!IsUndefined(fallback) && fallback.isProviderFor(O, P)) {
+                    return fallback;
+                }
+                return undefined;
+            }
+            function getProvider(O, P) {
+                var providerMap = targetProviderMap.get(O);
+                var provider;
+                if (!IsUndefined(providerMap)) {
+                    provider = providerMap.get(P);
+                }
+                if (!IsUndefined(provider)) {
+                    return provider;
+                }
+                provider = getProviderNoCache(O, P);
+                if (!IsUndefined(provider)) {
+                    if (IsUndefined(providerMap)) {
+                        providerMap = new _Map();
+                        targetProviderMap.set(O, providerMap);
+                    }
+                    providerMap.set(P, provider);
+                }
+                return provider;
+            }
+            function hasProvider(provider) {
+                if (IsUndefined(provider))
+                    throw new TypeError();
+                return first === provider || second === provider || !IsUndefined(rest) && rest.has(provider);
+            }
+            function setProvider(O, P, provider) {
+                if (!hasProvider(provider)) {
+                    throw new Error("Metadata provider not registered.");
+                }
+                var existingProvider = getProvider(O, P);
+                if (existingProvider !== provider) {
+                    if (!IsUndefined(existingProvider)) {
+                        return false;
+                    }
+                    var providerMap = targetProviderMap.get(O);
+                    if (IsUndefined(providerMap)) {
+                        providerMap = new _Map();
+                        targetProviderMap.set(O, providerMap);
+                    }
+                    providerMap.set(P, provider);
+                }
+                return true;
+            }
+        }
+        /**
+         * Gets or creates the shared registry of metadata providers.
+         */
+        function GetOrCreateMetadataRegistry() {
+            var metadataRegistry;
+            if (!IsUndefined(registrySymbol) && IsObject(root.Reflect) && Object.isExtensible(root.Reflect)) {
+                metadataRegistry = root.Reflect[registrySymbol];
+            }
+            if (IsUndefined(metadataRegistry)) {
+                metadataRegistry = CreateMetadataRegistry();
+            }
+            if (!IsUndefined(registrySymbol) && IsObject(root.Reflect) && Object.isExtensible(root.Reflect)) {
+                Object.defineProperty(root.Reflect, registrySymbol, {
+                    enumerable: false,
+                    configurable: false,
+                    writable: false,
+                    value: metadataRegistry
+                });
+            }
+            return metadataRegistry;
+        }
+        function CreateMetadataProvider(registry) {
+            // [[Metadata]] internal slot
+            // https://rbuckton.github.io/reflect-metadata/#ordinary-object-internal-methods-and-internal-slots
+            var metadata = new _WeakMap();
+            var provider = {
+                isProviderFor: function (O, P) {
+                    var targetMetadata = metadata.get(O);
+                    if (IsUndefined(targetMetadata))
+                        return false;
+                    return targetMetadata.has(P);
+                },
+                OrdinaryDefineOwnMetadata: OrdinaryDefineOwnMetadata,
+                OrdinaryHasOwnMetadata: OrdinaryHasOwnMetadata,
+                OrdinaryGetOwnMetadata: OrdinaryGetOwnMetadata,
+                OrdinaryOwnMetadataKeys: OrdinaryOwnMetadataKeys,
+                OrdinaryDeleteMetadata: OrdinaryDeleteMetadata,
+            };
+            metadataRegistry.registerProvider(provider);
+            return provider;
+            function GetOrCreateMetadataMap(O, P, Create) {
+                var targetMetadata = metadata.get(O);
+                var createdTargetMetadata = false;
+                if (IsUndefined(targetMetadata)) {
+                    if (!Create)
+                        return undefined;
+                    targetMetadata = new _Map();
+                    metadata.set(O, targetMetadata);
+                    createdTargetMetadata = true;
+                }
+                var metadataMap = targetMetadata.get(P);
+                if (IsUndefined(metadataMap)) {
+                    if (!Create)
+                        return undefined;
+                    metadataMap = new _Map();
+                    targetMetadata.set(P, metadataMap);
+                    if (!registry.setProvider(O, P, provider)) {
+                        targetMetadata.delete(P);
+                        if (createdTargetMetadata) {
+                            metadata.delete(O);
+                        }
+                        throw new Error("Wrong provider for target.");
+                    }
+                }
+                return metadataMap;
+            }
+            // 3.1.2.1 OrdinaryHasOwnMetadata(MetadataKey, O, P)
+            // https://rbuckton.github.io/reflect-metadata/#ordinaryhasownmetadata
+            function OrdinaryHasOwnMetadata(MetadataKey, O, P) {
+                var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
+                if (IsUndefined(metadataMap))
+                    return false;
+                return ToBoolean(metadataMap.has(MetadataKey));
+            }
+            // 3.1.4.1 OrdinaryGetOwnMetadata(MetadataKey, O, P)
+            // https://rbuckton.github.io/reflect-metadata/#ordinarygetownmetadata
+            function OrdinaryGetOwnMetadata(MetadataKey, O, P) {
+                var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
+                if (IsUndefined(metadataMap))
+                    return undefined;
+                return metadataMap.get(MetadataKey);
+            }
+            // 3.1.5.1 OrdinaryDefineOwnMetadata(MetadataKey, MetadataValue, O, P)
+            // https://rbuckton.github.io/reflect-metadata/#ordinarydefineownmetadata
+            function OrdinaryDefineOwnMetadata(MetadataKey, MetadataValue, O, P) {
+                var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ true);
+                metadataMap.set(MetadataKey, MetadataValue);
+            }
+            // 3.1.7.1 OrdinaryOwnMetadataKeys(O, P)
+            // https://rbuckton.github.io/reflect-metadata/#ordinaryownmetadatakeys
+            function OrdinaryOwnMetadataKeys(O, P) {
+                var keys = [];
+                var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
+                if (IsUndefined(metadataMap))
+                    return keys;
+                var keysObj = metadataMap.keys();
+                var iterator = GetIterator(keysObj);
+                var k = 0;
+                while (true) {
+                    var next = IteratorStep(iterator);
+                    if (!next) {
+                        keys.length = k;
+                        return keys;
+                    }
+                    var nextValue = IteratorValue(next);
+                    try {
+                        keys[k] = nextValue;
+                    }
+                    catch (e) {
+                        try {
+                            IteratorClose(iterator);
+                        }
+                        finally {
+                            throw e;
+                        }
+                    }
+                    k++;
+                }
+            }
+            function OrdinaryDeleteMetadata(MetadataKey, O, P) {
+                var metadataMap = GetOrCreateMetadataMap(O, P, /*Create*/ false);
+                if (IsUndefined(metadataMap))
+                    return false;
+                if (!metadataMap.delete(MetadataKey))
+                    return false;
+                if (metadataMap.size === 0) {
+                    var targetMetadata = metadata.get(O);
+                    if (!IsUndefined(targetMetadata)) {
+                        targetMetadata.delete(P);
+                        if (targetMetadata.size === 0) {
+                            metadata.delete(targetMetadata);
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+        function CreateFallbackProvider(reflect) {
+            var defineMetadata = reflect.defineMetadata, hasOwnMetadata = reflect.hasOwnMetadata, getOwnMetadata = reflect.getOwnMetadata, getOwnMetadataKeys = reflect.getOwnMetadataKeys, deleteMetadata = reflect.deleteMetadata;
+            var metadataOwner = new _WeakMap();
+            var provider = {
+                isProviderFor: function (O, P) {
+                    var metadataPropertySet = metadataOwner.get(O);
+                    if (!IsUndefined(metadataPropertySet)) {
+                        return metadataPropertySet.has(P);
+                    }
+                    if (getOwnMetadataKeys(O, P).length) {
+                        if (IsUndefined(metadataPropertySet)) {
+                            metadataPropertySet = new _Set();
+                            metadataOwner.set(O, metadataPropertySet);
+                        }
+                        metadataPropertySet.add(P);
+                        return true;
+                    }
+                    return false;
+                },
+                OrdinaryDefineOwnMetadata: defineMetadata,
+                OrdinaryHasOwnMetadata: hasOwnMetadata,
+                OrdinaryGetOwnMetadata: getOwnMetadata,
+                OrdinaryOwnMetadataKeys: getOwnMetadataKeys,
+                OrdinaryDeleteMetadata: deleteMetadata,
+            };
+            return provider;
+        }
+        /**
+         * Gets the metadata provider for an object. If the object has no metadata provider and this is for a create operation,
+         * then this module's metadata provider is assigned to the object.
+         */
+        function GetMetadataProvider(O, P, Create) {
+            var registeredProvider = metadataRegistry.getProvider(O, P);
+            if (!IsUndefined(registeredProvider)) {
+                return registeredProvider;
+            }
+            if (Create) {
+                if (metadataRegistry.setProvider(O, P, metadataProvider)) {
+                    return metadataProvider;
+                }
+                throw new Error("Illegal state.");
+            }
+            return undefined;
+        }
         // naive Map shim
         function CreateMapPolyfill() {
             var cacheSentinel = {};
@@ -954,7 +1224,7 @@ var Reflect$1;
                 };
                 return MapIterator;
             }());
-            return /** @class */ (function () {
+            var Map = /** @class */ (function () {
                 function Map() {
                     this._keys = [];
                     this._values = [];
@@ -986,7 +1256,7 @@ var Reflect$1;
                         }
                         this._keys.length--;
                         this._values.length--;
-                        if (key === this._cacheKey) {
+                        if (SameValueZero(key, this._cacheKey)) {
                             this._cacheKey = cacheSentinel;
                             this._cacheIndex = -2;
                         }
@@ -1006,8 +1276,14 @@ var Reflect$1;
                 Map.prototype["@@iterator"] = function () { return this.entries(); };
                 Map.prototype[iteratorSymbol] = function () { return this.entries(); };
                 Map.prototype._find = function (key, insert) {
-                    if (this._cacheKey !== key) {
-                        this._cacheIndex = this._keys.indexOf(this._cacheKey = key);
+                    if (!SameValueZero(this._cacheKey, key)) {
+                        this._cacheIndex = -1;
+                        for (var i = 0; i < this._keys.length; i++) {
+                            if (SameValueZero(this._keys[i], key)) {
+                                this._cacheIndex = i;
+                                break;
+                            }
+                        }
                     }
                     if (this._cacheIndex < 0 && insert) {
                         this._cacheIndex = this._keys.length;
@@ -1018,6 +1294,7 @@ var Reflect$1;
                 };
                 return Map;
             }());
+            return Map;
             function getKey(key, _) {
                 return key;
             }
@@ -1030,7 +1307,7 @@ var Reflect$1;
         }
         // naive Set shim
         function CreateSetPolyfill() {
-            return /** @class */ (function () {
+            var Set = /** @class */ (function () {
                 function Set() {
                     this._map = new _Map();
                 }
@@ -1044,12 +1321,13 @@ var Reflect$1;
                 Set.prototype.delete = function (value) { return this._map.delete(value); };
                 Set.prototype.clear = function () { this._map.clear(); };
                 Set.prototype.keys = function () { return this._map.keys(); };
-                Set.prototype.values = function () { return this._map.values(); };
+                Set.prototype.values = function () { return this._map.keys(); };
                 Set.prototype.entries = function () { return this._map.entries(); };
                 Set.prototype["@@iterator"] = function () { return this.keys(); };
                 Set.prototype[iteratorSymbol] = function () { return this.keys(); };
                 return Set;
             }());
+            return Set;
         }
         // naive WeakMap shim
         function CreateWeakMapPolyfill() {
@@ -1154,7 +1432,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-/* global Reflect, Promise */
+/* global Reflect, Promise, SuppressedError, Symbol */
 
 var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf ||
@@ -1220,7 +1498,7 @@ function __generator$1(thisArg, body) {
     }
 }
 
-function __spreadArray$1(to, from, pack) {
+function __spreadArray$2(to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
             if (!ar) ar = Array.prototype.slice.call(from, 0, i);
@@ -1229,6 +1507,11 @@ function __spreadArray$1(to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 }
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
 
 /**
  * This metadata contains validation rules.
@@ -1251,9 +1534,10 @@ var ValidationMetadata = /** @class */ (function () {
          */
         this.context = undefined;
         this.type = args.type;
+        this.name = args.name;
         this.target = args.target;
         this.propertyName = args.propertyName;
-        this.constraints = args.constraints;
+        this.constraints = args === null || args === void 0 ? void 0 : args.constraints;
         this.constraintCls = args.constraintCls;
         this.validationTypeOptions = args.validationTypeOptions;
         if (args.validationOptions) {
@@ -1285,6 +1569,7 @@ var ValidationSchemaToMetadataTransformer = /** @class */ (function () {
                 };
                 var args = {
                     type: validation.type,
+                    name: validation.name,
                     target: schema.name,
                     propertyName: property,
                     constraints: validation.constraints,
@@ -1343,6 +1628,42 @@ function isPromise$1(p) {
     return p !== null && typeof p === 'object' && typeof p.then === 'function';
 }
 
+var __values = (undefined && undefined.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+var __read$2 = (undefined && undefined.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray$1 = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 /**
  * Storage all metadatas.
  */
@@ -1351,12 +1672,12 @@ var MetadataStorage$1 = /** @class */ (function () {
         // -------------------------------------------------------------------------
         // Private properties
         // -------------------------------------------------------------------------
-        this.validationMetadatas = [];
-        this.constraintMetadatas = [];
+        this.validationMetadatas = new Map();
+        this.constraintMetadatas = new Map();
     }
     Object.defineProperty(MetadataStorage.prototype, "hasValidationMetaData", {
         get: function () {
-            return !!this.validationMetadatas.length;
+            return !!this.validationMetadatas.size;
         },
         enumerable: false,
         configurable: true
@@ -1376,13 +1697,25 @@ var MetadataStorage$1 = /** @class */ (function () {
      * Adds a new validation metadata.
      */
     MetadataStorage.prototype.addValidationMetadata = function (metadata) {
-        this.validationMetadatas.push(metadata);
+        var existingMetadata = this.validationMetadatas.get(metadata.target);
+        if (existingMetadata) {
+            existingMetadata.push(metadata);
+        }
+        else {
+            this.validationMetadatas.set(metadata.target, [metadata]);
+        }
     };
     /**
      * Adds a new constraint metadata.
      */
     MetadataStorage.prototype.addConstraintMetadata = function (metadata) {
-        this.constraintMetadatas.push(metadata);
+        var existingMetadata = this.constraintMetadatas.get(metadata.target);
+        if (existingMetadata) {
+            existingMetadata.push(metadata);
+        }
+        else {
+            this.constraintMetadatas.set(metadata.target, [metadata]);
+        }
     };
     /**
      * Groups metadata by their property names.
@@ -1400,6 +1733,7 @@ var MetadataStorage$1 = /** @class */ (function () {
      * Gets all validation metadatas for the given object with the given groups.
      */
     MetadataStorage.prototype.getTargetValidationMetadatas = function (targetConstructor, targetSchema, always, strictGroups, groups) {
+        var e_1, _a;
         var includeMetadataBecauseOfAlwaysOption = function (metadata) {
             // `metadata.always` overrides global default.
             if (typeof metadata.always !== 'undefined')
@@ -1422,7 +1756,8 @@ var MetadataStorage$1 = /** @class */ (function () {
             return false;
         };
         // get directly related to a target metadatas
-        var originalMetadatas = this.validationMetadatas.filter(function (metadata) {
+        var filteredForOriginalMetadatasSearch = this.validationMetadatas.get(targetConstructor) || [];
+        var originalMetadatas = filteredForOriginalMetadatasSearch.filter(function (metadata) {
             if (metadata.target !== targetConstructor && metadata.target !== targetSchema)
                 return false;
             if (includeMetadataBecauseOfAlwaysOption(metadata))
@@ -1434,7 +1769,23 @@ var MetadataStorage$1 = /** @class */ (function () {
             return true;
         });
         // get metadatas for inherited classes
-        var inheritedMetadatas = this.validationMetadatas.filter(function (metadata) {
+        var filteredForInheritedMetadatasSearch = [];
+        try {
+            for (var _b = __values(this.validationMetadatas.entries()), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var _d = __read$2(_c.value, 2), key = _d[0], value = _d[1];
+                if (targetConstructor.prototype instanceof key) {
+                    filteredForInheritedMetadatasSearch.push.apply(filteredForInheritedMetadatasSearch, __spreadArray$1([], __read$2(value), false));
+                }
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        var inheritedMetadatas = filteredForInheritedMetadatasSearch.filter(function (metadata) {
             // if target is a string it's means we validate against a schema, and there is no inheritance support for schemas
             if (typeof metadata.target === 'string')
                 return false;
@@ -1463,7 +1814,7 @@ var MetadataStorage$1 = /** @class */ (function () {
      * Gets all validator constraints for the given object.
      */
     MetadataStorage.prototype.getTargetValidatorConstraints = function (target) {
-        return this.constraintMetadatas.filter(function (metadata) { return metadata.target === target; });
+        return this.constraintMetadatas.get(target) || [];
     };
     return MetadataStorage;
 }());
@@ -1490,22 +1841,27 @@ var ValidationError = /** @class */ (function () {
      * @param shouldDecorate decorate the message with ANSI formatter escape codes for better readability
      * @param hasParent true when the error is a child of an another one
      * @param parentPath path as string to the parent of this property
+     * @param showConstraintMessages show constraint messages instead of constraint names
      */
-    ValidationError.prototype.toString = function (shouldDecorate, hasParent, parentPath) {
+    ValidationError.prototype.toString = function (shouldDecorate, hasParent, parentPath, showConstraintMessages) {
         var _this = this;
         if (shouldDecorate === void 0) { shouldDecorate = false; }
         if (hasParent === void 0) { hasParent = false; }
         if (parentPath === void 0) { parentPath = ""; }
+        if (showConstraintMessages === void 0) { showConstraintMessages = false; }
         var boldStart = shouldDecorate ? "\u001B[1m" : "";
         var boldEnd = shouldDecorate ? "\u001B[22m" : "";
+        var constraintsToString = function () { var _a; return (showConstraintMessages ? Object.values : Object.keys)((_a = _this.constraints) !== null && _a !== void 0 ? _a : {}).join(", "); };
         var propConstraintFailed = function (propertyName) {
-            return " - property ".concat(boldStart).concat(parentPath).concat(propertyName).concat(boldEnd, " has failed the following constraints: ").concat(boldStart).concat(Object.keys(_this.constraints).join(", ")).concat(boldEnd, " \n");
+            return " - property ".concat(boldStart).concat(parentPath).concat(propertyName).concat(boldEnd, " has failed the following constraints: ").concat(boldStart).concat(constraintsToString()).concat(boldEnd, " \n");
         };
         if (!hasParent) {
             return ("An instance of ".concat(boldStart).concat(this.target ? this.target.constructor.name : 'an object').concat(boldEnd, " has failed the validation:\n") +
                 (this.constraints ? propConstraintFailed(this.property) : "") +
                 (this.children
-                    ? this.children.map(function (childError) { return childError.toString(shouldDecorate, true, _this.property); }).join("")
+                    ? this.children
+                        .map(function (childError) { return childError.toString(shouldDecorate, true, _this.property, showConstraintMessages); })
+                        .join("")
                     : ""));
         }
         else {
@@ -1519,7 +1875,9 @@ var ValidationError = /** @class */ (function () {
             else {
                 return this.children
                     ? this.children
-                        .map(function (childError) { return childError.toString(shouldDecorate, true, "".concat(parentPath).concat(formattedProperty_1)); })
+                        .map(function (childError) {
+                        return childError.toString(shouldDecorate, true, "".concat(parentPath).concat(formattedProperty_1), showConstraintMessages);
+                    })
                         .join("")
                     : "";
             }
@@ -1562,6 +1920,9 @@ function constraintToString(constraint) {
     if (Array.isArray(constraint)) {
         return constraint.join(', ');
     }
+    if (typeof constraint === 'symbol') {
+        constraint = constraint.description;
+    }
     return "".concat(constraint);
 }
 var ValidationUtils = /** @class */ (function () {
@@ -1583,7 +1944,7 @@ var ValidationUtils = /** @class */ (function () {
         if (messageString &&
             validationArguments.value !== undefined &&
             validationArguments.value !== null &&
-            typeof validationArguments.value === 'string')
+            ['string', 'boolean', 'number'].includes(typeof validationArguments.value))
             messageString = messageString.replace(/\$value/g, validationArguments.value);
         if (messageString)
             messageString = messageString.replace(/\$property/g, validationArguments.property);
@@ -1594,6 +1955,22 @@ var ValidationUtils = /** @class */ (function () {
     return ValidationUtils;
 }());
 
+var __read$1 = (undefined && undefined.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 /**
  * Executes validation over given object.
  */
@@ -1619,7 +1996,7 @@ var ValidationExecutor = /** @class */ (function () {
     // -------------------------------------------------------------------------
     ValidationExecutor.prototype.execute = function (object, targetSchema, validationErrors) {
         var _this = this;
-        var _a;
+        var _a, _b;
         /**
          * If there is no metadata registered it means possibly the dependencies are not flatterned and
          * more than one instance is used.
@@ -1627,14 +2004,18 @@ var ValidationExecutor = /** @class */ (function () {
          * TODO: This needs proper handling, forcing to use the same container or some other proper solution.
          */
         if (!this.metadataStorage.hasValidationMetaData && ((_a = this.validatorOptions) === null || _a === void 0 ? void 0 : _a.enableDebugMessages) === true) {
-            console.warn("No metadata found. There is more than once class-validator version installed probably. You need to flatten your dependencies.");
+            console.warn("No validation metadata found. No validation will be  performed. There are multiple possible reasons:\n" +
+                "  - There may be multiple class-validator versions installed. You will need to flatten your dependencies to fix the issue.\n" +
+                "  - This validation runs before any file with validation decorator was parsed by NodeJS.");
         }
         var groups = this.validatorOptions ? this.validatorOptions.groups : undefined;
         var strictGroups = (this.validatorOptions && this.validatorOptions.strictGroups) || false;
         var always = (this.validatorOptions && this.validatorOptions.always) || false;
+        /** Forbid unknown values are turned on by default and any other value than false will enable it. */
+        var forbidUnknownValues = ((_b = this.validatorOptions) === null || _b === void 0 ? void 0 : _b.forbidUnknownValues) === undefined || this.validatorOptions.forbidUnknownValues !== false;
         var targetMetadatas = this.metadataStorage.getTargetValidationMetadatas(object.constructor, targetSchema, always, strictGroups, groups);
         var groupedMetadatas = this.metadataStorage.groupByPropertyName(targetMetadatas);
-        if (this.validatorOptions && this.validatorOptions.forbidUnknownValues && !targetMetadatas.length) {
+        if (this.validatorOptions && forbidUnknownValues && !targetMetadatas.length) {
             var validationError = new ValidationError();
             if (!this.validatorOptions ||
                 !this.validatorOptions.validationError ||
@@ -1736,7 +2117,7 @@ var ValidationExecutor = /** @class */ (function () {
             return;
         }
         this.customValidations(object, value, customValidationMetadatas, validationError);
-        this.nestedValidations(value, nestedValidationMetadatas, validationError.children);
+        this.nestedValidations(value, nestedValidationMetadatas, validationError);
         this.mapContexts(object, value, metadatas, validationError);
         this.mapContexts(object, value, customValidationMetadatas, validationError);
     };
@@ -1784,7 +2165,7 @@ var ValidationExecutor = /** @class */ (function () {
                     if (isPromise$1(validatedValue)) {
                         var promise = validatedValue.then(function (isValid) {
                             if (!isValid) {
-                                var _a = _this.createValidationError(object, value, metadata, customConstraintMetadata), type = _a[0], message = _a[1];
+                                var _a = __read$1(_this.createValidationError(object, value, metadata, customConstraintMetadata), 2), type = _a[0], message = _a[1];
                                 error.constraints[type] = message;
                                 if (metadata.context) {
                                     if (!error.contexts) {
@@ -1798,7 +2179,7 @@ var ValidationExecutor = /** @class */ (function () {
                     }
                     else {
                         if (!validatedValue) {
-                            var _a = _this.createValidationError(object, value, metadata, customConstraintMetadata), type = _a[0], message = _a[1];
+                            var _a = __read$1(_this.createValidationError(object, value, metadata, customConstraintMetadata), 2), type = _a[0], message = _a[1];
                             error.constraints[type] = message;
                         }
                     }
@@ -1821,7 +2202,7 @@ var ValidationExecutor = /** @class */ (function () {
                     var asyncValidationIsFinishedPromise = Promise.all(asyncValidatedSubValues).then(function (flatValidatedValues) {
                         var validationResult = flatValidatedValues.every(function (isValid) { return isValid; });
                         if (!validationResult) {
-                            var _a = _this.createValidationError(object, value, metadata, customConstraintMetadata), type = _a[0], message = _a[1];
+                            var _a = __read$1(_this.createValidationError(object, value, metadata, customConstraintMetadata), 2), type = _a[0], message = _a[1];
                             error.constraints[type] = message;
                             if (metadata.context) {
                                 if (!error.contexts) {
@@ -1836,43 +2217,40 @@ var ValidationExecutor = /** @class */ (function () {
                 }
                 var validationResult = validatedSubValues.every(function (isValid) { return isValid; });
                 if (!validationResult) {
-                    var _b = _this.createValidationError(object, value, metadata, customConstraintMetadata), type = _b[0], message = _b[1];
+                    var _b = __read$1(_this.createValidationError(object, value, metadata, customConstraintMetadata), 2), type = _b[0], message = _b[1];
                     error.constraints[type] = message;
                 }
             });
         });
     };
-    ValidationExecutor.prototype.nestedValidations = function (value, metadatas, errors) {
+    ValidationExecutor.prototype.nestedValidations = function (value, metadatas, error) {
         var _this = this;
         if (value === void 0) {
             return;
         }
         metadatas.forEach(function (metadata) {
-            var _a;
             if (metadata.type !== ValidationTypes.NESTED_VALIDATION && metadata.type !== ValidationTypes.PROMISE_VALIDATION) {
+                return;
+            }
+            else if (_this.validatorOptions &&
+                _this.validatorOptions.stopAtFirstError &&
+                Object.keys(error.constraints || {}).length > 0) {
                 return;
             }
             if (Array.isArray(value) || value instanceof Set || value instanceof Map) {
                 // Treats Set as an array - as index of Set value is value itself and it is common case to have Object as value
                 var arrayLikeValue = value instanceof Set ? Array.from(value) : value;
                 arrayLikeValue.forEach(function (subValue, index) {
-                    _this.performValidations(value, subValue, index.toString(), [], metadatas, errors);
+                    _this.performValidations(value, subValue, index.toString(), [], metadatas, error.children);
                 });
             }
             else if (value instanceof Object) {
                 var targetSchema = typeof metadata.target === 'string' ? metadata.target : metadata.target.name;
-                _this.execute(value, targetSchema, errors);
+                _this.execute(value, targetSchema, error.children);
             }
             else {
-                var error = new ValidationError();
-                error.value = value;
-                error.property = metadata.propertyName;
-                error.target = metadata.target;
-                var _b = _this.createValidationError(metadata.target, value, metadata), type = _b[0], message = _b[1];
-                error.constraints = (_a = {},
-                    _a[type] = message,
-                    _a);
-                errors.push(error);
+                var _a = __read$1(_this.createValidationError(metadata.target, value, metadata), 2), type = _a[0], message = _a[1];
+                error.constraints[type] = message;
             }
         });
     };
@@ -1937,7 +2315,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -2123,6 +2501,7 @@ function registerDecorator(options) {
     }
     var validationMetadataArgs = {
         type: options.name && ValidationTypes.isValid(options.name) ? options.name : ValidationTypes.CUSTOM_VALIDATION,
+        name: options.name,
         target: options.target,
         propertyName: options.propertyName,
         validationOptions: options.options,
@@ -2268,10 +2647,6 @@ module.exports.default = exports.default;
 
 unwrapExports(merge_1);
 
-var require$$0 = assertString_1;
-
-var require$$3 = merge_1;
-
 var IS_NOT_EMPTY = 'isNotEmpty';
 /**
  * Checks if given value is not empty (!== '', !== null, !== undefined).
@@ -2300,14 +2675,14 @@ function min(num, min) {
     return typeof num === 'number' && typeof min === 'number' && num >= min;
 }
 /**
- * Checks if the first number is greater than or equal to the second.
+ * Checks if the value is greater than or equal to the allowed minimum value.
  */
 function Min(minValue, validationOptions) {
     return ValidateBy({
         name: MIN,
         constraints: [minValue],
         validator: {
-            validate: function (value, args) { return min(value, args.constraints[0]); },
+            validate: function (value, args) { return min(value, args === null || args === void 0 ? void 0 : args.constraints[0]); },
             defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must not be less than $constraint1'; }, validationOptions),
         },
     }, validationOptions);
@@ -2320,7 +2695,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = isByteLength;
 
-var _assertString = _interopRequireDefault(require$$0);
+var _assertString = _interopRequireDefault(assertString_1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2358,9 +2733,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = isFQDN;
 
-var _assertString = _interopRequireDefault(require$$0);
+var _assertString = _interopRequireDefault(assertString_1);
 
-var _merge = _interopRequireDefault(require$$3);
+var _merge = _interopRequireDefault(merge_1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2369,7 +2744,8 @@ var default_fqdn_options = {
   allow_underscores: false,
   allow_trailing_dot: false,
   allow_numeric_tld: false,
-  allow_wildcard: false
+  allow_wildcard: false,
+  ignore_max_length: false
 };
 
 function isFQDN(str, options) {
@@ -2396,7 +2772,7 @@ function isFQDN(str, options) {
       return false;
     }
 
-    if (!/^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i.test(tld)) {
+    if (!options.allow_numeric_tld && !/^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i.test(tld)) {
       return false;
     } // disallow spaces
 
@@ -2412,7 +2788,7 @@ function isFQDN(str, options) {
   }
 
   return parts.every(function (part) {
-    if (part.length > 63) {
+    if (part.length > 63 && !options.ignore_max_length) {
       return false;
     }
 
@@ -2451,7 +2827,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = isIP;
 
-var _assertString = _interopRequireDefault(require$$0);
+var _assertString = _interopRequireDefault(assertString_1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2500,18 +2876,11 @@ function isIP(str) {
   }
 
   if (version === '4') {
-    if (!IPv4AddressRegExp.test(str)) {
-      return false;
-    }
-
-    var parts = str.split('.').sort(function (a, b) {
-      return a - b;
-    });
-    return parts[3] <= 255;
+    return IPv4AddressRegExp.test(str);
   }
 
   if (version === '6') {
-    return !!IPv6AddressRegExp.test(str);
+    return IPv6AddressRegExp.test(str);
   }
 
   return false;
@@ -2523,12 +2892,6 @@ module.exports.default = exports.default;
 
 unwrapExports(isIP_1);
 
-var require$$2$1 = isByteLength_1;
-
-var require$$1 = isFQDN_1;
-
-var require$$2 = isIP_1;
-
 var isEmail_1 = createCommonjsModule(function (module, exports) {
 
 Object.defineProperty(exports, "__esModule", {
@@ -2536,26 +2899,28 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = isEmail;
 
-var _assertString = _interopRequireDefault(require$$0);
+var _assertString = _interopRequireDefault(assertString_1);
 
-var _merge = _interopRequireDefault(require$$3);
+var _isByteLength = _interopRequireDefault(isByteLength_1);
 
-var _isByteLength = _interopRequireDefault(require$$2$1);
+var _isFQDN = _interopRequireDefault(isFQDN_1);
 
-var _isFQDN = _interopRequireDefault(require$$1);
+var _isIP = _interopRequireDefault(isIP_1);
 
-var _isIP = _interopRequireDefault(require$$2);
+var _merge = _interopRequireDefault(merge_1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var default_email_options = {
   allow_display_name: false,
+  allow_underscores: false,
   require_display_name: false,
   allow_utf8_local_part: true,
   require_tld: true,
   blacklisted_chars: '',
   ignore_max_length: false,
-  host_blacklist: []
+  host_blacklist: [],
+  host_whitelist: []
 };
 /* eslint-disable max-len */
 
@@ -2565,7 +2930,7 @@ var splitNameAddress = /^([^\x00-\x1F\x7F-\x9F\cX]+)</i;
 var emailUserPart = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~]+$/i;
 var gmailUserPart = /^[a-z\d]+$/;
 var quotedEmailUser = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f]))*$/i;
-var emailUserUtf8Part = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$/i;
+var emailUserUtf8Part = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\u00A1-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$/i;
 var quotedEmailUserUtf8 = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*$/i;
 var defaultMaxEmailLength = 254;
 /* eslint-enable max-len */
@@ -2622,7 +2987,7 @@ function isEmail(str, options) {
       // the display name is `myname` instead of `myname `, so need to trim the last space
 
       if (display_name.endsWith(' ')) {
-        display_name = display_name.substr(0, display_name.length - 1);
+        display_name = display_name.slice(0, -1);
       }
 
       if (!validateDisplayName(display_name)) {
@@ -2642,6 +3007,10 @@ function isEmail(str, options) {
   var lower_domain = domain.toLowerCase();
 
   if (options.host_blacklist.includes(lower_domain)) {
+    return false;
+  }
+
+  if (options.host_whitelist.length > 0 && !options.host_whitelist.includes(lower_domain)) {
     return false;
   }
 
@@ -2684,7 +3053,9 @@ function isEmail(str, options) {
   }
 
   if (!(0, _isFQDN.default)(domain, {
-    require_tld: options.require_tld
+    require_tld: options.require_tld,
+    ignore_max_length: options.ignore_max_length,
+    allow_underscores: options.allow_underscores
   })) {
     if (!options.allow_ip_domain) {
       return false;
@@ -2695,7 +3066,7 @@ function isEmail(str, options) {
         return false;
       }
 
-      var noBracketdomain = domain.substr(1, domain.length - 2);
+      var noBracketdomain = domain.slice(1, -1);
 
       if (noBracketdomain.length === 0 || !(0, _isIP.default)(noBracketdomain)) {
         return false;
@@ -2747,7 +3118,7 @@ function IsEmail(options, validationOptions) {
         name: IS_EMAIL,
         constraints: [options],
         validator: {
-            validate: function (value, args) { return isEmail(value, args.constraints[0]); },
+            validate: function (value, args) { return isEmail(value, args === null || args === void 0 ? void 0 : args.constraints[0]); },
             defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must be an email'; }, validationOptions),
         },
     }, validationOptions);
@@ -2761,7 +3132,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = isMobilePhone;
 exports.locales = void 0;
 
-var _assertString = _interopRequireDefault(require$$0);
+var _assertString = _interopRequireDefault(assertString_1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2775,15 +3146,16 @@ var phones = {
   'ar-EG': /^((\+?20)|0)?1[0125]\d{8}$/,
   'ar-IQ': /^(\+?964|0)?7[0-9]\d{8}$/,
   'ar-JO': /^(\+?962|0)?7[789]\d{7}$/,
-  'ar-KW': /^(\+?965)[569]\d{7}$/,
+  'ar-KW': /^(\+?965)([569]\d{7}|41\d{6})$/,
   'ar-LY': /^((\+?218)|0)?(9[1-6]\d{7}|[1-8]\d{7,9})$/,
   'ar-MA': /^(?:(?:\+|00)212|0)[5-7]\d{8}$/,
   'ar-OM': /^((\+|00)968)?(9[1-9])\d{6}$/,
   'ar-PS': /^(\+?970|0)5[6|9](\d{7})$/,
   'ar-SA': /^(!?(\+?966)|0)?5\d{8}$/,
+  'ar-SD': /^((\+?249)|0)?(9[012369]|1[012])\d{7}$/,
   'ar-SY': /^(!?(\+?963)|0)?9\d{8}$/,
   'ar-TN': /^(\+?216)?[2459]\d{7}$/,
-  'az-AZ': /^(\+994|0)(5[015]|7[07]|99)\d{7}$/,
+  'az-AZ': /^(\+994|0)(10|5[015]|7[07]|99)\d{7}$/,
   'bs-BA': /^((((\+|00)3876)|06))((([0-3]|[5-6])\d{6})|(4\d{7}))$/,
   'be-BY': /^(\+?375)?(24|25|29|33|44)\d{7}$/,
   'bg-BG': /^(\+?359|0)?8[789]\d{7}$/,
@@ -2791,14 +3163,18 @@ var phones = {
   'ca-AD': /^(\+376)?[346]\d{5}$/,
   'cs-CZ': /^(\+?420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$/,
   'da-DK': /^(\+?45)?\s?\d{2}\s?\d{2}\s?\d{2}\s?\d{2}$/,
-  'de-DE': /^((\+49|0)[1|3])([0|5][0-45-9]\d|6([23]|0\d?)|7([0-57-9]|6\d))\d{7,9}$/,
+  'de-DE': /^((\+49|0)1)(5[0-25-9]\d|6([23]|0\d?)|7([0-57-9]|6\d))\d{7,9}$/,
   'de-AT': /^(\+43|0)\d{1,4}\d{3,12}$/,
   'de-CH': /^(\+41|0)([1-9])\d{1,9}$/,
   'de-LU': /^(\+352)?((6\d1)\d{6})$/,
-  'dv-MV': /^(\+?960)?(7[2-9]|91|9[3-9])\d{7}$/,
-  'el-GR': /^(\+?30|0)?(69\d{8})$/,
+  'dv-MV': /^(\+?960)?(7[2-9]|9[1-9])\d{5}$/,
+  'el-GR': /^(\+?30|0)?6(8[5-9]|9(?![26])[0-9])\d{7}$/,
+  'el-CY': /^(\+?357?)?(9(9|6)\d{6})$/,
+  'en-AI': /^(\+?1|0)264(?:2(35|92)|4(?:6[1-2]|76|97)|5(?:3[6-9]|8[1-4])|7(?:2(4|9)|72))\d{4}$/,
   'en-AU': /^(\+?61|0)4\d{8}$/,
-  'en-BM': /^(\+?1)?441(((3|7)\d{6}$)|(5[0-3][0-9]\d{4}$)|(59\d{5}))/,
+  'en-AG': /^(?:\+1|1)268(?:464|7(?:1[3-9]|[28]\d|3[0246]|64|7[0-689]))\d{4}$/,
+  'en-BM': /^(\+?1)?441(((3|7)\d{6}$)|(5[0-3][0-9]\d{4}$)|(59\d{5}$))/,
+  'en-BS': /^(\+?1[-\s]?|0)?\(?242\)?[-\s]?\d{3}[-\s]?\d{4}$/,
   'en-GB': /^(\+?44|0)7\d{9}$/,
   'en-GG': /^(\+?44|0)1481\d{6}$/,
   'en-GH': /^(\+233|0)(20|50|24|54|27|57|26|56|23|28|55|59)\d{7}$/,
@@ -2807,13 +3183,19 @@ var phones = {
   'en-MO': /^(\+?853[-\s]?)?[6]\d{3}[-\s]?\d{4}$/,
   'en-IE': /^(\+?353|0)8[356789]\d{7}$/,
   'en-IN': /^(\+?91|0)?[6789]\d{9}$/,
+  'en-JM': /^(\+?876)?\d{7}$/,
   'en-KE': /^(\+?254|0)(7|1)\d{8}$/,
+  'fr-CF': /^(\+?236| ?)(70|75|77|72|21|22)\d{6}$/,
+  'en-SS': /^(\+?211|0)(9[1257])\d{7}$/,
   'en-KI': /^((\+686|686)?)?( )?((6|7)(2|3|8)[0-9]{6})$/,
+  'en-KN': /^(?:\+1|1)869(?:46\d|48[89]|55[6-8]|66\d|76[02-7])\d{4}$/,
+  'en-LS': /^(\+?266)(22|28|57|58|59|27|52)\d{6}$/,
   'en-MT': /^(\+?356|0)?(99|79|77|21|27|22|25)[0-9]{6}$/,
   'en-MU': /^(\+?230|0)?\d{8}$/,
   'en-NA': /^(\+?264|0)(6|8)\d{7}$/,
   'en-NG': /^(\+?234|0)?[789]\d{9}$/,
   'en-NZ': /^(\+?64|0)[28]\d{7,9}$/,
+  'en-PG': /^(\+?675|0)?(7\d|8[18])\d{6}$/,
   'en-PK': /^((00|\+)?92|0)3[0-6]\d{8}$/,
   'en-PH': /^(09|\+639)\d{9}$/,
   'en-RW': /^(\+?250|0)?[7]\d{8}$/,
@@ -2831,13 +3213,14 @@ var phones = {
   'es-CO': /^(\+?57)?3(0(0|1|2|4|5)|1\d|2[0-4]|5(0|1))\d{7}$/,
   'es-CL': /^(\+?56|0)[2-9]\d{1}\d{7}$/,
   'es-CR': /^(\+506)?[2-8]\d{7}$/,
-  'es-CU': /^(\+53|0053)?5\d{7}/,
+  'es-CU': /^(\+53|0053)?5\d{7}$/,
   'es-DO': /^(\+?1)?8[024]9\d{7}$/,
-  'es-HN': /^(\+?504)?[9|8]\d{7}$/,
+  'es-HN': /^(\+?504)?[9|8|3|2]\d{7}$/,
   'es-EC': /^(\+?593|0)([2-7]|9[2-9])\d{7}$/,
   'es-ES': /^(\+?34)?[6|7]\d{8}$/,
   'es-PE': /^(\+?51)?9\d{8}$/,
   'es-MX': /^(\+?52)?(1|01)?\d{10,11}$/,
+  'es-NI': /^(\+?505)\d{7,8}$/,
   'es-PA': /^(\+?507)\d{7,8}$/,
   'es-PY': /^(\+?595|0)9[9876]\d{7}$/,
   'es-SV': /^(\+?503)?[67]\d{7}$/,
@@ -2845,10 +3228,12 @@ var phones = {
   'es-VE': /^(\+?58)?(2|4)\d{9}$/,
   'et-EE': /^(\+?372)?\s?(5|8[1-4])\s?([0-9]\s?){6,7}$/,
   'fa-IR': /^(\+?98[\-\s]?|0)9[0-39]\d[\-\s]?\d{3}[\-\s]?\d{4}$/,
-  'fi-FI': /^(\+?358|0)\s?(4(0|1|2|4|5|6)?|50)\s?(\d\s?){4,8}\d$/,
+  'fi-FI': /^(\+?358|0)\s?(4[0-6]|50)\s?(\d\s?){4,8}$/,
   'fj-FJ': /^(\+?679)?\s?\d{3}\s?\d{4}$/,
   'fo-FO': /^(\+?298)?\s?\d{2}\s?\d{2}\s?\d{2}$/,
   'fr-BF': /^(\+226|0)[67]\d{7}$/,
+  'fr-BJ': /^(\+229)\d{8}$/,
+  'fr-CD': /^(\+?243|0)?(8|9)\d{8}$/,
   'fr-CM': /^(\+?237)6[0-9]{8}$/,
   'fr-FR': /^(\+?33|0)[67]\d{8}$/,
   'fr-GF': /^(\+?594|0|00594)[67]\d{8}$/,
@@ -2856,34 +3241,43 @@ var phones = {
   'fr-MQ': /^(\+?596|0|00596)[67]\d{8}$/,
   'fr-PF': /^(\+?689)?8[789]\d{6}$/,
   'fr-RE': /^(\+?262|0|00262)[67]\d{8}$/,
+  'fr-WF': /^(\+681)?\d{6}$/,
   'he-IL': /^(\+972|0)([23489]|5[012345689]|77)[1-9]\d{6}$/,
   'hu-HU': /^(\+?36|06)(20|30|31|50|70)\d{7}$/,
   'id-ID': /^(\+?62|0)8(1[123456789]|2[1238]|3[1238]|5[12356789]|7[78]|9[56789]|8[123456789])([\s?|\d]{5,11})$/,
+  'ir-IR': /^(\+98|0)?9\d{9}$/,
   'it-IT': /^(\+?39)?\s?3\d{2} ?\d{6,7}$/,
   'it-SM': /^((\+378)|(0549)|(\+390549)|(\+3780549))?6\d{5,9}$/,
   'ja-JP': /^(\+81[ \-]?(\(0\))?|0)[6789]0[ \-]?\d{4}[ \-]?\d{4}$/,
-  'ka-GE': /^(\+?995)?(5|79)\d{7}$/,
+  'ka-GE': /^(\+?995)?(79\d{7}|5\d{8})$/,
   'kk-KZ': /^(\+?7|8)?7\d{9}$/,
   'kl-GL': /^(\+?299)?\s?\d{2}\s?\d{2}\s?\d{2}$/,
   'ko-KR': /^((\+?82)[ \-]?)?0?1([0|1|6|7|8|9]{1})[ \-]?\d{3,4}[ \-]?\d{4}$/,
+  'ky-KG': /^(\+?7\s?\+?7|0)\s?\d{2}\s?\d{3}\s?\d{4}$/,
   'lt-LT': /^(\+370|8)\d{8}$/,
   'lv-LV': /^(\+?371)2\d{7}$/,
-  'ms-MY': /^(\+?6?01){1}(([0145]{1}(\-|\s)?\d{7,8})|([236789]{1}(\s|\-)?\d{7}))$/,
+  'mg-MG': /^((\+?261|0)(2|3)\d)?\d{7}$/,
+  'mn-MN': /^(\+|00|011)?976(77|81|88|91|94|95|96|99)\d{6}$/,
+  'my-MM': /^(\+?959|09|9)(2[5-7]|3[1-2]|4[0-5]|6[6-9]|7[5-9]|9[6-9])[0-9]{7}$/,
+  'ms-MY': /^(\+?60|0)1(([0145](-|\s)?\d{7,8})|([236-9](-|\s)?\d{7}))$/,
   'mz-MZ': /^(\+?258)?8[234567]\d{7}$/,
   'nb-NO': /^(\+?47)?[49]\d{7}$/,
   'ne-NP': /^(\+?977)?9[78]\d{8}$/,
   'nl-BE': /^(\+?32|0)4\d{8}$/,
   'nl-NL': /^(((\+|00)?31\(0\))|((\+|00)?31)|0)6{1}\d{8}$/,
+  'nl-AW': /^(\+)?297(56|59|64|73|74|99)\d{5}$/,
   'nn-NO': /^(\+?47)?[49]\d{7}$/,
-  'pl-PL': /^(\+?48)? ?[5-8]\d ?\d{3} ?\d{2} ?\d{2}$/,
-  'pt-BR': /^((\+?55\ ?[1-9]{2}\ ?)|(\+?55\ ?\([1-9]{2}\)\ ?)|(0[1-9]{2}\ ?)|(\([1-9]{2}\)\ ?)|([1-9]{2}\ ?))((\d{4}\-?\d{4})|(9[2-9]{1}\d{3}\-?\d{4}))$/,
+  'pl-PL': /^(\+?48)? ?([5-8]\d|45) ?\d{3} ?\d{2} ?\d{2}$/,
+  'pt-BR': /^((\+?55\ ?[1-9]{2}\ ?)|(\+?55\ ?\([1-9]{2}\)\ ?)|(0[1-9]{2}\ ?)|(\([1-9]{2}\)\ ?)|([1-9]{2}\ ?))((\d{4}\-?\d{4})|(9[1-9]{1}\d{3}\-?\d{4}))$/,
   'pt-PT': /^(\+?351)?9[1236]\d{7}$/,
   'pt-AO': /^(\+244)\d{9}$/,
-  'ro-RO': /^(\+?4?0)\s?7\d{2}(\/|\s|\.|\-)?\d{3}(\s|\.|\-)?\d{3}$/,
+  'ro-MD': /^(\+?373|0)((6(0|1|2|6|7|8|9))|(7(6|7|8|9)))\d{6}$/,
+  'ro-RO': /^(\+?40|0)\s?7\d{2}(\/|\s|\.|-)?\d{3}(\s|\.|-)?\d{3}$/,
   'ru-RU': /^(\+?7|8)?9\d{9}$/,
   'si-LK': /^(?:0|94|\+94)?(7(0|1|2|4|5|6|7|8)( |-)?)\d{7}$/,
   'sl-SI': /^(\+386\s?|0)(\d{1}\s?\d{3}\s?\d{2}\s?\d{2}|\d{2}\s?\d{3}\s?\d{3})$/,
   'sk-SK': /^(\+?421)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$/,
+  'so-SO': /^(\+?252|0)((6[0-9])\d{7}|(7[1-9])\d{7})$/,
   'sq-AL': /^(\+355|0)6[789]\d{6}$/,
   'sr-RS': /^(\+3816|06)[- \d]{5,9}$/,
   'sv-SE': /^(\+?46|0)[\s\-]?7[\s\-]?[02369]([\s\-]?\d){7}$/,
@@ -2896,7 +3290,10 @@ var phones = {
   'vi-VN': /^((\+?84)|0)((3([2-9]))|(5([25689]))|(7([0|6-9]))|(8([1-9]))|(9([0-9])))([0-9]{7})$/,
   'zh-CN': /^((\+|00)86)?(1[3-9]|9[28])\d{9}$/,
   'zh-TW': /^(\+?886\-?|0)?9\d{8}$/,
-  'dz-BT': /^(\+?975|0)?(17|16|77|02)\d{6}$/
+  'dz-BT': /^(\+?975|0)?(17|16|77|02)\d{6}$/,
+  'ar-YE': /^(((\+|00)9677|0?7)[0137]\d{7}|((\+|00)967|0)[1-7]\d{6})$/,
+  'ar-EH': /^(\+?212|0)[\s\-]?(5288|5289)[\s\-]?\d{5}$/,
+  'fa-AF': /^(\+93|0)?(2{1}[0-8]{1}|[3-5]{1}[0-4]{1})(\d{7})$/
 };
 /* eslint-enable max-len */
 // aliases
@@ -2991,7 +3388,7 @@ function IsMobilePhone(locale, options, validationOptions) {
         name: IS_MOBILE_PHONE,
         constraints: [locale, options],
         validator: {
-            validate: function (value, args) { return isMobilePhone(value, args.constraints[0], args.constraints[1]); },
+            validate: function (value, args) { return isMobilePhone(value, args === null || args === void 0 ? void 0 : args.constraints[0], args === null || args === void 0 ? void 0 : args.constraints[1]); },
             defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must be a phone number'; }, validationOptions),
         },
     }, validationOptions);
@@ -3004,7 +3401,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = isLength;
 
-var _assertString = _interopRequireDefault(require$$0);
+var _assertString = _interopRequireDefault(assertString_1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3025,8 +3422,9 @@ function isLength(str, options) {
     max = arguments[2];
   }
 
+  var presentationSequences = str.match(/(\uFE0F|\uFE0E)/g) || [];
   var surrogatePairs = str.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g) || [];
-  var len = str.length - surrogatePairs.length;
+  var len = str.length - presentationSequences.length - surrogatePairs.length;
   return len >= min && (typeof max === 'undefined' || len <= max);
 }
 
@@ -3053,14 +3451,14 @@ function Length(min, max, validationOptions) {
         name: IS_LENGTH,
         constraints: [min, max],
         validator: {
-            validate: function (value, args) { return length(value, args.constraints[0], args.constraints[1]); },
+            validate: function (value, args) { return length(value, args === null || args === void 0 ? void 0 : args.constraints[0], args === null || args === void 0 ? void 0 : args.constraints[1]); },
             defaultMessage: buildMessage(function (eachPrefix, args) {
-                var isMinLength = args.constraints[0] !== null && args.constraints[0] !== undefined;
-                var isMaxLength = args.constraints[1] !== null && args.constraints[1] !== undefined;
-                if (isMinLength && (!args.value || args.value.length < args.constraints[0])) {
+                var isMinLength = (args === null || args === void 0 ? void 0 : args.constraints[0]) !== null && (args === null || args === void 0 ? void 0 : args.constraints[0]) !== undefined;
+                var isMaxLength = (args === null || args === void 0 ? void 0 : args.constraints[1]) !== null && (args === null || args === void 0 ? void 0 : args.constraints[1]) !== undefined;
+                if (isMinLength && (!args.value || args.value.length < (args === null || args === void 0 ? void 0 : args.constraints[0]))) {
                     return eachPrefix + '$property must be longer than or equal to $constraint1 characters';
                 }
-                else if (isMaxLength && args.value.length > args.constraints[1]) {
+                else if (isMaxLength && args.value.length > (args === null || args === void 0 ? void 0 : args.constraints[1])) {
                     return eachPrefix + '$property must be shorter than or equal to $constraint2 characters';
                 }
                 return (eachPrefix +
@@ -3087,7 +3485,7 @@ function MinLength(min, validationOptions) {
         name: MIN_LENGTH,
         constraints: [min],
         validator: {
-            validate: function (value, args) { return minLength(value, args.constraints[0]); },
+            validate: function (value, args) { return minLength(value, args === null || args === void 0 ? void 0 : args.constraints[0]); },
             defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must be longer than or equal to $constraint1 characters'; }, validationOptions),
         },
     }, validationOptions);
@@ -3143,10 +3541,10 @@ function isNumber(value, options) {
         return false;
     }
     if (value === Infinity || value === -Infinity) {
-        return options.allowInfinity;
+        return !!options.allowInfinity;
     }
     if (Number.isNaN(value)) {
-        return options.allowNaN;
+        return !!options.allowNaN;
     }
     if (options.maxDecimalPlaces !== undefined) {
         var decimalPlaces = 0;
@@ -3168,30 +3566,60 @@ function IsNumber(options, validationOptions) {
         name: IS_NUMBER,
         constraints: [options],
         validator: {
-            validate: function (value, args) { return isNumber(value, args.constraints[0]); },
+            validate: function (value, args) { return isNumber(value, args === null || args === void 0 ? void 0 : args.constraints[0]); },
             defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must be a number conforming to the specified constraints'; }, validationOptions),
         },
     }, validationOptions);
 }
 
+var __read = (undefined && undefined.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 var IS_ENUM = 'isEnum';
 /**
- * Checks if a given value is an enum
+ * Checks if a given value is the member of the provided enum.
  */
 function isEnum(value, entity) {
     var enumValues = Object.keys(entity).map(function (k) { return entity[k]; });
-    return enumValues.indexOf(value) >= 0;
+    return enumValues.includes(value);
 }
 /**
- * Checks if a given value is an enum
+ * Returns the possible values from an enum (both simple number indexed and string indexed enums).
+ */
+function validEnumValues(entity) {
+    return Object.entries(entity)
+        .filter(function (_a) {
+        var _b = __read(_a, 2), key = _b[0]; _b[1];
+        return isNaN(parseInt(key));
+    })
+        .map(function (_a) {
+        var _b = __read(_a, 2); _b[0]; var value = _b[1];
+        return value;
+    });
+}
+/**
+ * Checks if a given value is the member of the provided enum.
  */
 function IsEnum(entity, validationOptions) {
     return ValidateBy({
         name: IS_ENUM,
-        constraints: [entity],
+        constraints: [entity, validEnumValues(entity)],
         validator: {
-            validate: function (value, args) { return isEnum(value, args.constraints[0]); },
-            defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must be a valid enum value'; }, validationOptions),
+            validate: function (value, args) { return isEnum(value, args === null || args === void 0 ? void 0 : args.constraints[0]); },
+            defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must be one of the following values: $constraint2'; }, validationOptions),
         },
     }, validationOptions);
 }
@@ -3273,7 +3701,7 @@ function ArrayMinSize(min, validationOptions) {
         name: ARRAY_MIN_SIZE,
         constraints: [min],
         validator: {
-            validate: function (value, args) { return arrayMinSize(value, args.constraints[0]); },
+            validate: function (value, args) { return arrayMinSize(value, args === null || args === void 0 ? void 0 : args.constraints[0]); },
             defaultMessage: buildMessage(function (eachPrefix) { return eachPrefix + '$property must contain at least $constraint1 elements'; }, validationOptions),
         },
     }, validationOptions);
@@ -4325,25 +4753,18 @@ const decorateClass = (decorator) => ((clazz) => {
     return decorator(clazz);
 });
 const decorateMember = (decorator) => ((object, key, ...otherArgs) => {
+    var _a, _b, _c;
     const decoratorTargetType = typeof object === 'function' ? 'static' : 'instance';
     const decoratorType = typeof object[key] === 'function' ? 'method' : 'property';
     const clazz = decoratorTargetType === 'static' ? object : object.constructor;
     const decoratorsForClass = getDecoratorsForClass(clazz);
-    let decoratorsForTargetType = decoratorsForClass === null || decoratorsForClass === void 0 ? void 0 : decoratorsForClass[decoratorTargetType];
-    if (!decoratorsForTargetType) {
-        decoratorsForTargetType = {};
-        decoratorsForClass[decoratorTargetType] = decoratorsForTargetType;
-    }
-    let decoratorsForType = decoratorsForTargetType === null || decoratorsForTargetType === void 0 ? void 0 : decoratorsForTargetType[decoratorType];
-    if (!decoratorsForType) {
-        decoratorsForType = {};
-        decoratorsForTargetType[decoratorType] = decoratorsForType;
-    }
-    let decoratorsForKey = decoratorsForType === null || decoratorsForType === void 0 ? void 0 : decoratorsForType[key];
-    if (!decoratorsForKey) {
-        decoratorsForKey = [];
-        decoratorsForType[key] = decoratorsForKey;
-    }
+    const decoratorsForTargetType = (_a = decoratorsForClass === null || decoratorsForClass === void 0 ? void 0 : decoratorsForClass[decoratorTargetType]) !== null && _a !== void 0 ? _a : {};
+    decoratorsForClass[decoratorTargetType] = decoratorsForTargetType;
+    let decoratorsForType = (_b = decoratorsForTargetType === null || decoratorsForTargetType === void 0 ? void 0 : decoratorsForTargetType[decoratorType]) !== null && _b !== void 0 ? _b : {};
+    decoratorsForTargetType[decoratorType] = decoratorsForType;
+    let decoratorsForKey = (_c = decoratorsForType === null || decoratorsForType === void 0 ? void 0 : decoratorsForType[key]) !== null && _c !== void 0 ? _c : [];
+    decoratorsForType[key] = decoratorsForKey;
+    // @ts-ignore: array is type `A[] | B[]` and item is type `A | B`, so technically a type error, but it's fine
     decoratorsForKey.push(decorator);
     // @ts-ignore
     return decorator(object, key, ...otherArgs);
@@ -4370,8 +4791,12 @@ function Mixin(...constructors) {
     {
         const classDecorators = deepDecoratorSearch(...constructors)
             ;
-        for (let decorator of (_a = classDecorators === null || classDecorators === void 0 ? void 0 : classDecorators.class) !== null && _a !== void 0 ? _a : [])
-            DecoratedMixedClass = decorator(DecoratedMixedClass);
+        for (let decorator of (_a = classDecorators === null || classDecorators === void 0 ? void 0 : classDecorators.class) !== null && _a !== void 0 ? _a : []) {
+            const result = decorator(DecoratedMixedClass);
+            if (result) {
+                DecoratedMixedClass = result;
+            }
+        }
         applyPropAndMethodDecorators((_b = classDecorators === null || classDecorators === void 0 ? void 0 : classDecorators.static) !== null && _b !== void 0 ? _b : {}, DecoratedMixedClass);
         applyPropAndMethodDecorators((_c = classDecorators === null || classDecorators === void 0 ? void 0 : classDecorators.instance) !== null && _c !== void 0 ? _c : {}, DecoratedMixedClass.prototype);
     }
@@ -4408,21 +4833,21 @@ var DiscountBxgyItemItemDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemItemDto.prototype, "productId");
+    ], DiscountBxgyItemItemDto.prototype, "productId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.BXGYType === BXGYType.COMPANIES; })),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemItemDto.prototype, "companyId");
+    ], DiscountBxgyItemItemDto.prototype, "companyId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.BXGYType === BXGYType.CATEGORIES; })),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemItemDto.prototype, "categoryId");
+    ], DiscountBxgyItemItemDto.prototype, "categoryId", void 0);
     return DiscountBxgyItemItemDto;
 }());
 
@@ -4443,21 +4868,21 @@ var DiscountFilterItemItemDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountFilterItemItemDto.prototype, "productId");
+    ], DiscountFilterItemItemDto.prototype, "productId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType.COMPANIES; })),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountFilterItemItemDto.prototype, "companyId");
+    ], DiscountFilterItemItemDto.prototype, "companyId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountFilterType === DiscountFilterType.CATEGORIES; })),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountFilterItemItemDto.prototype, "categoryId");
+    ], DiscountFilterItemItemDto.prototype, "categoryId", void 0);
     return DiscountFilterItemItemDto;
 }());
 
@@ -4470,35 +4895,35 @@ var PaginateResponseMetadataDto = /** @class */ (function () {
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "itemCount");
+    ], PaginateResponseMetadataDto.prototype, "itemCount", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "totalItems");
+    ], PaginateResponseMetadataDto.prototype, "totalItems", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "itemsPerPage");
+    ], PaginateResponseMetadataDto.prototype, "itemsPerPage", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "totalPages");
+    ], PaginateResponseMetadataDto.prototype, "totalPages", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], PaginateResponseMetadataDto.prototype, "currentPage");
+    ], PaginateResponseMetadataDto.prototype, "currentPage", void 0);
     return PaginateResponseMetadataDto;
 }());
 
@@ -4511,27 +4936,27 @@ var BaseDBFieldsDto = /** @class */ (function () {
         decorate(IsNumber()),
         decorate(IsInt()),
         __metadata("design:type", Number)
-    ], BaseDBFieldsDto.prototype, "id");
+    ], BaseDBFieldsDto.prototype, "id", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsBoolean()),
         __metadata("design:type", Boolean)
-    ], BaseDBFieldsDto.prototype, "isDeleted");
+    ], BaseDBFieldsDto.prototype, "isDeleted", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsDate()),
         decorate(Type(function () { return Date; })),
         __metadata("design:type", Date)
-    ], BaseDBFieldsDto.prototype, "createdAt");
+    ], BaseDBFieldsDto.prototype, "createdAt", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsDate()),
         decorate(Type(function () { return Date; })),
         __metadata("design:type", Date)
-    ], BaseDBFieldsDto.prototype, "updatedAt");
+    ], BaseDBFieldsDto.prototype, "updatedAt", void 0);
     return BaseDBFieldsDto;
 }());
 
@@ -4593,33 +5018,33 @@ var DiscountBulkItemDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBulkItemDto.prototype, "minimumQuantity");
+    ], DiscountBulkItemDto.prototype, "minimumQuantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBulkItemDto.prototype, "maximumQuantity");
+    ], DiscountBulkItemDto.prototype, "maximumQuantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(BulkDiscountType)),
         __metadata("design:type", String)
-    ], DiscountBulkItemDto.prototype, "discountType");
+    ], DiscountBulkItemDto.prototype, "discountType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
         __metadata("design:type", Number)
-    ], DiscountBulkItemDto.prototype, "discountAmount");
+    ], DiscountBulkItemDto.prototype, "discountAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], DiscountBulkItemDto.prototype, "label");
+    ], DiscountBulkItemDto.prototype, "label", void 0);
     return DiscountBulkItemDto;
 }());
 
@@ -4640,46 +5065,46 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "minimumQuantity");
+    ], DiscountBxgyItemDto.prototype, "minimumQuantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "bonusQuantity");
+    ], DiscountBxgyItemDto.prototype, "bonusQuantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(BXGYDiscountType)),
         __metadata("design:type", String)
-    ], DiscountBxgyItemDto.prototype, "discountType");
+    ], DiscountBxgyItemDto.prototype, "discountType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType !== BXGYDiscountType.FREE; })),
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "discountAmount");
+    ], DiscountBxgyItemDto.prototype, "discountAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsBoolean()),
         __metadata("design:type", Boolean)
-    ], DiscountBxgyItemDto.prototype, "isBXGYRecursive");
+    ], DiscountBxgyItemDto.prototype, "isBXGYRecursive", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(BXGYType)),
         __metadata("design:type", String)
-    ], DiscountBxgyItemDto.prototype, "BXGYType");
+    ], DiscountBxgyItemDto.prototype, "BXGYType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return !o.isBXGYRecursive; })),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBxgyItemDto.prototype, "maximumQuantity");
+    ], DiscountBxgyItemDto.prototype, "maximumQuantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.BXGYType !== BXGYType.ALL; })),
@@ -4695,7 +5120,7 @@ var DiscountBxgyItemDto = /** @class */ (function () {
         decorate(ArrayMinSize(1)),
         decorate(Type(function () { return DiscountBxgyItemItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBxgyItemDto.prototype, "discountBXGYItemItems");
+    ], DiscountBxgyItemDto.prototype, "discountBXGYItemItems", void 0);
     return DiscountBxgyItemDto;
 }());
 
@@ -4716,40 +5141,40 @@ var DiscountBxgxItemDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "minimumQuantity");
+    ], DiscountBxgxItemDto.prototype, "minimumQuantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "bonusQuantity");
+    ], DiscountBxgxItemDto.prototype, "bonusQuantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(BXGXDiscountType)),
         __metadata("design:type", String)
-    ], DiscountBxgxItemDto.prototype, "discountType");
+    ], DiscountBxgxItemDto.prototype, "discountType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType !== BXGXDiscountType.FREE; })),
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
         __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "discountAmount");
+    ], DiscountBxgxItemDto.prototype, "discountAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsBoolean()),
         __metadata("design:type", Boolean)
-    ], DiscountBxgxItemDto.prototype, "isBXGXRecursive");
+    ], DiscountBxgxItemDto.prototype, "isBXGXRecursive", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return !o.isBXGXRecursive; })),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBxgxItemDto.prototype, "maximumQuantity");
+    ], DiscountBxgxItemDto.prototype, "maximumQuantity", void 0);
     return DiscountBxgxItemDto;
 }());
 
@@ -4761,7 +5186,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsEnum(DiscountFilterType)),
         __metadata("design:type", String)
-    ], DiscountFilterItemDto.prototype, "discountFilterType");
+    ], DiscountFilterItemDto.prototype, "discountFilterType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountFilterType !== DiscountFilterType.ALL; })),
@@ -4770,7 +5195,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
             return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
         })),
         __metadata("design:type", Boolean)
-    ], DiscountFilterItemDto.prototype, "isInList");
+    ], DiscountFilterItemDto.prototype, "isInList", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountFilterType !== DiscountFilterType.ALL; })),
@@ -4786,7 +5211,7 @@ var DiscountFilterItemDto = /** @class */ (function () {
         decorate(ArrayMinSize(1)),
         decorate(Type(function () { return DiscountFilterItemItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountFilterItemDto.prototype, "discountFilterItemItems");
+    ], DiscountFilterItemDto.prototype, "discountFilterItemItems", void 0);
     return DiscountFilterItemDto;
 }());
 
@@ -4821,25 +5246,25 @@ var DiscountConditionItemDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
         __metadata("design:type", Number)
-    ], DiscountConditionItemDto.prototype, "conditionValue");
+    ], DiscountConditionItemDto.prototype, "conditionValue", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(ConditionOperator)),
         __metadata("design:type", String)
-    ], DiscountConditionItemDto.prototype, "conditionOperator");
+    ], DiscountConditionItemDto.prototype, "conditionOperator", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(DiscountConditionType)),
         __metadata("design:type", String)
-    ], DiscountConditionItemDto.prototype, "conditionType");
+    ], DiscountConditionItemDto.prototype, "conditionType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(ConditionCountType)),
         __metadata("design:type", String)
-    ], DiscountConditionItemDto.prototype, "conditionCountType");
+    ], DiscountConditionItemDto.prototype, "conditionCountType", void 0);
     return DiscountConditionItemDto;
 }());
 
@@ -4851,13 +5276,13 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], DiscountBaseDto.prototype, "name");
+    ], DiscountBaseDto.prototype, "name", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(DiscountType)),
         __metadata("design:type", String)
-    ], DiscountBaseDto.prototype, "discountType");
+    ], DiscountBaseDto.prototype, "discountType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -4866,7 +5291,7 @@ var DiscountBaseDto = /** @class */ (function () {
             return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
         })),
         __metadata("design:type", Boolean)
-    ], DiscountBaseDto.prototype, "isEnabled");
+    ], DiscountBaseDto.prototype, "isEnabled", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -4875,7 +5300,7 @@ var DiscountBaseDto = /** @class */ (function () {
             return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
         })),
         __metadata("design:type", Boolean)
-    ], DiscountBaseDto.prototype, "isIgnoreOther");
+    ], DiscountBaseDto.prototype, "isIgnoreOther", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -4884,14 +5309,14 @@ var DiscountBaseDto = /** @class */ (function () {
             return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
         })),
         __metadata("design:type", Boolean)
-    ], DiscountBaseDto.prototype, "isIgnoreThisIfOtherMatched");
+    ], DiscountBaseDto.prototype, "isIgnoreThisIfOtherMatched", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(Type(function () { return Number; })),
         decorate(IsInt()),
         __metadata("design:type", Number)
-    ], DiscountBaseDto.prototype, "priority");
+    ], DiscountBaseDto.prototype, "priority", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -4899,45 +5324,45 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DiscountBaseDto.prototype, "usageLimit");
+    ], DiscountBaseDto.prototype, "usageLimit", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.PRODUCT_ADJUSTMENT; })),
         decorate(IsEnum(ProductAdjustmentDiscountType)),
         __metadata("design:type", String)
-    ], DiscountBaseDto.prototype, "productAdjustmentDiscountType");
+    ], DiscountBaseDto.prototype, "productAdjustmentDiscountType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.PRODUCT_ADJUSTMENT; })),
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
         __metadata("design:type", Number)
-    ], DiscountBaseDto.prototype, "productAdjustmentDiscountAmount");
+    ], DiscountBaseDto.prototype, "productAdjustmentDiscountAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.CART_ADJUSTMENT; })),
         decorate(IsEnum(CartAdjustmentDiscountType)),
         __metadata("design:type", String)
-    ], DiscountBaseDto.prototype, "cartAdjustmentDiscountType");
+    ], DiscountBaseDto.prototype, "cartAdjustmentDiscountType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.CART_ADJUSTMENT; })),
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
         __metadata("design:type", Number)
-    ], DiscountBaseDto.prototype, "cartAdjustmentDiscountAmount");
+    ], DiscountBaseDto.prototype, "cartAdjustmentDiscountAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.CART_ADJUSTMENT; })),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], DiscountBaseDto.prototype, "cartAdjustmentLabel");
+    ], DiscountBaseDto.prototype, "cartAdjustmentLabel", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BULK_ADJUSTMENT; })),
         decorate(IsEnum(BulkAdjustmentCountType)),
         __metadata("design:type", String)
-    ], DiscountBaseDto.prototype, "bulkAdjustmentCountType");
+    ], DiscountBaseDto.prototype, "bulkAdjustmentCountType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BULK_ADJUSTMENT; })),
@@ -4946,7 +5371,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(ArrayMinSize(1)),
         decorate(Type(function () { return DiscountBulkItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountBulkItems");
+    ], DiscountBaseDto.prototype, "discountBulkItems", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BXGX; })),
@@ -4955,7 +5380,7 @@ var DiscountBaseDto = /** @class */ (function () {
             return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
         })),
         __metadata("design:type", Boolean)
-    ], DiscountBaseDto.prototype, "isBXGXRecursive");
+    ], DiscountBaseDto.prototype, "isBXGXRecursive", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BXGX; })),
@@ -4972,25 +5397,25 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(Type(function () { return DiscountBxgxItemDto; })),
         decorate(ValidateNested({ each: true })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountBXGXItems");
+    ], DiscountBaseDto.prototype, "discountBXGXItems", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BXGY; })),
         decorate(IsEnum(BXGYType)),
         __metadata("design:type", String)
-    ], DiscountBaseDto.prototype, "BXGYType");
+    ], DiscountBaseDto.prototype, "BXGYType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BXGY; })),
         decorate(IsEnum(BXGYCountType)),
         __metadata("design:type", String)
-    ], DiscountBaseDto.prototype, "BXGYCountType");
+    ], DiscountBaseDto.prototype, "BXGYCountType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BXGY; })),
         decorate(IsEnum(BXGYGetType)),
         __metadata("design:type", String)
-    ], DiscountBaseDto.prototype, "BXGYGetType");
+    ], DiscountBaseDto.prototype, "BXGYGetType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BXGY; })),
@@ -4999,7 +5424,7 @@ var DiscountBaseDto = /** @class */ (function () {
             return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
         })),
         __metadata("design:type", Boolean)
-    ], DiscountBaseDto.prototype, "isBXGYRecursive");
+    ], DiscountBaseDto.prototype, "isBXGYRecursive", void 0);
     __decorate([
         decorate(Expose()),
         decorate(ValidateIf(function (o) { return o.discountType === DiscountType.BXGY; })),
@@ -5017,7 +5442,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(Type(function () { return DiscountBxgyItemDto; })),
         decorate(ValidateNested({ each: true })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountBXGYItems");
+    ], DiscountBaseDto.prototype, "discountBXGYItems", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5025,7 +5450,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(IsDate()),
         decorate(Type(function () { return Date; })),
         __metadata("design:type", Date)
-    ], DiscountBaseDto.prototype, "activeFromDateTime");
+    ], DiscountBaseDto.prototype, "activeFromDateTime", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5033,7 +5458,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(IsDate()),
         decorate(Type(function () { return Date; })),
         __metadata("design:type", Date)
-    ], DiscountBaseDto.prototype, "activeToDateTime");
+    ], DiscountBaseDto.prototype, "activeToDateTime", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -5042,7 +5467,7 @@ var DiscountBaseDto = /** @class */ (function () {
             return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
         })),
         __metadata("design:type", Boolean)
-    ], DiscountBaseDto.prototype, "isMatchAllCondition");
+    ], DiscountBaseDto.prototype, "isMatchAllCondition", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsArray()),
@@ -5050,7 +5475,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(ArrayMinSize(1)),
         decorate(Type(function () { return DiscountFilterItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountFilterItems");
+    ], DiscountBaseDto.prototype, "discountFilterItems", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5058,7 +5483,7 @@ var DiscountBaseDto = /** @class */ (function () {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return DiscountConditionItemDto; })),
         __metadata("design:type", Array)
-    ], DiscountBaseDto.prototype, "discountConditionItems");
+    ], DiscountBaseDto.prototype, "discountConditionItems", void 0);
     return DiscountBaseDto;
 }());
 
@@ -5081,7 +5506,7 @@ var DiscountPaginateResponseDto = /** @class */ (function (_super) {
         Type(function () { return DiscountItemDto; }),
         ValidateNested({ each: true }),
         __metadata("design:type", Array)
-    ], DiscountPaginateResponseDto.prototype, "items");
+    ], DiscountPaginateResponseDto.prototype, "items", void 0);
     return DiscountPaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
@@ -5097,7 +5522,7 @@ var PaginateRequestDto = /** @class */ (function () {
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], PaginateRequestDto.prototype, "page");
+    ], PaginateRequestDto.prototype, "page", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
@@ -5111,13 +5536,13 @@ var PaginateRequestDto = /** @class */ (function () {
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], PaginateRequestDto.prototype, "limit");
+    ], PaginateRequestDto.prototype, "limit", void 0);
     __decorate([
         Expose(),
         IsOptional(),
         IsString(),
         __metadata("design:type", String)
-    ], PaginateRequestDto.prototype, "search");
+    ], PaginateRequestDto.prototype, "search", void 0);
     return PaginateRequestDto;
 }());
 
@@ -5145,12 +5570,12 @@ var AutoCompleteOptionItemDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         __metadata("design:type", Number)
-    ], AutoCompleteOptionItemDto.prototype, "id");
+    ], AutoCompleteOptionItemDto.prototype, "id", void 0);
     __decorate([
         decorate(Expose()),
         decorate(Allow()),
         __metadata("design:type", String)
-    ], AutoCompleteOptionItemDto.prototype, "label");
+    ], AutoCompleteOptionItemDto.prototype, "label", void 0);
     return AutoCompleteOptionItemDto;
 }());
 
@@ -5177,13 +5602,13 @@ var LoginDTO = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(Length(11, 11)),
         __metadata("design:type", String)
-    ], LoginDTO.prototype, "mobile");
+    ], LoginDTO.prototype, "mobile", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(Length(6)),
         __metadata("design:type", String)
-    ], LoginDTO.prototype, "password");
+    ], LoginDTO.prototype, "password", void 0);
     return LoginDTO;
 }());
 
@@ -5195,25 +5620,25 @@ var AuthResponseDTO = /** @class */ (function () {
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
-    ], AuthResponseDTO.prototype, "accessToken");
+    ], AuthResponseDTO.prototype, "accessToken", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
-    ], AuthResponseDTO.prototype, "expiresIn");
+    ], AuthResponseDTO.prototype, "expiresIn", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
-    ], AuthResponseDTO.prototype, "tokenType");
+    ], AuthResponseDTO.prototype, "tokenType", void 0);
     __decorate([
         Expose(),
         IsOptional(),
         IsString(),
         __metadata("design:type", String)
-    ], AuthResponseDTO.prototype, "message");
+    ], AuthResponseDTO.prototype, "message", void 0);
     return AuthResponseDTO;
 }());
 
@@ -5225,13 +5650,13 @@ var CompanyBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], CompanyBaseDto.prototype, "name");
+    ], CompanyBaseDto.prototype, "name", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], CompanyBaseDto.prototype, "logo");
+    ], CompanyBaseDto.prototype, "logo", void 0);
     return CompanyBaseDto;
 }());
 
@@ -5254,7 +5679,7 @@ var CompanyPaginateResponseDto = /** @class */ (function (_super) {
         Type(function () { return CompanyItemDto; }),
         ValidateNested({ each: true }),
         __metadata("design:type", Array)
-    ], CompanyPaginateResponseDto.prototype, "items");
+    ], CompanyPaginateResponseDto.prototype, "items", void 0);
     return CompanyPaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
@@ -5282,20 +5707,20 @@ var DeleteResponseDto = /** @class */ (function () {
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
-    ], DeleteResponseDto.prototype, "message");
+    ], DeleteResponseDto.prototype, "message", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], DeleteResponseDto.prototype, "deletedId");
+    ], DeleteResponseDto.prototype, "deletedId", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsBoolean(),
         __metadata("design:type", Boolean)
-    ], DeleteResponseDto.prototype, "isDeleted");
+    ], DeleteResponseDto.prototype, "isDeleted", void 0);
     return DeleteResponseDto;
 }());
 
@@ -5307,13 +5732,13 @@ var CategoryBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], CategoryBaseDto.prototype, "name");
+    ], CategoryBaseDto.prototype, "name", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], CategoryBaseDto.prototype, "icon");
+    ], CategoryBaseDto.prototype, "icon", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5321,7 +5746,7 @@ var CategoryBaseDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], CategoryBaseDto.prototype, "categoryId");
+    ], CategoryBaseDto.prototype, "categoryId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5330,7 +5755,7 @@ var CategoryBaseDto = /** @class */ (function () {
         decorate(IsNumber()),
         decorate(IsInt()),
         __metadata("design:type", Number)
-    ], CategoryBaseDto.prototype, "order");
+    ], CategoryBaseDto.prototype, "order", void 0);
     return CategoryBaseDto;
 }());
 
@@ -5353,7 +5778,7 @@ var CategoryCreateDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], CategoryCreateDto.prototype, "companyId");
+    ], CategoryCreateDto.prototype, "companyId", void 0);
     return CategoryCreateDto;
 }(CategoryBaseDto));
 
@@ -5376,7 +5801,7 @@ var CategoryPaginateResponseDto = /** @class */ (function (_super) {
         Type(function () { return CategoryItemDto; }),
         ValidateNested({ each: true }),
         __metadata("design:type", Array)
-    ], CategoryPaginateResponseDto.prototype, "items");
+    ], CategoryPaginateResponseDto.prototype, "items", void 0);
     return CategoryPaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
@@ -5393,7 +5818,7 @@ var CategoryPaginateRequestDto = /** @class */ (function (_super) {
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], CategoryPaginateRequestDto.prototype, "companyId");
+    ], CategoryPaginateRequestDto.prototype, "companyId", void 0);
     return CategoryPaginateRequestDto;
 }(PaginateRequestDto));
 
@@ -5405,13 +5830,13 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], ProductBaseDto.prototype, "name");
+    ], ProductBaseDto.prototype, "name", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], ProductBaseDto.prototype, "barcode");
+    ], ProductBaseDto.prototype, "barcode", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -5419,7 +5844,7 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(IsNumber()),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], ProductBaseDto.prototype, "cost");
+    ], ProductBaseDto.prototype, "cost", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -5427,7 +5852,7 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], ProductBaseDto.prototype, "price");
+    ], ProductBaseDto.prototype, "price", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -5435,13 +5860,13 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], ProductBaseDto.prototype, "mrp");
+    ], ProductBaseDto.prototype, "mrp", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], ProductBaseDto.prototype, "description");
+    ], ProductBaseDto.prototype, "description", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5449,7 +5874,7 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], ProductBaseDto.prototype, "order");
+    ], ProductBaseDto.prototype, "order", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5457,7 +5882,7 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], ProductBaseDto.prototype, "categoryId");
+    ], ProductBaseDto.prototype, "categoryId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5465,13 +5890,13 @@ var ProductBaseDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], ProductBaseDto.prototype, "companyId");
+    ], ProductBaseDto.prototype, "companyId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], ProductBaseDto.prototype, "image");
+    ], ProductBaseDto.prototype, "image", void 0);
     return ProductBaseDto;
 }());
 
@@ -5503,7 +5928,7 @@ var ProductPaginateRequestDto = /** @class */ (function (_super) {
         Type(function () { return Number; }),
         IsInt(),
         __metadata("design:type", Number)
-    ], ProductPaginateRequestDto.prototype, "companyId");
+    ], ProductPaginateRequestDto.prototype, "companyId", void 0);
     __decorate([
         Expose(),
         IsOptional(),
@@ -5511,7 +5936,7 @@ var ProductPaginateRequestDto = /** @class */ (function (_super) {
         Type(function () { return Number; }),
         IsInt(),
         __metadata("design:type", Number)
-    ], ProductPaginateRequestDto.prototype, "categoryId");
+    ], ProductPaginateRequestDto.prototype, "categoryId", void 0);
     return ProductPaginateRequestDto;
 }(PaginateRequestDto));
 
@@ -5526,7 +5951,7 @@ var ProductPaginateResponseDto = /** @class */ (function (_super) {
         Type(function () { return ProductItemDto; }),
         ValidateNested({ each: true }),
         __metadata("design:type", Array)
-    ], ProductPaginateResponseDto.prototype, "items");
+    ], ProductPaginateResponseDto.prototype, "items", void 0);
     return ProductPaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
@@ -5547,7 +5972,7 @@ var PurchaseItemBaseDto = /** @class */ (function () {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], PurchaseItemBaseDto.prototype, "productId");
+    ], PurchaseItemBaseDto.prototype, "productId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -5555,7 +5980,7 @@ var PurchaseItemBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], PurchaseItemBaseDto.prototype, "cost");
+    ], PurchaseItemBaseDto.prototype, "cost", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -5563,7 +5988,7 @@ var PurchaseItemBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(1)),
         __metadata("design:type", Number)
-    ], PurchaseItemBaseDto.prototype, "quantity");
+    ], PurchaseItemBaseDto.prototype, "quantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5571,7 +5996,7 @@ var PurchaseItemBaseDto = /** @class */ (function () {
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], PurchaseItemBaseDto.prototype, "totalAmount");
+    ], PurchaseItemBaseDto.prototype, "totalAmount", void 0);
     return PurchaseItemBaseDto;
 }());
 
@@ -5583,25 +6008,25 @@ var PurchaseBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], PurchaseBaseDto.prototype, "title");
+    ], PurchaseBaseDto.prototype, "title", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], PurchaseBaseDto.prototype, "invoiceNumber");
+    ], PurchaseBaseDto.prototype, "invoiceNumber", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], PurchaseBaseDto.prototype, "invoiceImage");
+    ], PurchaseBaseDto.prototype, "invoiceImage", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], PurchaseBaseDto.prototype, "comment");
+    ], PurchaseBaseDto.prototype, "comment", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5610,14 +6035,14 @@ var PurchaseBaseDto = /** @class */ (function () {
             return [true, 'enabled', 'true', 1, '1'].indexOf(value) > -1;
         })),
         __metadata("design:type", Boolean)
-    ], PurchaseBaseDto.prototype, "isDraft");
+    ], PurchaseBaseDto.prototype, "isDraft", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], PurchaseBaseDto.prototype, "companyId");
+    ], PurchaseBaseDto.prototype, "companyId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5626,7 +6051,7 @@ var PurchaseBaseDto = /** @class */ (function () {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return PurchaseItemBaseDto; })),
         __metadata("design:type", Array)
-    ], PurchaseBaseDto.prototype, "purchaseItems");
+    ], PurchaseBaseDto.prototype, "purchaseItems", void 0);
     return PurchaseBaseDto;
 }());
 
@@ -5649,14 +6074,14 @@ var PurchaseItemDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], PurchaseItemDto.prototype, "userId");
+    ], PurchaseItemDto.prototype, "userId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], PurchaseItemDto.prototype, "totalAmount");
+    ], PurchaseItemDto.prototype, "totalAmount", void 0);
     return PurchaseItemDto;
 }(Mixin(BaseDBFieldsDto, PurchaseBaseDto)));
 
@@ -5673,7 +6098,7 @@ var PurchasePaginateRequestDto = /** @class */ (function (_super) {
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], PurchasePaginateRequestDto.prototype, "companyId");
+    ], PurchasePaginateRequestDto.prototype, "companyId", void 0);
     return PurchasePaginateRequestDto;
 }(PaginateRequestDto));
 
@@ -5688,7 +6113,7 @@ var PurchasePaginateResponseDto = /** @class */ (function (_super) {
         Type(function () { return PurchaseItemDto; }),
         ValidateNested({ each: true }),
         __metadata("design:type", Array)
-    ], PurchasePaginateResponseDto.prototype, "items");
+    ], PurchasePaginateResponseDto.prototype, "items", void 0);
     return PurchasePaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
@@ -5708,25 +6133,25 @@ var CustomerBaseDto = /** @class */ (function () {
         decorate(IsNotEmpty()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], CustomerBaseDto.prototype, "name");
+    ], CustomerBaseDto.prototype, "name", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], CustomerBaseDto.prototype, "address");
+    ], CustomerBaseDto.prototype, "address", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], CustomerBaseDto.prototype, "contactPerson");
+    ], CustomerBaseDto.prototype, "contactPerson", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], CustomerBaseDto.prototype, "photo");
+    ], CustomerBaseDto.prototype, "photo", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5734,7 +6159,7 @@ var CustomerBaseDto = /** @class */ (function () {
         decorate(Length(11, 11)),
         decorate(IsMobilePhone('bn-BD')),
         __metadata("design:type", String)
-    ], CustomerBaseDto.prototype, "mobile");
+    ], CustomerBaseDto.prototype, "mobile", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5742,7 +6167,7 @@ var CustomerBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
         __metadata("design:type", Number)
-    ], CustomerBaseDto.prototype, "latitude");
+    ], CustomerBaseDto.prototype, "latitude", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5750,7 +6175,7 @@ var CustomerBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(IsNumber()),
         __metadata("design:type", Number)
-    ], CustomerBaseDto.prototype, "longitude");
+    ], CustomerBaseDto.prototype, "longitude", void 0);
     return CustomerBaseDto;
 }());
 
@@ -5797,7 +6222,7 @@ var CustomerPaginateResponseDto = /** @class */ (function (_super) {
         Type(function () { return CustomerItemDto; }),
         ValidateNested({ each: true }),
         __metadata("design:type", Array)
-    ], CustomerPaginateResponseDto.prototype, "items");
+    ], CustomerPaginateResponseDto.prototype, "items", void 0);
     return CustomerPaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
@@ -5821,28 +6246,28 @@ var OrderBaseDto = /** @class */ (function () {
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], OrderBaseDto.prototype, "comment");
+    ], OrderBaseDto.prototype, "comment", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderBaseDto.prototype, "customerId");
+    ], OrderBaseDto.prototype, "customerId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(TransformBoolean()),
         decorate(IsBoolean()),
         __metadata("design:type", Boolean)
-    ], OrderBaseDto.prototype, "isCanceled");
+    ], OrderBaseDto.prototype, "isCanceled", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(TransformBoolean()),
         decorate(IsBoolean()),
         __metadata("design:type", Boolean)
-    ], OrderBaseDto.prototype, "isDelivered");
+    ], OrderBaseDto.prototype, "isDelivered", void 0);
     return OrderBaseDto;
 }());
 
@@ -5856,7 +6281,7 @@ var OrderProductBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], OrderProductBaseDto.prototype, "sale_price");
+    ], OrderProductBaseDto.prototype, "sale_price", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -5864,14 +6289,14 @@ var OrderProductBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], OrderProductBaseDto.prototype, "quantity");
+    ], OrderProductBaseDto.prototype, "quantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductBaseDto.prototype, "productId");
+    ], OrderProductBaseDto.prototype, "productId", void 0);
     return OrderProductBaseDto;
 }());
 
@@ -5886,7 +6311,7 @@ var OrderProductCreateDto = /** @class */ (function (_super) {
         decorate(IsNotEmpty()),
         decorate(IsEnum(OrderItemType)),
         __metadata("design:type", String)
-    ], OrderProductCreateDto.prototype, "itemType");
+    ], OrderProductCreateDto.prototype, "itemType", void 0);
     return OrderProductCreateDto;
 }(OrderProductBaseDto));
 
@@ -5899,14 +6324,14 @@ var OrderPaymentBaseDto = /** @class */ (function () {
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderPaymentBaseDto.prototype, "amount");
+    ], OrderPaymentBaseDto.prototype, "amount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderPaymentBaseDto.prototype, "collectedByUserId");
+    ], OrderPaymentBaseDto.prototype, "collectedByUserId", void 0);
     return OrderPaymentBaseDto;
 }());
 
@@ -5930,7 +6355,7 @@ var OrderCreateDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return OrderProductCreateDto; })),
         __metadata("design:type", Array)
-    ], OrderCreateDto.prototype, "orderProducts");
+    ], OrderCreateDto.prototype, "orderProducts", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5938,7 +6363,7 @@ var OrderCreateDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return OrderPaymentCreateDto; })),
         __metadata("design:type", Array)
-    ], OrderCreateDto.prototype, "orderPayments");
+    ], OrderCreateDto.prototype, "orderPayments", void 0);
     return OrderCreateDto;
 }(OrderBaseDto));
 
@@ -5955,7 +6380,7 @@ var OrderProductUpdateDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductUpdateDto.prototype, "id");
+    ], OrderProductUpdateDto.prototype, "id", void 0);
     return OrderProductUpdateDto;
 }(OrderProductCreateDto));
 
@@ -5972,7 +6397,7 @@ var OrderPaymentUpdateDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderPaymentUpdateDto.prototype, "id");
+    ], OrderPaymentUpdateDto.prototype, "id", void 0);
     return OrderPaymentUpdateDto;
 }(OrderPaymentBaseDto));
 
@@ -5988,7 +6413,7 @@ var OrderUpdateDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return OrderProductUpdateDto; })),
         __metadata("design:type", Array)
-    ], OrderUpdateDto.prototype, "orderProducts");
+    ], OrderUpdateDto.prototype, "orderProducts", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -5996,7 +6421,7 @@ var OrderUpdateDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return OrderPaymentUpdateDto; })),
         __metadata("design:type", Array)
-    ], OrderUpdateDto.prototype, "orderPayments");
+    ], OrderUpdateDto.prototype, "orderPayments", void 0);
     return OrderUpdateDto;
 }(OrderBaseDto));
 
@@ -6010,70 +6435,41 @@ var OrderProductItemDto = /** @class */ (function (_super) {
         decorate(IsNotEmpty()),
         Type(function () { return ProductItemDto; }),
         __metadata("design:type", ProductItemDto)
-    ], OrderProductItemDto.prototype, "product");
+    ], OrderProductItemDto.prototype, "product", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsEnum(OrderItemType)),
         __metadata("design:type", String)
-    ], OrderProductItemDto.prototype, "itemType");
+    ], OrderProductItemDto.prototype, "itemType", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "cost");
+    ], OrderProductItemDto.prototype, "cost", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "regular_price");
+    ], OrderProductItemDto.prototype, "regular_price", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "sale_price");
+    ], OrderProductItemDto.prototype, "sale_price", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "mrp");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "quantity");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "totalRegularAmount");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "totalSaleAmount");
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsNumber()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "totalDiscount");
+    ], OrderProductItemDto.prototype, "mrp", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -6081,28 +6477,57 @@ var OrderProductItemDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "oldQuantity");
+    ], OrderProductItemDto.prototype, "quantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "oldTotalRegularAmount");
+    ], OrderProductItemDto.prototype, "totalRegularAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "oldTotalSaleAmount");
+    ], OrderProductItemDto.prototype, "totalSaleAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderProductItemDto.prototype, "oldTotalDiscount");
+    ], OrderProductItemDto.prototype, "totalDiscount", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldQuantity", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldTotalRegularAmount", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldTotalSaleAmount", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderProductItemDto.prototype, "oldTotalDiscount", void 0);
     return OrderProductItemDto;
 }(Mixin(BaseDBFieldsDto, OrderProductBaseDto)));
 
@@ -6145,48 +6570,48 @@ var UserBaseDto = /** @class */ (function () {
         IsNotEmpty(),
         IsString(),
         __metadata("design:type", String)
-    ], UserBaseDto.prototype, "name");
+    ], UserBaseDto.prototype, "name", void 0);
     __decorate([
         decorate(Expose()),
         IsNotEmpty(),
         Length(11, 11),
         IsMobilePhone('bn-BD'),
         __metadata("design:type", String)
-    ], UserBaseDto.prototype, "mobile");
+    ], UserBaseDto.prototype, "mobile", void 0);
     __decorate([
         decorate(Expose()),
         IsOptional(),
         ValidateIf(function (object, value) { return !!value; }),
         IsEmail(),
         __metadata("design:type", String)
-    ], UserBaseDto.prototype, "email");
+    ], UserBaseDto.prototype, "email", void 0);
     __decorate([
         decorate(Expose()),
         IsOptional(),
         ValidateIf(function (object, value) { return !!value; }),
         IsString(),
         __metadata("design:type", String)
-    ], UserBaseDto.prototype, "address");
+    ], UserBaseDto.prototype, "address", void 0);
     __decorate([
         decorate(Expose()),
         IsNotEmpty(),
         IsEnum(UserType),
         __metadata("design:type", String)
-    ], UserBaseDto.prototype, "userType");
+    ], UserBaseDto.prototype, "userType", void 0);
     __decorate([
         decorate(Expose()),
         ValidateIf(function (o) { return o.userType === UserType.DMS_USER; }),
         IsNotEmpty(),
         IsEnum(DMSRole),
         __metadata("design:type", String)
-    ], UserBaseDto.prototype, "dmsRole");
+    ], UserBaseDto.prototype, "dmsRole", void 0);
     __decorate([
         decorate(Expose()),
         ValidateIf(function (o) { return o.userType === UserType.ORGANIZATION_USER; }),
         IsNotEmpty(),
         IsEnum(OrganizationRole),
         __metadata("design:type", String)
-    ], UserBaseDto.prototype, "organizationRole");
+    ], UserBaseDto.prototype, "organizationRole", void 0);
     return UserBaseDto;
 }());
 
@@ -6202,7 +6627,7 @@ var UserItemDto = /** @class */ (function (_super) {
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
-    ], UserItemDto.prototype, "organizationId");
+    ], UserItemDto.prototype, "organizationId", void 0);
     return UserItemDto;
 }(Mixin(BaseDBFieldsDto, UserBaseDto)));
 
@@ -6218,13 +6643,13 @@ var OrderPaymentItemDto = /** @class */ (function (_super) {
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderPaymentItemDto.prototype, "id");
+    ], OrderPaymentItemDto.prototype, "id", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         Type(function () { return UserItemDto; }),
         __metadata("design:type", UserItemDto)
-    ], OrderPaymentItemDto.prototype, "collectedByUser");
+    ], OrderPaymentItemDto.prototype, "collectedByUser", void 0);
     return OrderPaymentItemDto;
 }(Mixin(BaseDBFieldsDto, OrderPaymentBaseDto)));
 
@@ -6240,7 +6665,7 @@ var OrderItemDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return OrderProductItemDto; })),
         __metadata("design:type", Array)
-    ], OrderItemDto.prototype, "orderProducts");
+    ], OrderItemDto.prototype, "orderProducts", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),
@@ -6248,82 +6673,82 @@ var OrderItemDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return OrderPaymentItemDto; })),
         __metadata("design:type", Array)
-    ], OrderItemDto.prototype, "orderPayments");
+    ], OrderItemDto.prototype, "orderPayments", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(Type(function () { return CustomerItemDto; })),
         __metadata("design:type", CustomerItemDto)
-    ], OrderItemDto.prototype, "customer");
+    ], OrderItemDto.prototype, "customer", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(Type(function () { return UserItemDto; })),
         __metadata("design:type", UserItemDto)
-    ], OrderItemDto.prototype, "orderUser");
+    ], OrderItemDto.prototype, "orderUser", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "oldTotalDiscount");
+    ], OrderItemDto.prototype, "oldTotalDiscount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "oldTotalSaleAmount");
+    ], OrderItemDto.prototype, "oldTotalSaleAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "oldTotalRegularAmount");
+    ], OrderItemDto.prototype, "oldTotalRegularAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "totalDiscount");
+    ], OrderItemDto.prototype, "totalDiscount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "totalSaleAmount");
+    ], OrderItemDto.prototype, "totalSaleAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "totalRegularAmount");
+    ], OrderItemDto.prototype, "totalRegularAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "totalPaymentAmount");
+    ], OrderItemDto.prototype, "totalPaymentAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsNumber()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], OrderItemDto.prototype, "totalDueAmount");
+    ], OrderItemDto.prototype, "totalDueAmount", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(TransformBoolean()),
         decorate(IsBoolean()),
         __metadata("design:type", Boolean)
-    ], OrderItemDto.prototype, "isPaid");
+    ], OrderItemDto.prototype, "isPaid", void 0);
     return OrderItemDto;
 }(Mixin(BaseDBFieldsDto, OrderBaseDto)));
 
@@ -6338,7 +6763,7 @@ var OrderPaginateResponseDto = /** @class */ (function (_super) {
         Type(function () { return OrderItemDto; }),
         ValidateNested({ each: true }),
         __metadata("design:type", Array)
-    ], OrderPaginateResponseDto.prototype, "items");
+    ], OrderPaginateResponseDto.prototype, "items", void 0);
     return OrderPaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
@@ -6350,14 +6775,14 @@ var CreatedResponseDto = /** @class */ (function () {
         IsOptional(),
         IsString(),
         __metadata("design:type", String)
-    ], CreatedResponseDto.prototype, "message");
+    ], CreatedResponseDto.prototype, "message", void 0);
     __decorate([
         Expose(),
         IsNotEmpty(),
         IsNumber(),
         IsInt(),
         __metadata("design:type", Number)
-    ], CreatedResponseDto.prototype, "id");
+    ], CreatedResponseDto.prototype, "id", void 0);
     return CreatedResponseDto;
 }());
 
@@ -6373,7 +6798,7 @@ var UserCreateDto = /** @class */ (function (_super) {
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
-    ], UserCreateDto.prototype, "organizationId");
+    ], UserCreateDto.prototype, "organizationId", void 0);
     __decorate([
         decorate(Expose()),
         IsOptional(),
@@ -6381,7 +6806,7 @@ var UserCreateDto = /** @class */ (function (_super) {
         IsString(),
         MinLength(6),
         __metadata("design:type", String)
-    ], UserCreateDto.prototype, "password");
+    ], UserCreateDto.prototype, "password", void 0);
     return UserCreateDto;
 }(UserBaseDto));
 
@@ -6397,7 +6822,7 @@ var UserUpdateDto = /** @class */ (function (_super) {
         IsString(),
         MinLength(6),
         __metadata("design:type", String)
-    ], UserUpdateDto.prototype, "password");
+    ], UserUpdateDto.prototype, "password", void 0);
     return UserUpdateDto;
 }(UserBaseDto));
 
@@ -6409,28 +6834,28 @@ var DeliverySummaryBaseDto = /** @class */ (function () {
         decorate(IsOptional()),
         decorate(IsString()),
         __metadata("design:type", String)
-    ], DeliverySummaryBaseDto.prototype, "comment");
+    ], DeliverySummaryBaseDto.prototype, "comment", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DeliverySummaryBaseDto.prototype, "deliveryByUserId");
+    ], DeliverySummaryBaseDto.prototype, "deliveryByUserId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DeliverySummaryBaseDto.prototype, "routeId");
+    ], DeliverySummaryBaseDto.prototype, "routeId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(Type(function () { return Date; })),
         decorate(IsDate()),
         __metadata("design:type", Object)
-    ], DeliverySummaryBaseDto.prototype, "deliveryDate");
+    ], DeliverySummaryBaseDto.prototype, "deliveryDate", void 0);
     return DeliverySummaryBaseDto;
 }());
 
@@ -6444,7 +6869,7 @@ var DeliverySummaryProductBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], DeliverySummaryProductBaseDto.prototype, "dispatchedQuantity");
+    ], DeliverySummaryProductBaseDto.prototype, "dispatchedQuantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -6452,14 +6877,14 @@ var DeliverySummaryProductBaseDto = /** @class */ (function () {
         decorate(Type(function () { return Number; })),
         decorate(Min(0)),
         __metadata("design:type", Number)
-    ], DeliverySummaryProductBaseDto.prototype, "returnedQuantity");
+    ], DeliverySummaryProductBaseDto.prototype, "returnedQuantity", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
         decorate(IsInt()),
         decorate(Type(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DeliverySummaryProductBaseDto.prototype, "productId");
+    ], DeliverySummaryProductBaseDto.prototype, "productId", void 0);
     return DeliverySummaryProductBaseDto;
 }());
 
@@ -6483,7 +6908,7 @@ var DeliverySummaryCreateDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return DeliverySummaryProductCreateDto; })),
         __metadata("design:type", Array)
-    ], DeliverySummaryCreateDto.prototype, "deliverySummaryProducts");
+    ], DeliverySummaryCreateDto.prototype, "deliverySummaryProducts", void 0);
     return DeliverySummaryCreateDto;
 }(DeliverySummaryBaseDto));
 
@@ -6507,7 +6932,7 @@ var DeliverySummaryItemDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return DeliverySummaryProductItemDto; })),
         __metadata("design:type", Array)
-    ], DeliverySummaryItemDto.prototype, "deliverySummaryProducts");
+    ], DeliverySummaryItemDto.prototype, "deliverySummaryProducts", void 0);
     return DeliverySummaryItemDto;
 }(Mixin(BaseDBFieldsDto, DeliverySummaryBaseDto)));
 
@@ -6530,7 +6955,7 @@ var DeliverySummaryPaginateResponseDto = /** @class */ (function (_super) {
         Type(function () { return DeliverySummaryItemDto; }),
         ValidateNested({ each: true }),
         __metadata("design:type", Array)
-    ], DeliverySummaryPaginateResponseDto.prototype, "items");
+    ], DeliverySummaryPaginateResponseDto.prototype, "items", void 0);
     return DeliverySummaryPaginateResponseDto;
 }(PaginateResponseMetadataDto));
 
@@ -6554,7 +6979,7 @@ var DeliverySummaryUpdateDto = /** @class */ (function (_super) {
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return DeliverySummaryProductUpdateDto; })),
         __metadata("design:type", Array)
-    ], DeliverySummaryUpdateDto.prototype, "deliverySummaryProducts");
+    ], DeliverySummaryUpdateDto.prototype, "deliverySummaryProducts", void 0);
     return DeliverySummaryUpdateDto;
 }(DeliverySummaryBaseDto));
 
@@ -6573,14 +6998,14 @@ var dtoValidator = function (dto, obj) { return __awaiter$1(void 0, void 0, void
                 objInstance = plainToInstance(dto, obj, {
                     excludeExtraneousValues: true,
                     exposeDefaultValues: true,
-                    enableImplicitConversion: true
+                    enableImplicitConversion: true,
                 });
                 return [4 /*yield*/, validate(objInstance, {
                         enableDebugMessages: true,
                         whitelist: false,
                         forbidNonWhitelisted: true,
                         skipMissingProperties: false,
-                        transform: true
+                        transform: true,
                     })];
             case 1:
                 errors = _a.sent();
@@ -6613,13 +7038,13 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
             case 1:
                 returnError = _a.sent();
                 if (returnError.length > 0) {
-                    returnError = __spreadArray$1(['Object is not valid'], returnError, true);
+                    returnError = __spreadArray$2(['Object is not valid'], returnError, true);
                     throw new Error(returnError === null || returnError === void 0 ? void 0 : returnError.join('. \n'));
                 }
                 return [2 /*return*/, plainToInstance(dto, obj, {
                         excludeExtraneousValues: true,
                         exposeDefaultValues: true,
-                        enableImplicitConversion: true
+                        enableImplicitConversion: true,
                     })];
         }
     });

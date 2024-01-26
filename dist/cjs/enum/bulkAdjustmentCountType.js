@@ -5,5 +5,5 @@ var BulkAdjustmentCountType;
 (function (BulkAdjustmentCountType) {
     BulkAdjustmentCountType["ALL"] = "ALL";
     BulkAdjustmentCountType["INDIVIDUAL"] = "INDIVIDUAL";
-})(BulkAdjustmentCountType = exports.BulkAdjustmentCountType || (exports.BulkAdjustmentCountType = {}));
+})(BulkAdjustmentCountType || (exports.BulkAdjustmentCountType = BulkAdjustmentCountType = {}));
 //# sourceMappingURL=bulkAdjustmentCountType.js.map

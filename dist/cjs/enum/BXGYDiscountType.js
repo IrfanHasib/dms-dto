@@ -6,5 +6,5 @@ var BXGYDiscountType;
     BXGYDiscountType["PERCENT"] = "PERCENT";
     BXGYDiscountType["FIXED"] = "FIXED";
     BXGYDiscountType["FREE"] = "FREE";
-})(BXGYDiscountType = exports.BXGYDiscountType || (exports.BXGYDiscountType = {}));
+})(BXGYDiscountType || (exports.BXGYDiscountType = BXGYDiscountType = {}));
 //# sourceMappingURL=BXGYDiscountType.js.map

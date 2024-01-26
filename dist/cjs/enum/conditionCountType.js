@@ -5,5 +5,5 @@ var ConditionCountType;
 (function (ConditionCountType) {
     ConditionCountType["FROM_CART"] = "FROM_CART";
     ConditionCountType["FROM_FILTER"] = "FROM_FILTER";
-})(ConditionCountType = exports.ConditionCountType || (exports.ConditionCountType = {}));
+})(ConditionCountType || (exports.ConditionCountType = ConditionCountType = {}));
 //# sourceMappingURL=conditionCountType.js.map

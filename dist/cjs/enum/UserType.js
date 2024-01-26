@@ -5,5 +5,5 @@ var UserType;
 (function (UserType) {
     UserType["ORGANIZATION_USER"] = "ORGANIZATION_USER";
     UserType["DMS_USER"] = "DMS_USER";
-})(UserType = exports.UserType || (exports.UserType = {}));
+})(UserType || (exports.UserType = UserType = {}));
 //# sourceMappingURL=UserType.js.map

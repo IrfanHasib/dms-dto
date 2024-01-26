@@ -6,5 +6,5 @@ var BXGYGetType;
     BXGYGetType["RANDOM"] = "RANDOM";
     BXGYGetType["CHEAPEST_PRICE"] = "CHEAPEST_PRICE";
     BXGYGetType["HIGHEST_PRICE"] = "HIGHEST_PRICE";
-})(BXGYGetType = exports.BXGYGetType || (exports.BXGYGetType = {}));
+})(BXGYGetType || (exports.BXGYGetType = BXGYGetType = {}));
 //# sourceMappingURL=BXGYGetType.js.map

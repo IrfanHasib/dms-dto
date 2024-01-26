@@ -6,5 +6,5 @@ var BXGXDiscountType;
     BXGXDiscountType["PERCENT"] = "PERCENT";
     BXGXDiscountType["FIXED"] = "FIXED";
     BXGXDiscountType["FREE"] = "FREE";
-})(BXGXDiscountType = exports.BXGXDiscountType || (exports.BXGXDiscountType = {}));
+})(BXGXDiscountType || (exports.BXGXDiscountType = BXGXDiscountType = {}));
 //# sourceMappingURL=BXGXDiscountType.js.map

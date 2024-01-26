@@ -9,5 +9,5 @@ var OrganizationRole;
     OrganizationRole["DELIVERY_MAN"] = "DELIVERY_MAN";
     OrganizationRole["SALES_REPRESENTATIVE"] = "SALES_REPRESENTATIVE";
     OrganizationRole["SALES_MANAGER"] = "SALES_MANAGER";
-})(OrganizationRole = exports.OrganizationRole || (exports.OrganizationRole = {}));
+})(OrganizationRole || (exports.OrganizationRole = OrganizationRole = {}));
 //# sourceMappingURL=organizationRole.js.map

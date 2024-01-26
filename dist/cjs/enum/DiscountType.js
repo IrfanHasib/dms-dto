@@ -8,5 +8,5 @@ var DiscountType;
     DiscountType["BULK_ADJUSTMENT"] = "BULK_ADJUSTMENT";
     DiscountType["BXGX"] = "BXGX";
     DiscountType["BXGY"] = "BXGY";
-})(DiscountType = exports.DiscountType || (exports.DiscountType = {}));
+})(DiscountType || (exports.DiscountType = DiscountType = {}));
 //# sourceMappingURL=discountType.js.map

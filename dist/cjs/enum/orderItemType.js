@@ -6,5 +6,5 @@ var OrderItemType;
     OrderItemType["RETURN"] = "RETURN";
     OrderItemType["DAMAGE_RETURN"] = "DAMAGE_RETURN";
     OrderItemType["SALE"] = "SALE";
-})(OrderItemType = exports.OrderItemType || (exports.OrderItemType = {}));
+})(OrderItemType || (exports.OrderItemType = OrderItemType = {}));
 //# sourceMappingURL=orderItemType.js.map
