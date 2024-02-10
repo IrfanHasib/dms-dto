@@ -13,6 +13,7 @@ exports.DeliverySummaryBaseDto = void 0;
 var ts_mixer_1 = require("ts-mixer");
 var class_transformer_1 = require("class-transformer");
 var class_validator_1 = require("class-validator");
+var transformBoolean_1 = require("../utils/transformBoolean");
 var DeliverySummaryBaseDto = /** @class */ (function () {
     function DeliverySummaryBaseDto() {
     }
@@ -28,13 +29,6 @@ var DeliverySummaryBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
         __metadata("design:type", Number)
-    ], DeliverySummaryBaseDto.prototype, "deliveryByUserId", void 0);
-    __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
-        __metadata("design:type", Number)
     ], DeliverySummaryBaseDto.prototype, "routeId", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
@@ -43,6 +37,13 @@ var DeliverySummaryBaseDto = /** @class */ (function () {
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsDate)()),
         __metadata("design:type", Object)
     ], DeliverySummaryBaseDto.prototype, "deliveryDate", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryBaseDto.prototype, "isCanceled", void 0);
     return DeliverySummaryBaseDto;
 }());
 exports.DeliverySummaryBaseDto = DeliverySummaryBaseDto;

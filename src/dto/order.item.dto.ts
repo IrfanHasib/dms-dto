@@ -7,8 +7,8 @@ import { CustomerItemDto } from './customer.item.dto';
 import { TransformBoolean } from '../utils/transformBoolean';
 import { UserItemDto } from './user.item.dto';
 import { OrderProductItemDto } from './orderProduct.item.dto';
-import { OrderPaymentCreateDto } from './orderPayment.create.dto';
 import { OrderPaymentItemDto } from './orderPayment.item.dto';
+import { DeliverySummaryItemDto } from './deliverySummary.item.dto';
 
 export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
   @decorate(Expose())
@@ -34,6 +34,17 @@ export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
   @decorate(IsNotEmpty())
   @decorate(Type(() => UserItemDto))
   orderUser: UserItemDto;
+
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(Type(() => DeliverySummaryItemDto))
+  deliverySummary: DeliverySummaryItemDto;
+
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsNumber())
+  @decorate(Type(() => Number))
+  deliverySummaryId?: number;
 
   @decorate(Expose())
   @decorate(IsNotEmpty())

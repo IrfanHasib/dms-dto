@@ -6653,6 +6653,201 @@ var OrderPaymentItemDto = /** @class */ (function (_super) {
     return OrderPaymentItemDto;
 }(Mixin(BaseDBFieldsDto, OrderPaymentBaseDto)));
 
+var DeliverySummaryBaseDto = /** @class */ (function () {
+    function DeliverySummaryBaseDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsString()),
+        __metadata("design:type", String)
+    ], DeliverySummaryBaseDto.prototype, "comment", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryBaseDto.prototype, "routeId", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(Type(function () { return Date; })),
+        decorate(IsDate()),
+        __metadata("design:type", Object)
+    ], DeliverySummaryBaseDto.prototype, "deliveryDate", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryBaseDto.prototype, "isCanceled", void 0);
+    return DeliverySummaryBaseDto;
+}());
+
+var DeliverySummaryProductBaseDto = /** @class */ (function () {
+    function DeliverySummaryProductBaseDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        decorate(Min(0)),
+        __metadata("design:type", Number)
+    ], DeliverySummaryProductBaseDto.prototype, "dispatchedQuantity", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        decorate(Min(0)),
+        __metadata("design:type", Number)
+    ], DeliverySummaryProductBaseDto.prototype, "returnedQuantity", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryProductBaseDto.prototype, "productId", void 0);
+    return DeliverySummaryProductBaseDto;
+}());
+
+var DeliverySummaryProductItemDto = /** @class */ (function (_super) {
+    __extends(DeliverySummaryProductItemDto, _super);
+    function DeliverySummaryProductItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryProductItemDto.prototype, "orderedQuantity", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryProductItemDto.prototype, "deliveredQuantity", void 0);
+    return DeliverySummaryProductItemDto;
+}(Mixin(BaseDBFieldsDto, DeliverySummaryProductBaseDto)));
+
+var RouteBaseDto = /** @class */ (function () {
+    function RouteBaseDto() {
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsString()),
+        __metadata("design:type", String)
+    ], RouteBaseDto.prototype, "name", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsString()),
+        __metadata("design:type", String)
+    ], RouteBaseDto.prototype, "description", void 0);
+    return RouteBaseDto;
+}());
+
+var RouteItemDto = /** @class */ (function (_super) {
+    __extends(RouteItemDto, _super);
+    function RouteItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return RouteItemDto;
+}(Mixin(BaseDBFieldsDto, RouteBaseDto)));
+
+var DeliverySummaryItemDto = /** @class */ (function (_super) {
+    __extends(DeliverySummaryItemDto, _super);
+    function DeliverySummaryItemDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsArray()),
+        decorate(IsInt({ each: true })),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Array)
+    ], DeliverySummaryItemDto.prototype, "ordersIds", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsArray()),
+        decorate(ValidateNested({ each: true })),
+        decorate(Type(function () { return DeliverySummaryProductItemDto; })),
+        __metadata("design:type", Array)
+    ], DeliverySummaryItemDto.prototype, "deliverySummaryProducts", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(Type(function () { return UserItemDto; })),
+        __metadata("design:type", UserItemDto)
+    ], DeliverySummaryItemDto.prototype, "deliveryByUser", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(Type(function () { return RouteItemDto; })),
+        __metadata("design:type", RouteItemDto)
+    ], DeliverySummaryItemDto.prototype, "route", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryItemDto.prototype, "totalDiscount", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryItemDto.prototype, "totalSaleAmount", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryItemDto.prototype, "totalRegularAmount", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryItemDto.prototype, "isDispatched", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryItemDto.prototype, "isReturned", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryItemDto.prototype, "isCompleted", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryItemDto.prototype, "isCanceled", void 0);
+    return DeliverySummaryItemDto;
+}(Mixin(BaseDBFieldsDto, DeliverySummaryBaseDto)));
+
 var OrderItemDto = /** @class */ (function (_super) {
     __extends(OrderItemDto, _super);
     function OrderItemDto() {
@@ -6686,6 +6881,19 @@ var OrderItemDto = /** @class */ (function (_super) {
         decorate(Type(function () { return UserItemDto; })),
         __metadata("design:type", UserItemDto)
     ], OrderItemDto.prototype, "orderUser", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(Type(function () { return DeliverySummaryItemDto; })),
+        __metadata("design:type", DeliverySummaryItemDto)
+    ], OrderItemDto.prototype, "deliverySummary", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "deliverySummaryId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsNotEmpty()),
@@ -6826,76 +7034,6 @@ var UserUpdateDto = /** @class */ (function (_super) {
     return UserUpdateDto;
 }(UserBaseDto));
 
-var DeliverySummaryBaseDto = /** @class */ (function () {
-    function DeliverySummaryBaseDto() {
-    }
-    __decorate([
-        decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(IsString()),
-        __metadata("design:type", String)
-    ], DeliverySummaryBaseDto.prototype, "comment", void 0);
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], DeliverySummaryBaseDto.prototype, "deliveryByUserId", void 0);
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], DeliverySummaryBaseDto.prototype, "routeId", void 0);
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(Type(function () { return Date; })),
-        decorate(IsDate()),
-        __metadata("design:type", Object)
-    ], DeliverySummaryBaseDto.prototype, "deliveryDate", void 0);
-    return DeliverySummaryBaseDto;
-}());
-
-var DeliverySummaryProductBaseDto = /** @class */ (function () {
-    function DeliverySummaryProductBaseDto() {
-    }
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        decorate(Min(0)),
-        __metadata("design:type", Number)
-    ], DeliverySummaryProductBaseDto.prototype, "dispatchedQuantity", void 0);
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        decorate(Min(0)),
-        __metadata("design:type", Number)
-    ], DeliverySummaryProductBaseDto.prototype, "returnedQuantity", void 0);
-    __decorate([
-        decorate(Expose()),
-        decorate(IsNotEmpty()),
-        decorate(IsInt()),
-        decorate(Type(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], DeliverySummaryProductBaseDto.prototype, "productId", void 0);
-    return DeliverySummaryProductBaseDto;
-}());
-
-var DeliverySummaryProductCreateDto = /** @class */ (function (_super) {
-    __extends(DeliverySummaryProductCreateDto, _super);
-    function DeliverySummaryProductCreateDto() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return DeliverySummaryProductCreateDto;
-}(DeliverySummaryProductBaseDto));
-
 var DeliverySummaryCreateDto = /** @class */ (function (_super) {
     __extends(DeliverySummaryCreateDto, _super);
     function DeliverySummaryCreateDto() {
@@ -6903,38 +7041,13 @@ var DeliverySummaryCreateDto = /** @class */ (function (_super) {
     }
     __decorate([
         decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(IsArray()),
-        decorate(ValidateNested({ each: true })),
-        decorate(Type(function () { return DeliverySummaryProductCreateDto; })),
-        __metadata("design:type", Array)
-    ], DeliverySummaryCreateDto.prototype, "deliverySummaryProducts", void 0);
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryCreateDto.prototype, "deliveryByUserId", void 0);
     return DeliverySummaryCreateDto;
 }(DeliverySummaryBaseDto));
-
-var DeliverySummaryProductItemDto = /** @class */ (function (_super) {
-    __extends(DeliverySummaryProductItemDto, _super);
-    function DeliverySummaryProductItemDto() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return DeliverySummaryProductItemDto;
-}(Mixin(BaseDBFieldsDto, DeliverySummaryProductBaseDto)));
-
-var DeliverySummaryItemDto = /** @class */ (function (_super) {
-    __extends(DeliverySummaryItemDto, _super);
-    function DeliverySummaryItemDto() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    __decorate([
-        decorate(Expose()),
-        decorate(IsOptional()),
-        decorate(IsArray()),
-        decorate(ValidateNested({ each: true })),
-        decorate(Type(function () { return DeliverySummaryProductItemDto; })),
-        __metadata("design:type", Array)
-    ], DeliverySummaryItemDto.prototype, "deliverySummaryProducts", void 0);
-    return DeliverySummaryItemDto;
-}(Mixin(BaseDBFieldsDto, DeliverySummaryBaseDto)));
 
 var DeliverySummaryPaginateRequestDto = /** @class */ (function (_super) {
     __extends(DeliverySummaryPaginateRequestDto, _super);
@@ -6974,14 +7087,89 @@ var DeliverySummaryUpdateDto = /** @class */ (function (_super) {
     }
     __decorate([
         decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(IsInt()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryUpdateDto.prototype, "deliveryByUserId", void 0);
+    __decorate([
+        decorate(Expose()),
         decorate(IsOptional()),
         decorate(IsArray()),
         decorate(ValidateNested({ each: true })),
         decorate(Type(function () { return DeliverySummaryProductUpdateDto; })),
         __metadata("design:type", Array)
     ], DeliverySummaryUpdateDto.prototype, "deliverySummaryProducts", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsArray()),
+        decorate(IsInt({ each: true })),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Array)
+    ], DeliverySummaryUpdateDto.prototype, "deliverySummaryOrderIds", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryUpdateDto.prototype, "isDispatched", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryUpdateDto.prototype, "isReturned", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsNotEmpty()),
+        decorate(TransformBoolean()),
+        decorate(IsBoolean()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryUpdateDto.prototype, "isCompleted", void 0);
     return DeliverySummaryUpdateDto;
 }(DeliverySummaryBaseDto));
+
+var DeliverySummaryProductCreateDto = /** @class */ (function (_super) {
+    __extends(DeliverySummaryProductCreateDto, _super);
+    function DeliverySummaryProductCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return DeliverySummaryProductCreateDto;
+}(DeliverySummaryProductBaseDto));
+
+var RouteCreateDto = /** @class */ (function (_super) {
+    __extends(RouteCreateDto, _super);
+    function RouteCreateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return RouteCreateDto;
+}(RouteBaseDto));
+
+var RoutePaginateResponseDto = /** @class */ (function (_super) {
+    __extends(RoutePaginateResponseDto, _super);
+    function RoutePaginateResponseDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    __decorate([
+        Expose(),
+        IsArray(),
+        Type(function () { return RouteItemDto; }),
+        ValidateNested({ each: true }),
+        __metadata("design:type", Array)
+    ], RoutePaginateResponseDto.prototype, "items", void 0);
+    return RoutePaginateResponseDto;
+}(PaginateResponseMetadataDto));
+
+var RouteUpdateDto = /** @class */ (function (_super) {
+    __extends(RouteUpdateDto, _super);
+    function RouteUpdateDto() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return RouteUpdateDto;
+}(RouteBaseDto));
 
 /**
 Obj should not be empty, if there are no field then pass {}
@@ -7050,5 +7238,5 @@ var validateAndPaintToInstance = function (dto, obj) { return __awaiter$1(void 0
     });
 }); };
 
-export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CreatedResponseDto, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DMSRole, DeleteResponseDto, DeliverySummaryBaseDto, DeliverySummaryCreateDto, DeliverySummaryItemDto, DeliverySummaryPaginateRequestDto, DeliverySummaryPaginateResponseDto, DeliverySummaryProductBaseDto, DeliverySummaryProductCreateDto, DeliverySummaryProductItemDto, DeliverySummaryProductUpdateDto, DeliverySummaryUpdateDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, OrderBaseDto, OrderCreateDto, OrderItemDto, OrderItemType, OrderPaginateRequestDto, OrderPaginateResponseDto, OrderPaymentBaseDto, OrderPaymentCreateDto, OrderPaymentItemDto, OrderPaymentUpdateDto, OrderProductBaseDto, OrderProductCreateDto, OrderProductItemDto, OrderProductUpdateDto, OrderUpdateDto, OrganizationRole, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, TransformBoolean, UserBaseDto, UserCreateDto, UserItemDto, UserType, UserUpdateDto, dtoValidator, validateAndPaintToInstance };
+export { AuthResponseDTO, AutoCompleteOptionItemDto, BXGXDiscountType, BXGYCountType, BXGYDiscountType, BXGYGetType, BXGYType, BaseDBFieldsDto, BulkAdjustmentCountType, BulkDiscountType, CartAdjustmentDiscountType, CategoryBaseDto, CategoryCreateDto, CategoryItemDto, CategoryPaginateRequestDto, CategoryPaginateResponseDto, CategoryUpdateDto, CompanyBaseDto, CompanyCreateDto, CompanyItemDto, CompanyPaginateResponseDto, CompanyUpdateDto, ConditionCountType, ConditionOperator, CreatedResponseDto, CustomerBaseDto, CustomerCreateDto, CustomerItemDto, CustomerPaginateRequestDto, CustomerPaginateResponseDto, CustomerUpdateDto, DMSRole, DeleteResponseDto, DeliverySummaryBaseDto, DeliverySummaryCreateDto, DeliverySummaryItemDto, DeliverySummaryPaginateRequestDto, DeliverySummaryPaginateResponseDto, DeliverySummaryProductBaseDto, DeliverySummaryProductCreateDto, DeliverySummaryProductItemDto, DeliverySummaryProductUpdateDto, DeliverySummaryUpdateDto, DiscountBaseDto, DiscountBulkItemDto, DiscountBxgxItemDto, DiscountBxgyItemDto, DiscountBxgyItemItemDto, DiscountConditionItemDto, DiscountConditionType, DiscountCreateDto, DiscountFilterItemDto, DiscountFilterItemItemDto, DiscountFilterType, DiscountItemDto, DiscountPaginateRequestDto, DiscountPaginateResponseDto, DiscountType, DiscountUpdateDto, LoginDTO, OrderBaseDto, OrderCreateDto, OrderItemDto, OrderItemType, OrderPaginateRequestDto, OrderPaginateResponseDto, OrderPaymentBaseDto, OrderPaymentCreateDto, OrderPaymentItemDto, OrderPaymentUpdateDto, OrderProductBaseDto, OrderProductCreateDto, OrderProductItemDto, OrderProductUpdateDto, OrderUpdateDto, OrganizationRole, PaginateRequestDto, PaginateResponseMetadataDto, ProductAdjustmentDiscountType, ProductBaseDto, ProductCreateDto, ProductItemDto, ProductPaginateRequestDto, ProductPaginateResponseDto, ProductUpdateDto, PurchaseBaseDto, PurchaseCreateDto, PurchaseItemBaseDto, PurchaseItemDto, PurchasePaginateRequestDto, PurchasePaginateResponseDto, PurchaseUpdateDto, RouteBaseDto, RouteCreateDto, RouteItemDto, RoutePaginateResponseDto, RouteUpdateDto, TransformBoolean, UserBaseDto, UserCreateDto, UserItemDto, UserType, UserUpdateDto, dtoValidator, validateAndPaintToInstance };
 //# sourceMappingURL=index.js.map

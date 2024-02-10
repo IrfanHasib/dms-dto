@@ -35,6 +35,7 @@ var transformBoolean_1 = require("../utils/transformBoolean");
 var user_item_dto_1 = require("./user.item.dto");
 var orderProduct_item_dto_1 = require("./orderProduct.item.dto");
 var orderPayment_item_dto_1 = require("./orderPayment.item.dto");
+var deliverySummary_item_dto_1 = require("./deliverySummary.item.dto");
 var OrderItemDto = /** @class */ (function (_super) {
     __extends(OrderItemDto, _super);
     function OrderItemDto() {
@@ -68,6 +69,19 @@ var OrderItemDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return user_item_dto_1.UserItemDto; })),
         __metadata("design:type", user_item_dto_1.UserItemDto)
     ], OrderItemDto.prototype, "orderUser", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return deliverySummary_item_dto_1.DeliverySummaryItemDto; })),
+        __metadata("design:type", deliverySummary_item_dto_1.DeliverySummaryItemDto)
+    ], OrderItemDto.prototype, "deliverySummary", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "deliverySummaryId", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),

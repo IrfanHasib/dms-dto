@@ -31,6 +31,9 @@ var deliverySummary_base_dto_1 = require("./deliverySummary.base.dto");
 var class_transformer_1 = require("class-transformer");
 var class_validator_1 = require("class-validator");
 var deliverySummaryProduct_item_dto_1 = require("./deliverySummaryProduct.item.dto");
+var user_item_dto_1 = require("./user.item.dto");
+var route_item_dto_1 = require("./route.item.dto");
+var transformBoolean_1 = require("../utils/transformBoolean");
 var DeliverySummaryItemDto = /** @class */ (function (_super) {
     __extends(DeliverySummaryItemDto, _super);
     function DeliverySummaryItemDto() {
@@ -40,10 +43,79 @@ var DeliverySummaryItemDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)({ each: true })),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Array)
+    ], DeliverySummaryItemDto.prototype, "ordersIds", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.ValidateNested)({ each: true })),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return deliverySummaryProduct_item_dto_1.DeliverySummaryProductItemDto; })),
         __metadata("design:type", Array)
     ], DeliverySummaryItemDto.prototype, "deliverySummaryProducts", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return user_item_dto_1.UserItemDto; })),
+        __metadata("design:type", user_item_dto_1.UserItemDto)
+    ], DeliverySummaryItemDto.prototype, "deliveryByUser", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return route_item_dto_1.RouteItemDto; })),
+        __metadata("design:type", route_item_dto_1.RouteItemDto)
+    ], DeliverySummaryItemDto.prototype, "route", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryItemDto.prototype, "totalDiscount", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryItemDto.prototype, "totalSaleAmount", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryItemDto.prototype, "totalRegularAmount", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryItemDto.prototype, "isDispatched", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryItemDto.prototype, "isReturned", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryItemDto.prototype, "isCompleted", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryItemDto.prototype, "isCanceled", void 0);
     return DeliverySummaryItemDto;
 }((0, ts_mixer_1.Mixin)(baseDBFields_dto_1.BaseDBFieldsDto, deliverySummary_base_dto_1.DeliverySummaryBaseDto)));
 exports.DeliverySummaryItemDto = DeliverySummaryItemDto;

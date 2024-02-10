@@ -24,24 +24,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeliverySummaryCreateDto = void 0;
-var deliverySummary_base_dto_1 = require("./deliverySummary.base.dto");
-var ts_mixer_1 = require("ts-mixer");
-var class_transformer_1 = require("class-transformer");
+exports.RoutePaginateResponseDto = void 0;
 var class_validator_1 = require("class-validator");
-var DeliverySummaryCreateDto = /** @class */ (function (_super) {
-    __extends(DeliverySummaryCreateDto, _super);
-    function DeliverySummaryCreateDto() {
+var class_transformer_1 = require("class-transformer");
+var paginate_response_metadata_dto_1 = require("./paginate.response.metadata.dto");
+var route_item_dto_1 = require("./route.item.dto");
+var RoutePaginateResponseDto = /** @class */ (function (_super) {
+    __extends(RoutePaginateResponseDto, _super);
+    function RoutePaginateResponseDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
-        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
-        __metadata("design:type", Number)
-    ], DeliverySummaryCreateDto.prototype, "deliveryByUserId", void 0);
-    return DeliverySummaryCreateDto;
-}(deliverySummary_base_dto_1.DeliverySummaryBaseDto));
-exports.DeliverySummaryCreateDto = DeliverySummaryCreateDto;
-//# sourceMappingURL=deliverySummary.create.dto.js.map
+        (0, class_transformer_1.Expose)(),
+        (0, class_validator_1.IsArray)(),
+        (0, class_transformer_1.Type)(function () { return route_item_dto_1.RouteItemDto; }),
+        (0, class_validator_1.ValidateNested)({ each: true }),
+        __metadata("design:type", Array)
+    ], RoutePaginateResponseDto.prototype, "items", void 0);
+    return RoutePaginateResponseDto;
+}(paginate_response_metadata_dto_1.PaginateResponseMetadataDto));
+exports.RoutePaginateResponseDto = RoutePaginateResponseDto;
+//# sourceMappingURL=route.paginate.response.dto.js.map

@@ -30,11 +30,19 @@ var ts_mixer_1 = require("ts-mixer");
 var class_transformer_1 = require("class-transformer");
 var class_validator_1 = require("class-validator");
 var deliverySummaryProduct_update_dto_1 = require("./deliverySummaryProduct.update.dto");
+var transformBoolean_1 = require("../utils/transformBoolean");
 var DeliverySummaryUpdateDto = /** @class */ (function (_super) {
     __extends(DeliverySummaryUpdateDto, _super);
     function DeliverySummaryUpdateDto() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], DeliverySummaryUpdateDto.prototype, "deliveryByUserId", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
@@ -43,6 +51,35 @@ var DeliverySummaryUpdateDto = /** @class */ (function (_super) {
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return deliverySummaryProduct_update_dto_1.DeliverySummaryProductUpdateDto; })),
         __metadata("design:type", Array)
     ], DeliverySummaryUpdateDto.prototype, "deliverySummaryProducts", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsArray)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsInt)({ each: true })),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Array)
+    ], DeliverySummaryUpdateDto.prototype, "deliverySummaryOrderIds", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryUpdateDto.prototype, "isDispatched", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryUpdateDto.prototype, "isReturned", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, transformBoolean_1.TransformBoolean)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsBoolean)()),
+        __metadata("design:type", Boolean)
+    ], DeliverySummaryUpdateDto.prototype, "isCompleted", void 0);
     return DeliverySummaryUpdateDto;
 }(deliverySummary_base_dto_1.DeliverySummaryBaseDto));
 exports.DeliverySummaryUpdateDto = DeliverySummaryUpdateDto;
