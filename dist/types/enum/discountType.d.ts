@@ -1,7 +1,0 @@
-export declare enum DiscountType {
-    PRODUCT_ADJUSTMENT = "PRODUCT_ADJUSTMENT",
-    CART_ADJUSTMENT = "CART_ADJUSTMENT",
-    BULK_ADJUSTMENT = "BULK_ADJUSTMENT",
-    BXGX = "BXGX",
-    BXGY = "BXGY"
-}
