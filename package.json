@@ -31,8 +31,8 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "prettier": "^3.2.4",
-    "rollup": "^4.9.6",
+    "prettier": "^3.2.5",
+    "rollup": "^4.10.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
