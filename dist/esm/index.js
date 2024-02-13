@@ -6624,6 +6624,7 @@ var UserItemDto = /** @class */ (function (_super) {
         decorate(Expose()),
         IsOptional(),
         ValidateIf(function (object, value) { return !!value; }),
+        ValidateIf(function (o) { return o.userType === UserType.ORGANIZATION_USER; }),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
@@ -7003,6 +7004,7 @@ var UserCreateDto = /** @class */ (function (_super) {
         decorate(Expose()),
         IsOptional(),
         ValidateIf(function (object, value) { return !!value; }),
+        ValidateIf(function (o) { return o.userType === UserType.ORGANIZATION_USER; }),
         IsInt(),
         Type(function () { return Number; }),
         __metadata("design:type", Number)
