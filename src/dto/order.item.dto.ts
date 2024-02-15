@@ -2,7 +2,7 @@ import { BaseDBFieldsDto } from './baseDBFields.dto';
 import { decorate, Mixin } from 'ts-mixer';
 import { OrderBaseDto } from './order.base.dto';
 import { Expose, Type } from 'class-transformer';
-import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from 'class-validator';
+import { IsArray, IsBoolean, IsIn, IsInt, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from 'class-validator';
 import { CustomerItemDto } from './customer.item.dto';
 import { TransformBoolean } from '../utils/transformBoolean';
 import { UserItemDto } from './user.item.dto';
@@ -26,14 +26,26 @@ export class OrderItemDto extends Mixin(BaseDBFieldsDto, OrderBaseDto) {
   orderPayments: OrderPaymentItemDto[];
 
   @decorate(Expose())
-  @decorate(IsNotEmpty())
+  @decorate(IsOptional())
   @decorate(Type(() => CustomerItemDto))
-  customer: CustomerItemDto;
+  customer?: CustomerItemDto;
 
   @decorate(Expose())
-  @decorate(IsNotEmpty())
+  @decorate(IsOptional())
   @decorate(Type(() => UserItemDto))
-  orderUser: UserItemDto;
+  orderUser?: UserItemDto;
+
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsNumber())
+  @decorate(Type(() => Number))
+  orderUserId?: number;
+
+  @decorate(Expose())
+  @decorate(IsOptional())
+  @decorate(IsNumber())
+  @decorate(Type(() => Number))
+  deliveryByUserId?: number;
 
   @decorate(Expose())
   @decorate(IsOptional())

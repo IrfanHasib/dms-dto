@@ -59,16 +59,30 @@ var OrderItemDto = /** @class */ (function (_super) {
     ], OrderItemDto.prototype, "orderPayments", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return customer_item_dto_1.CustomerItemDto; })),
         __metadata("design:type", customer_item_dto_1.CustomerItemDto)
     ], OrderItemDto.prototype, "customer", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
-        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNotEmpty)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return user_item_dto_1.UserItemDto; })),
         __metadata("design:type", user_item_dto_1.UserItemDto)
     ], OrderItemDto.prototype, "orderUser", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "orderUserId", void 0);
+    __decorate([
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),
+        (0, ts_mixer_1.decorate)((0, class_validator_1.IsNumber)()),
+        (0, ts_mixer_1.decorate)((0, class_transformer_1.Type)(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "deliveryByUserId", void 0);
     __decorate([
         (0, ts_mixer_1.decorate)((0, class_transformer_1.Expose)()),
         (0, ts_mixer_1.decorate)((0, class_validator_1.IsOptional)()),

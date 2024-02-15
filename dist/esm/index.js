@@ -6872,16 +6872,30 @@ var OrderItemDto = /** @class */ (function (_super) {
     ], OrderItemDto.prototype, "orderPayments", void 0);
     __decorate([
         decorate(Expose()),
-        decorate(IsNotEmpty()),
+        decorate(IsOptional()),
         decorate(Type(function () { return CustomerItemDto; })),
         __metadata("design:type", CustomerItemDto)
     ], OrderItemDto.prototype, "customer", void 0);
     __decorate([
         decorate(Expose()),
-        decorate(IsNotEmpty()),
+        decorate(IsOptional()),
         decorate(Type(function () { return UserItemDto; })),
         __metadata("design:type", UserItemDto)
     ], OrderItemDto.prototype, "orderUser", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "orderUserId", void 0);
+    __decorate([
+        decorate(Expose()),
+        decorate(IsOptional()),
+        decorate(IsNumber()),
+        decorate(Type(function () { return Number; })),
+        __metadata("design:type", Number)
+    ], OrderItemDto.prototype, "deliveryByUserId", void 0);
     __decorate([
         decorate(Expose()),
         decorate(IsOptional()),

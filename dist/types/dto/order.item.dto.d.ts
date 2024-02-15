@@ -9,8 +9,10 @@ declare const OrderItemDto_base: import("ts-mixer/dist/types/types").Class<any[]
 export declare class OrderItemDto extends OrderItemDto_base {
     orderProducts: OrderProductItemDto[];
     orderPayments: OrderPaymentItemDto[];
-    customer: CustomerItemDto;
-    orderUser: UserItemDto;
+    customer?: CustomerItemDto;
+    orderUser?: UserItemDto;
+    orderUserId?: number;
+    deliveryByUserId?: number;
     deliverySummary: DeliverySummaryItemDto;
     deliverySummaryId?: number;
     oldTotalDiscount: number;
